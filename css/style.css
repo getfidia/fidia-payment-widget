@@ -1,3 +1,677 @@
-body {
-    font-family: 'Work Sans', sans-serif;
+* {
+    font-family: 'Work Sans', sans-serif!important;
 }
+
+:root {
+    /* define colors to be used across all pages as variables*/
+    --fidiaColor: #292a73;
+    --fidiaBodyColor: rgb(250 250 250);
+    --fidiaColorBlue: #3a9efd;
+}
+
+
+#app {
+    height: 100vh!important;
+    max-width: 1500px!important;
+    margin: auto!important;
+    font-family: 'Work Sans', sans-serif!important;
+}
+
+
+
+body{
+    background: none transparent!important;
+    padding-left: .3em;
+    padding-right: .3em;
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    border: 0px;
+    height: 60px;
+    max-width: 90%;
+    transition: .5s linear;
+}
+
+#supportB > button {
+    width: 250px;
+    background: #292a73;
+}
+
+button:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+button:focus{
+    outline: 0px;
+}
+
+#paymentPromptsBody{
+    position: absolute;
+    overflow-y: scroll;
+    height: 100%;
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+    background: rgba(0, 0, 0, 0.25);
+}
+
+#paymentPromptsBody::-webkit-scrollbar {
+    display: none;
+}
+
+#cancelIcon{
+    width: 30px;
+    height: 30px;
+    background: white;
+    cursor: pointer;
+    float: right;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100px;
+    cursor: pointer;
+}
+
+#cancelIcon:hover{
+    opacity: 0.8;
+    transition: all .5s linear;
+}
+
+
+
+
+
+
+
+
+
+
+/* Link prompt body */
+
+#fidia-decor{
+    margin-top: 36px;
+}
+
+#bgImage{
+    width: 100% !important;
+}
+
+#paymentContainer{
+    /* display: none; */
+    min-height: 800px;
+    padding: 2em 0px 2em 0px;
+    animation: glowIn .5s linear;
+}
+
+@keyframes glowIn{
+    from {
+        opacity: 0;
+    }
+}
+
+#paymentContainer > div{
+    width: 90%;
+    max-width: 750px;
+    margin: auto;
+}
+
+#paymentBody{
+    width: 100%;
+    min-height: 800px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);
+    padding: 1.5em 3em 1.5em 3em;
+}
+
+#userProfileImage{
+    height: 70px;
+    width: 70px;
+    border-radius: 50px;
+    object-fit: cover;
+}
+
+#usersName{
+    font-size: 24px;
+    font-weight: 600;
+}
+
+#usersRole{
+    font-size: 18px;
+    color:  #787676;
+    font-weight: 500;
+}
+
+#usersDescription{
+    font-size: 16px;
+    color:  #787676;
+    font-weight: 400;
+}
+
+#paymentQuantity{
+    height: 75px;
+}
+
+#paymentQuantity div > #item {
+    width: 75px;
+}
+
+#itemBody{
+    background: rgba(26, 27, 75, 0.09);
+    height: 71px;
+    width: 71px;
+    border-radius: 10px;
+    font-size: 35px;
+}
+
+.itemCon{
+    float: left;
+    height: 100%;
+}
+
+.priceInfo{
+    font-size: 20px;
+    color:  #787676;
+    font-weight: 500;
+}
+
+#counterBody{
+    width: 113px;
+    height: 37px;
+    border: 1.2px solid #787676;
+    border-radius: 3.7px;
+    background: #e4e3e3;
+    color: #787676;
+}
+
+#counterBody > .counter {
+    background: #e4e3e3;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 1.3em;
+    opacity: 0.7;
+    transition: opaciity .5s linear;
+}
+
+#counterBody > .counter:hover {
+    opacity: 1;
+}
+
+#counterBody > .counted {
+    background: white;
+    border-right: 0.7px solid #787676;
+    border-left: 0.7px solid #787676;
+}
+
+.inputName{
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.submitBtn{
+    width: 290px;
+}
+
+#supportBtn{
+    cursor: pointer;
+    color: #333333;
+    font-size: 17px;
+    font-weight: 500;
+    transition: .5s linear;
+}
+
+#supportBtn:hover{
+    opacity: 0.8;
+}
+
+#buyText{
+    font-size: 24px;
+    font-weight: 500;
+    color: #333;
+}
+
+#buyText > span {
+    color:  #787676;
+}
+
+#poweredByBody{
+    height: 40px;
+    max-width: 200px;
+    margin: auto;
+    background: white;
+    border-radius: 3px;
+    border: 1px solid #F8F8F8;
+    cursor: pointer;
+}
+
+#poweredByText{
+    color: var(--fidiaColor);
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.amountError{
+    font-size: 10px;
+    color: red!important;
+}
+
+
+
+/* Text Input */
+
+.input{
+    background: #FAFAFA;
+    width: 100%;
+    height: 60px;
+    border: 0px solid #787676;
+    box-sizing: border-box;
+    border-radius: 5px;
+    font-family: Work Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 20px;
+    color: #000000;
+    padding: 1.5em;
+    padding-left: 1.8em;
+    outline: none;
+    transition: border .1s linear;
+    transition: .3s linear;
+}
+
+.input:focus{
+    border: 1.5px solid var(--fidiaColorBlue);
+}
+
+.input::placeholder{
+    color: grey;
+}
+
+textarea{
+    background: #FAFAFA;
+    width: 100%;
+    height: 100px;
+    border: none;
+    box-sizing: border-box;
+    border-radius: 5px;
+    font-family: Work Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 20px;
+    color: #000000;
+    padding: 1.5em;
+    padding-left: 1.8em;
+    outline: none;
+    transition: border .1s linear;
+    transition: .3s linear;
+    resize: none;
+}
+
+textarea.large {
+    height: 207px;
+}
+
+textarea:focus{
+    border: 1.5px solid var(--fidiaColorBlue)!important;
+}
+
+textarea::placeholder{
+    color: grey;
+}
+
+
+
+
+/* Payment confirmation prompt */
+
+#paymentConfirmationSection{
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.25);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: show .5s linear;
+    z-index: 3;
+}
+
+@keyframes show {
+    from {
+        opacity: 0;
+    }
+}
+
+#paymentPromptBody{
+    width: 500px;
+    min-height: 275px;
+    background: white;
+    border-radius: 10px;
+    animation: scale .3s linear;
+    transform: translateY(0px);
+    transition: transform .5s linear;
+}
+
+.closeVerifyBvnBody{
+    transform: translateY(1000px)!important;
+}
+
+#paymentHead{
+    height: 60px;
+}
+
+#paymentText{
+    font-size: 24px;
+    font-weight: 600;
+}
+
+#closePaymentPrompt{
+    font-size: 50px;
+    color: #787676;
+    cursor: pointer;
+    font-weight: 200;
+    transition: .5s linear;
+}
+
+#closePaymentPrompt:hover{
+    color: var(--fidiaColorRed);
+}
+
+.closePaymentPromptBody{
+    transform: translateY(1000px)!important;
+}
+
+.paymentDetailsBody{
+    height: 40px;
+    border-bottom: 1px solid #C4C4C4;
+}
+
+.paymentDetailsBody.last{
+    border-bottom: none!important;
+}
+
+.paymentDetailTitle{
+    font-size: 16px;
+    color: #333333;
+    font-weight: 500;
+}
+
+.paymentDetail{
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--fidiaColorGrey);
+    text-align: right;
+}
+
+#paymentSupportText{
+    color: var(--fidiaColorGrey);
+    font-size: 18px;
+    font-weight: 400;
+}
+
+#paymentInfoHeader{
+    color: var(--fidiaColorDeep);
+    font-weight: 600;
+    font-size: 13px;
+}
+
+#cancelPaymentBtn{
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--fidiaColorGrey);
+    font-size: 22px;
+    transition: .5s all linear;
+}
+
+#cancelPaymentBtn:hover{
+    opacity: 0.6;
+    color: red;
+}
+
+#paymentBtn {
+    background: var(--fidiaColor);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    border: 0px;
+    height: 60px;
+    width: 100%;
+    transition: .5s linear;
+}
+
+#paymentBtn:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+#paymentBtn:focus{
+    outline: 0px;
+}
+
+@keyframes scale {
+    from {
+        transform: scale(0.5);
+    }
+}
+
+
+
+/* Payment status section */
+
+#paymentStatusSection{
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.25);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: show .5s linear;
+    z-index: 3;
+}
+
+@keyframes show {
+    from {
+        opacity: 0;
+    }
+}
+
+#paymentStatusBody{
+    width: 500px;
+    min-height: 275px;
+    background: white;
+    border-radius: 10px;
+    animation: scale .3s linear;
+    transform: translateY(0px);
+    transition: transform .5s linear;
+}
+
+.closeVerifyBvnBody{
+    transform: translateY(1000px)!important;
+}
+
+.paymentDetailsBody{
+    height: 40px;
+    border-bottom: 1px solid #C4C4C4;
+}
+
+.paymentDetailsBody.last{
+    border-bottom: none!important;
+}
+
+.paymentDetailTitle{
+    font-size: 16px;
+    color: #333333;
+    font-weight: 500;
+}
+
+.paymentDetail{
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--fidiaColorGrey);
+    text-align: right;
+}
+
+#paymentSupportText{
+    color: var(--fidiaColorGrey);
+    font-size: 22px;
+    font-weight: 500;
+}
+
+#paymentInfoHeader{
+    color: var(--fidiaColorDeep);
+    font-weight: 600;
+    font-size: 13px;
+}
+
+#cancelPaymentBtn{
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--fidiaColorGrey);
+    font-size: 22px;
+    transition: .5s all linear;
+}
+
+#cancelPaymentBtn:hover{
+    opacity: 0.6;
+    color: red;
+}
+
+#successText{
+    font-weight: 500;
+    font-size: 22px;
+}
+
+#depositText{
+    text-align: center;
+    color: var(--fidiaColorGrey);
+    font-size: 20px;
+}
+
+#paymentBtn{
+    width: 165px;
+}
+
+@keyframes scale {
+    from {
+        transform: scale(0.5);
+    }
+}
+
+@media only screen and (max-width: 770px){
+    #paymentConfirmationSection{
+        padding-left: 0px;
+    }
+
+    #paymentPromptBody{
+        width: 80%;
+    }
+
+    #paymentStatusSection{
+        padding-left: 0px;
+    }
+
+    #paymentStatusBody{
+        width: 80%;
+    }
+}
+
+@media only screen and (max-width: 600px){
+    #paymentBody{
+        min-height: 900px;
+    }
+
+    #usersDescription{
+        text-align: center !important;
+    }
+
+    #paymentQuantity div > #item {
+        width: 45px;
+    }
+
+    .itemCon.buy {
+        width: 115px;
+    }
+
+    .priceInfo:nth-child(1){
+        padding-top: 10px;
+    }
+
+    .priceInfo{
+        font-size: 18px;
+    }
+
+
+    
+    #paymentConfirmationSection{
+        padding-left: 0px;
+        padding-top: 10em;
+    }
+
+    #paymentPromptBody{
+        width: 100%;
+        max-height: 80%;
+        position: absolute;
+        bottom: 0px;
+        min-height: 0px;
+        border-bottom-right-radius: 0px;
+        border-bottom-left-radius: 0px;
+    }
+
+    #paymentSupportText{
+        font-size: 19px;
+    }
+
+
+    #paymentStatusSection{
+        padding-left: 0px;
+        padding-top: 10em;
+    }
+
+    #paymentStatusBody{
+        width: 100%;
+        max-height: 80%;
+        position: absolute;
+        bottom: 0px;
+        min-height: 0px;
+        border-bottom-right-radius: 0px;
+        border-bottom-left-radius: 0px;
+    }
+
+    #paymentSupportText{
+        font-size: 19px;
+    }
+
+    textArea{
+        padding: 1em!important;
+    }
+
+    textarea.large {
+        height: 197px;
+    }
+}
+
