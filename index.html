@@ -16,7 +16,7 @@
 <body>
     <div id="app">
         <!-- Payment prompts section -->
-        <div id="paymentPromptsBody" :style="{display: showPopoup? 'flex' : 'none'}" class="justify-content-center align-items-center">
+        <div id="paymentPromptsBody" class="d-flex justify-content-center align-items-center">
             <!-- Receive payment -->
             <div class="" id="paymentContainer">
                 <div class="row">
@@ -245,7 +245,6 @@
     var app = new Vue({
         el: '#app',
         data: {
-            showPopoup: true,
             showPaymentConfirmationPrompt: false,
             showPaymentStatus: false,
             name: '',
@@ -354,7 +353,8 @@
             },
 
             closePaymentPopup(){
-                this.showPopoup = false;
+                // Tell the parent document to close the iframe
+                window.parent.postMessage('closeFidiaIframe', '*');
             },
 
             closePaymentStatusPrompt(){
