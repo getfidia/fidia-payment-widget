@@ -127,7 +127,7 @@ button:focus{
     margin: auto;
 }
 
-#paymentBody{
+#paymentBody, #paymentErrorBody{
     width: 100%;
     min-height: 800px;
     background: white;
@@ -611,6 +611,18 @@ textarea::placeholder{
   animation-play-state: running;
 }
 
+#widgetErrorHead{
+    font-weight: 500;
+    font-size: 20px;
+    color: #000000;
+}
+
+#widgetErrorText{
+    font-weight: 400;
+    color: #787676;
+    font-size: 16px;
+}
+
 
 @keyframes spin {
     0% {
@@ -646,9 +658,19 @@ textarea::placeholder{
     }
 }
 
+@media only screen and (max-width: 350px){
+    #paymentPromptsBody{
+        padding-top: 30em!important;
+    }
+}
+
 @media only screen and (max-width: 600px){
-    #paymentBody{
+    #paymentBody, #paymentErrorBody{
         min-height: 900px;
+    }
+
+    #paymentPromptsBody{
+        padding-top: 25em;
     }
 
     #usersDescription{

@@ -19,7 +19,7 @@
         <!-- Payment prompts section -->
         <div id="paymentPromptsBody" class="d-flex justify-content-center align-items-center">
             <!-- Receive payment -->
-            <div class="" :style="{display: showPaymentSection ? 'block' : 'none'}" id="paymentContainer">
+            <div class="" v-if="showPaymentSection" id="paymentContainer">
                 <div class="row">
                     <div class="col-10"></div>
                     <div class="col-2 p-0">
@@ -30,8 +30,8 @@
                         </span>
                     </div>
                 </div>
-                <div class="">
-                    <div class="pr-3 pl-3 pr-md-5 pl-md-5" id="paymentBody">
+                <div>
+                    <div v-if="!errorOccured" class="pr-3 pl-3 pr-md-5 pl-md-5" id="paymentBody">
                         <!-- Users info -->
                         <div class="row p-0 m-0" id="receiversInfo">
                             <div class="col-12 col-md-2 d-flex justify-content-center">
@@ -117,6 +117,30 @@
                                 </div>
                             </div>
                         </form>
+                    </div>
+                    <div v-else class="d-flex flex-column justify-content-center align-items-center" id="paymentErrorBody">
+                        <div>
+                            <svg width="51" height="50" viewBox="0 0 51 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0)">
+                                <path d="M32.037 6.11777L49.4918 36.3505C50.1319 37.4592 50.5 38.7445 50.5 40.1167C50.5 44.2837 47.1219 47.662 42.9547 47.662H25.5L19.4638 25.0004L25.5 2.33887C28.2949 2.33887 30.7331 3.85967 32.037 6.11777Z" fill="#3B4145"/>
+                                <path d="M18.963 6.11777L1.50811 36.3505C0.868066 37.4592 0.5 38.7445 0.5 40.1167C0.5 44.2837 3.87812 47.662 8.04531 47.662H25.5V2.33887C22.7051 2.33887 20.2669 3.85967 18.963 6.11777Z" fill="#525A61"/>
+                                <path d="M46.8782 37.8594L29.4235 7.62695C28.6368 6.26377 27.1922 5.40361 25.6298 5.35938L40.5584 44.644H42.9548C45.4508 44.644 47.4819 42.613 47.4819 40.1169C47.4819 39.3241 47.2727 38.5435 46.8782 37.8594Z" fill="#FFB751"/>
+                                <path d="M43.9427 37.859C44.2837 38.5431 44.4638 39.3237 44.4638 40.1165C44.4638 42.6125 42.7123 44.6437 40.5583 44.6437H8.04531C5.54931 44.6437 3.51816 42.6125 3.51816 40.1165C3.51816 39.3237 3.72744 38.5431 4.12177 37.859L21.5765 7.62656C22.3853 6.22617 23.8884 5.35596 25.5 5.35596C25.5433 5.35596 25.5865 5.35693 25.6298 5.35898C26.9708 5.41133 28.2093 6.26943 28.8843 7.62656L43.9427 37.859Z" fill="#FFD764"/>
+                                <path d="M25.5 34.583V39.6132C26.8894 39.6132 28.0151 38.4874 28.0151 37.098C28.0151 35.7088 26.8894 34.583 25.5 34.583Z" fill="#3B4145"/>
+                                <path d="M25.5 34.583C25.7776 34.583 26.003 35.7088 26.003 37.0981C26.003 38.4875 25.7776 39.6133 25.5 39.6133C24.1106 39.6133 22.9849 38.4875 22.9849 37.0981C22.9849 35.7088 24.1106 34.583 25.5 34.583Z" fill="#525A61"/>
+                                <path d="M25.5 12.9536V31.5653C26.8894 31.5653 28.0151 30.4386 28.0151 29.0502V15.4688C28.0151 14.0794 26.8894 12.9536 25.5 12.9536Z" fill="#3B4145"/>
+                                <path d="M25.5 12.9536C25.7776 12.9536 26.003 14.0794 26.003 15.4688V29.0502C26.003 30.4385 25.7776 31.5653 25.5 31.5653C24.1106 31.5653 22.9849 30.4386 22.9849 29.0502V15.4688C22.9849 14.0794 24.1106 12.9536 25.5 12.9536Z" fill="#525A61"/>
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0">
+                                        <rect width="50" height="50" fill="white" transform="translate(0.5)"/>
+                                    </clipPath>
+                                </defs>
+                            </svg>                                
+                        </div>
+
+                        <div class="pt-2" id="widgetErrorHead">Error loading widget!</div>
+                        <div id="widgetErrorText">This payment link does not exist. It is either been deleted or disabled.</div>
                     </div>
                     <!-- Powered by -->
                     <div class="d-flex justify-content-center align-items-center mt-2" id="poweredByBody">
@@ -256,6 +280,7 @@
             showPaymentConfirmationPrompt: false,
             showPaymentStatus: false,
             showPaymentSection: false,
+            errorOccured: false,
             displayLoader: true,
             name: '',
             baseUrl: "http://localhost:8000/graphql",
@@ -419,12 +444,9 @@
                         this.displayLoader = false;
 					}catch(err){
                         this.displayLoader = false;
-						console.log("Could not create transaction => ", err);
 					}
 
 				}
-
-				// this.$nuxt.$emit('display-loader', false);
 			},
 
 			totalPayableAmount(){
@@ -445,13 +467,12 @@
                 setTimeout(() => {
                     this.displayLoader = false;
                 }, 3000);
-				console.log('payment is closed');
 			},
 
 			payCreative(){
                 this.displayLoader = true;
 				const paymentData = {
-                    public_key: "FLWPUBK-ed722a351cbac366452d36cd099affda-X",
+                    public_key: "FLWPUBK_TEST-5e9c0b1c61cd1ae7d700e350eff2f18f-X",
 					tx_ref: this.generateReference(),
 					amount: this.totalPayableAmount(),
 					currency: this.currency,
@@ -487,6 +508,7 @@
 
                 this.username = fidiaUsername;
                 this.slug = fidiaSlug;
+                this.errorOccured = false;
 
                 let data;
                 try {
@@ -542,8 +564,11 @@
 
                     this.displayLoader = false;
                     this.showPaymentSection = true;
-                }catch(err){
-                    console.log("GraphQL error is => ", err);
+                }catch(_){
+                    // If for any reason, this payment link cannot be fetched or an error occured while trying to fetch this payment link, show the error page
+                    this.displayLoader = false;
+                    this.showPaymentSection = true;
+                    this.errorOccured = true;
                 }
            }
         }
