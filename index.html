@@ -5,12 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fidia Payment Link Widget</title>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <!-- 
+        Use this URL for Vue in development mode 
+        https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js
+     -->
+    <script src="https://vuejs.org/js/vue.min.js"></script>
     <script src="https://checkout.flutterwave.com/v3.js"></script>
-    <script src="./js/emojis.js"></script>
+    <script src="https://embed.getfidia.com/js/emojis.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <link href="./css/style.css" rel="stylesheet">
+    <link href="https://embed.getfidia.com/css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"> <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 </head>
 
@@ -145,7 +149,7 @@
                     <!-- Powered by -->
                     <div class="d-flex justify-content-center align-items-center mt-2" id="poweredByBody">
                         <div>
-                            <img src="./images/fidia-powered.svg" alt="Fidia Logo"/>
+                            <img src="https://embed.getfidia.com/images/fidia-powered.svg" alt="Fidia Logo"/>
                         </div>
                         <div class="pl-2" id="poweredByText">Powered by Fidia</div>
                     </div>
@@ -204,7 +208,6 @@
     
             </div>
         </div>
-
 
 
 
@@ -268,7 +271,7 @@
 
         <!-- Loader section -->
         <div class="loader" :class="{ active: displayLoader }">
-            <img src="./images/loader.svg" alt="Loader Image here.." />
+            <img src="https://embed.getfidia.com/images/loader.svg" alt="Loader Image here.." />
         </div>
     </div>
 </body>
@@ -283,7 +286,7 @@
             errorOccured: false,
             displayLoader: true,
             name: '',
-            baseUrl: "http://localhost:8000/graphql",
+            baseUrl: "https://getfidia-test.herokuapp.com/graphql",
             firstname: '',
             username: '',
             lastname: '',

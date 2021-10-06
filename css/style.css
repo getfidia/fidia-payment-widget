@@ -457,7 +457,7 @@ textarea::placeholder{
     border-radius: 5px;
     border: 0px;
     height: 60px;
-    width: 100%;
+    width: 100%!important;
     transition: .5s linear;
 }
 
@@ -573,11 +573,6 @@ textarea::placeholder{
     color: var(--fidiaColorGrey);
     font-size: 20px;
 }
-
-#paymentBtn{
-    width: 165px;
-}
-
 
 
 /* loader section */

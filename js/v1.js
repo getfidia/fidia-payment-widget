@@ -1,11 +1,15 @@
+/*!
+ * Fidia Payment Links Widget
+ * (c) 2021 - Present Gbadebo Bello
+ * Released under the MIT License.
+ */
 (function(){
     const d = document;
     const w = window;
     const f = d.createElement("iframe");
 
     
-    f.src = "../index.html";
-    // s.src = "http://embed.getfidia.com/";
+    f.src = "https://embed.getfidia.com/";
     f.frameborder = 0;
     f.allowtransparency= true;
     f.style = "display:none; position: fixed; top: 0px; left: 0px; z-index: 2147483647; border: none; opacity: 1; width: 100%; height: 100%;";
@@ -15,7 +19,7 @@
     
     const s = d.createElement('link');
     s.rel = 'stylesheet';
-    s.href = '../css/button.css';
+    s.href = 'https://embed.getfidia.com/css/button.css';
     d.getElementsByTagName("head")[0].appendChild(s);
 
     // Get the user specified template button(s)
