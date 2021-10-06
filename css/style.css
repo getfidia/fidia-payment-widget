@@ -578,6 +578,50 @@ textarea::placeholder{
     width: 165px;
 }
 
+
+
+/* loader section */
+
+
+.loader {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  bottom: 0px;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.loader.active {
+  display: flex;
+}
+
+.loader > img {
+  animation: spin 1.5s linear 0s infinite reverse;
+}
+
+.loader > img:hover {
+  animation-play-state: running;
+}
+
+
+@keyframes spin {
+    0% {
+      transform: rotate(360deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+
+
 @keyframes scale {
     from {
         transform: scale(0.5);

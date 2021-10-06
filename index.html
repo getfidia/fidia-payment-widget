@@ -19,7 +19,7 @@
         <!-- Payment prompts section -->
         <div id="paymentPromptsBody" class="d-flex justify-content-center align-items-center">
             <!-- Receive payment -->
-            <div class="" id="paymentContainer">
+            <div class="" :style="{display: showPaymentSection ? 'block' : 'none'}" id="paymentContainer">
                 <div class="row">
                     <div class="col-10"></div>
                     <div class="col-2 p-0">
@@ -239,6 +239,13 @@
     
             </div>
         </div>
+
+
+
+        <!-- Loader section -->
+        <div class="loader" :class="{ active: displayLoader }">
+            <img src="./images/loader.svg" alt="Loader Image here.." />
+        </div>
     </div>
 </body>
 
@@ -248,6 +255,8 @@
         data: {
             showPaymentConfirmationPrompt: false,
             showPaymentStatus: false,
+            showPaymentSection: false,
+            displayLoader: true,
             name: '',
             baseUrl: "http://localhost:8000/graphql",
             firstname: '',
@@ -367,6 +376,8 @@
 			},
 
 			async makePaymentCallback(response) {
+                this.displayLoader = true;
+
 				this.closePaymentConfirmationPrompt();
 				// this.$nuxt.$emit('display-loader', true);
 
@@ -405,9 +416,12 @@
 							this.paymentSuccessful = true;
                             this.showPaymentStatus = true;
 						}
+                        this.displayLoader = false;
 					}catch(err){
+                        this.displayLoader = false;
 						console.log("Could not create transaction => ", err);
 					}
+
 				}
 
 				// this.$nuxt.$emit('display-loader', false);
@@ -427,13 +441,17 @@
 				return date.getTime().toString();
 			},
 
-            closedPaymentModal() {
+            closedPaymentModal() { 
+                setTimeout(() => {
+                    this.displayLoader = false;
+                }, 3000);
 				console.log('payment is closed');
 			},
 
 			payCreative(){
+                this.displayLoader = true;
 				const paymentData = {
-                    public_key: "FLWPUBK_TEST-5e9c0b1c61cd1ae7d700e350eff2f18f-X",
+                    public_key: "FLWPUBK-ed722a351cbac366452d36cd099affda-X",
 					tx_ref: this.generateReference(),
 					amount: this.totalPayableAmount(),
 					currency: this.currency,
@@ -506,25 +524,27 @@
                     })
 
                     data = await data.json();
+
+                    const { user, link } = data.data.viewPaymentLinkWithSlug;
+                    this.firstname = user.firstname;
+                    this.lastname = user.lastname;
+                    this.profileImage = user.profileImage;
+                    this.currency = user.currency
+
+                    this.price = link.amount;
+                    this.paymentLinkId = link._id;
+                    this.linkName = link.name;
+                    this.type = link.type;
+                    this.description = link.description;
+
+                    const emoji = emojis.find(em => em.name === link.type);
+                    this.emoji = emoji.data;
+
+                    this.displayLoader = false;
+                    this.showPaymentSection = true;
                 }catch(err){
                     console.log("GraphQL error is => ", err);
                 }
-
-                const { user, link } = data.data.viewPaymentLinkWithSlug;
-                this.firstname = user.firstname;
-                this.lastname = user.lastname;
-                this.profileImage = user.profileImage;
-                this.currency = user.currency
-
-                this.price = link.amount;
-                this.paymentLinkId = link._id;
-                this.linkName = link.name;
-                this.type = link.type;
-                this.description = link.description;
-
-                const emoji = emojis.find(em => em.name === link.type);
-                this.emoji = emoji.data;
-                
            }
         }
     })
