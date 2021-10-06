@@ -7,6 +7,7 @@
     <title>Fidia Payment Link Widget</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://checkout.flutterwave.com/v3.js"></script>
+    <script src="./js/emojis.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link href="./css/style.css" rel="stylesheet">
@@ -34,7 +35,7 @@
                         <!-- Users info -->
                         <div class="row p-0 m-0" id="receiversInfo">
                             <div class="col-12 col-md-2 d-flex justify-content-center">
-                                <img src="https://fidia-profile.s3.us-east-2.amazonaws.com/gbahdeybohbello0.6142863431681134" alt="Users profile image" id="userProfileImage">
+                                <img :src="profileImage" alt="Users profile image" id="userProfileImage">
                             </div>
                             <div class="col-12 col-md-10">
                                 <div class="d-md-block d-flex justify-content-center align-items-center" id="usersName">{{ linkName }}</div>
@@ -248,27 +249,26 @@
             showPaymentConfirmationPrompt: false,
             showPaymentStatus: false,
             name: '',
-            firstname: 'Gbadebo',
-            username: 'gbahdeyboh',
-            lastname: 'Bello',
-            linkName: 'Ashleys Design',
+            baseUrl: "http://localhost:8000/graphql",
+            firstname: '',
+            username: '',
+            lastname: '',
+            linkName: '',
             role: '',
-            price: 2000,
-            type: 'Pizza',
-            emoji: '☕',
-            currency: 'NGN',
-            description: 'Hi, I’m Debo. A creative designer passionate about creating open source design resources for the design community. Support my creative work.',
+            price: 0,
+            type: '',
+            emoji: '',
+            currency: '',
+            description: '',
             supportersName: '',
             supportersEmail: '',
             supportersMessage: '',
             itemImage: 'Pizza',
             slug: '',
-            user: '',
             link: '',
             paymentLinkId: '',
             profileImage: '',
-            donationCount: 1,	
-            activePrompt: '', // 'paymentPrompt', 'statusPrompt'
+            donationCount: 1,
             paymentSuccessful: false,
             showPaymentPrompt: false,
             showStatusPrompt: false,
@@ -276,7 +276,6 @@
             enterCustomeAmount: false,
             customeAmount: '',
             amountError: false,
-            paymentLinkData: {},
         },
         computed: {
 			supportText(){
@@ -313,7 +312,6 @@
 			},
 			validateAmount(event){
                 const charCode = event.which ? event.which : event.keyCode;
-                console.log("Target is => ", charCode);
 				const isNum = !isNaN( parseInt(event.key) );
 
                 
@@ -359,6 +357,7 @@
 
             closePaymentStatusPrompt(){
                 this.showPaymentStatus = false;
+                this.closePaymentPopup();
             },
 
 			formatAmount(amount){
@@ -382,22 +381,32 @@
 						quantity: this.quantity,
 						message: this.supportersMessage,
 					};
-
-                    console.log("The payment was successfull => ", data);
-
+                    
 					try{
-						// const createTransactionData = await this.$apollo.mutate({
-						// 	mutation: CREATE_TRANSACTION,
-						// 	variables: { ...data },
-						// }); 
+                        let createTransactionData = await fetch(this.baseUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                query: `mutation($txId: String!, $paymentLinkId: String!, $name: String, $email: String, $amount: Int!, $quantity: Int, $message: String){
+                                    createTransaction(txId: $txId, paymentLinkId: $paymentLinkId, name: $name, email: $email, amount: $amount, quantity: $quantity, message: $message){
+                                        amount
+                                    }
+                                }
+                            `,
+                                variables: { ...data }
+                            })
+                        });
 
-						// if(createTransactionData.data.createTransaction.amount){
+                        createTransactionData = await createTransactionData.json();
 
+						if(createTransactionData.data.createTransaction.amount){
 							this.paymentSuccessful = true;
                             this.showPaymentStatus = true;
-						// }
+						}
 					}catch(err){
-						// console.log("Could not create transaction => ", err);
+						console.log("Could not create transaction => ", err);
 					}
 				}
 
@@ -451,7 +460,73 @@
 
 				window.FlutterwaveCheckout(paymentData); // Initialize the payment with flutterwave
 			},
-		}
+		},
+
+        created(){
+           window.onmessage = async (e) => {
+                // Get relevant data from the server and populate the DOM
+                const { fidiaUsername, fidiaSlug } = JSON.parse(e.data);
+
+                this.username = fidiaUsername;
+                this.slug = fidiaSlug;
+
+                let data;
+                try {
+                    data = await fetch(this.baseUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            query: `query($username: String!, $slug: String!){
+                                    viewPaymentLinkWithSlug(username: $username, slug: $slug){
+                                        user{
+                                            _id
+                                            lastname
+                                            firstname
+                                            bio
+                                            isBvnVerified
+                                            currency
+                                            isEmailVerified
+                                            profileImage
+                                        }
+                                        link{
+                                            _id
+                                            name
+                                            amount
+                                            description
+                                            isActive
+                                            type
+                                        }
+                                    }
+                                }
+                        `,
+                            variables: { username: fidiaUsername, slug: fidiaSlug }
+                        })
+                    })
+
+                    data = await data.json();
+                }catch(err){
+                    console.log("GraphQL error is => ", err);
+                }
+
+                const { user, link } = data.data.viewPaymentLinkWithSlug;
+                this.firstname = user.firstname;
+                this.lastname = user.lastname;
+                this.profileImage = user.profileImage;
+                this.currency = user.currency
+
+                this.price = link.amount;
+                this.paymentLinkId = link._id;
+                this.linkName = link.name;
+                this.type = link.type;
+                this.description = link.description;
+
+                const emoji = emojis.find(em => em.name === link.type);
+                this.emoji = emoji.data;
+                
+           }
+        }
     })
 </script>
 </html>
