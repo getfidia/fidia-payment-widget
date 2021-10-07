@@ -110,7 +110,7 @@ button:focus{
 #paymentContainer{
     /* display: none; */
     width: 100%;
-    min-height: 800px;
+    height: 100%;
     padding: 2em 0px 2em 0px;
     animation: glowIn .5s linear;
 }
