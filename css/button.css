@@ -85,3 +85,9 @@
     cursor: pointer;
     opacity: 0.8;
 }
+
+@media only screen and (max-width: 600px){
+    .fidia-widget-button{
+        font-size: 20px;
+    }
+}
