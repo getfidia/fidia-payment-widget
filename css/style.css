@@ -653,19 +653,10 @@ textarea::placeholder{
     }
 }
 
-@media only screen and (max-width: 350px){
-    #paymentPromptsBody{
-        padding-top: 30em!important;
-    }
-}
 
 @media only screen and (max-width: 600px){
     #paymentBody, #paymentErrorBody{
         min-height: 900px;
-    }
-
-    #paymentPromptsBody{
-        padding-top: 25em;
     }
 
     #usersDescription{
