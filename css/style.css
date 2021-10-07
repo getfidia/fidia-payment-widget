@@ -610,12 +610,14 @@ textarea::placeholder{
     font-weight: 500;
     font-size: 20px;
     color: #000000;
+    text-align: center;
 }
 
 #widgetErrorText{
     font-weight: 400;
     color: #787676;
     font-size: 16px;
+    text-align: center;
 }
 
 
