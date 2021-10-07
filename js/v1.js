@@ -10,6 +10,7 @@
 
     
     f.src = "https://embed.getfidia.com/";
+    // f.src = "../index.html";
     f.frameborder = 0;
     f.allowtransparency= true;
     f.style = "display:none; position: fixed; top: 0px; left: 0px; z-index: 2147483647; border: none; opacity: 1; width: 100%; height: 100%;";
@@ -20,6 +21,7 @@
     const s = d.createElement('link');
     s.rel = 'stylesheet';
     s.href = 'https://embed.getfidia.com/css/button.css';
+    // s.href = '../css/button.css';
     d.getElementsByTagName("head")[0].appendChild(s);
 
     // Get the user specified template button(s)

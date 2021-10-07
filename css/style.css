@@ -655,8 +655,32 @@ textarea::placeholder{
 
 
 @media only screen and (max-width: 600px){
+    #paymentContainer{
+        padding: 0px 0px 0px 0px!important;
+        overflow-y: scroll;
+        position: fixed;
+        top: 0px;
+        bottom: 0px;
+        right: 0px;
+        left: 0px;
+    }
+
+    #paymentContainer > div{
+        width: 100%;
+    }
+
+    #paymentBodyContainer{
+        background: white;
+        border-top-right-radius: 10px;
+        border-top-left-radius: 10px;
+        padding-bottom: 20px;
+    }
+ 
     #paymentBody, #paymentErrorBody{
-        min-height: 900px;
+        border-radius: none!important;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+        box-shadow: none;
     }
 
     #usersDescription{
