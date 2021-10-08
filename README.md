@@ -4,7 +4,7 @@ Fidia payment widget embeds a Fidia [payment link](https://getfidia-frontend-tes
 
 <img height="80px" src="https://res.cloudinary.com/fidia/image/upload/v1633732179/Payment_Button_1_wdddah.png"/>
 
-So you can get a feel of how this works, we created a [demo website](https://embed.getfidia.com/example/) that uses our widget. You only have to click the embedded Fidia button to see it in action. Check it our [here](https://embed.getfidia.com/example/).
+To give you a feel of how this works, we created a [demo website](https://embed.getfidia.com/example/) that uses our widget. You only have to click the embedded Fidia button to see it in action. Check it our [here](https://embed.getfidia.com/example/).
 
 ## Usage (HTML)
 Embedding a Fidia payment link on your website is super simple. First, you need to import our embed script. Add the below code anywhere within your code.
