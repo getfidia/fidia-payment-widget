@@ -4,10 +4,12 @@ Fidia payment widget embeds a Fidia [payment link](https://getfidia-frontend-tes
 
 <img height="80px" src="https://res.cloudinary.com/fidia/image/upload/v1633732179/Payment_Button_1_wdddah.png"/>
 
-To give you a feel of how this works, we created a [demo website](https://embed.getfidia.com/example/) that uses our widget. You only have to click the embedded Fidia button to see it in action. Check it our [here](https://embed.getfidia.com/example/).
+To give you a feel of how this works, we created a [demo website](https://embed.getfidia.com/example/) that uses our widget. You only have to click the embedded Fidia button to see it in action. Check it out [here](https://embed.getfidia.com/example/).
 
-## Usage (HTML)
-Embedding a Fidia payment link on your website is super simple. First, you need to import our embed script. Add the below code anywhere within your code.
+## 🚀 Usage
+
+### HTML
+Embedding a Fidia payment link on your website is super simple. First, you need to import our embed script. Add the below snippet to anywhere within your html code.
 
 ```html
 <script src="https://embed.getfidia.com/js/v1.js" async></script>
@@ -26,7 +28,7 @@ This will look as shown below:
 
 You can add as many buttons as desired and each of them will be replaced by Fidia's custom button.
 
-## Usage (Vue)
+### Vue
 Include Fidia's embed script in the head tag of your `public/index.html` file.
 
 ```html
@@ -39,8 +41,8 @@ Specify a target button anywhere within your views/components
 <button class="fidia-embed-target" data-fidia-username="gbahdeyboh" data-fidia-slug="laptop"></button>
 ```
 
-## Usage (Nuxt)
-In your plugins folder and create a file named `fidia-widget.js`. Copy and paste the below code into this file.
+### Nuxt
+In your plugins folder, create a file named `fidia-widget.js`. Copy and paste the below code into this file.
 
 ```javascript
 export default () => { 
@@ -65,3 +67,6 @@ Now you can specify a target button anywhere within your layouts, pages, or comp
 ```html
 <button class="fidia-embed-target" data-fidia-username="gbahdeyboh" data-fidia-slug="laptop"></button>
 ```
+
+✨ Contribution
+This widget still needs a lot of customizations, improvements, and fixes. PRs and issues are definitely welcomed!
