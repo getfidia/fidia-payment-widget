@@ -68,5 +68,5 @@ Now you can specify a target button anywhere within your layouts, pages, or comp
 <button class="fidia-embed-target" data-fidia-username="gbahdeyboh" data-fidia-slug="laptop"></button>
 ```
 
-✨ Contribution
+## ✨ Contribution
 This widget still needs a lot of customizations, improvements, and fixes. PRs and issues are definitely welcomed!
