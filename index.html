@@ -569,6 +569,8 @@
 
                     this.displayLoader = false;
                     this.showPaymentSection = true;
+
+                    console.log("showPaymentSection => ",this.showPaymentSection )
                 }catch(_){
                     // If for any reason, this payment link cannot be fetched or an error occured while trying to fetch this payment link, show the error page
                     this.displayLoader = false;
