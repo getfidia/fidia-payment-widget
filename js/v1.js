@@ -67,7 +67,7 @@
 
     w.onmessage = (e) => {
         if(e.data = 'closeFidiaIframe'){
-            // Close the iframe when this event id emitted to the parent document,
+            // Close the iframe when this event is emitted to the parent document,
             const fidiaIframe = document.querySelector('#fidia-embed-iframe');
             fidiaIframe.style.display = 'none';
         }
