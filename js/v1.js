@@ -62,6 +62,7 @@
 
             // Child window and parent window can only communicate over events
             fidiaIframe.contentWindow.postMessage(fidiaEmbedData, '*');
+            console.log("Dialogue message posted => ", fidiaEmbedData);
         });
     }
 

@@ -511,6 +511,7 @@
            window.onmessage = async (e) => {
                 // Get relevant data from the server and populate the DOM
                 const { fidiaUsername, fidiaSlug } = JSON.parse(e.data);
+                console.log("Posted message gotten => ", e.data);
 
                 this.username = fidiaUsername;
                 this.slug = fidiaSlug;
