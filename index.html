@@ -25,7 +25,7 @@
         <!-- Payment prompts section -->
         <div id="paymentPromptsBody" class="d-flex justify-content-center align-items-center">
             <!-- Receive payment -->
-            <div class="" v-if="showPaymentSection" id="paymentContainer">
+            <div class="" v-show="showPaySect" id="paymentContainer">
                 <div class="row">
                     <div class="col-10"></div>
                     <div class="col-2 p-0">
@@ -285,7 +285,7 @@
         data: {
             showPaymentConfirmationPrompt: false,
             showPaymentStatus: false,
-            showPaymentSection: false,
+            showPaySect: false,
             errorOccured: false,
             displayLoader: true,
             name: '',
@@ -508,18 +508,19 @@
 		},
 
         created(){
+            const self = this;
            window.onmessage = async (e) => {
                 // Get relevant data from the server and populate the DOM
                 const { fidiaUsername, fidiaSlug } = JSON.parse(e.data);
                 console.log("Posted message gotten => ", e.data);
 
-                this.username = fidiaUsername;
-                this.slug = fidiaSlug;
-                this.errorOccured = false;
+                self.username = fidiaUsername;
+                self.slug = fidiaSlug;
+                self.errorOccured = false;
 
                 let data;
                 try {
-                    data = await fetch(this.baseUrl, {
+                    data = await fetch(self.baseUrl, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -551,31 +552,32 @@
                     })
 
                     data = await data.json();
+                    console.log("Widget data is => ", data);
 
                     const { user, link } = data.data.viewPaymentLinkWithSlug;
-                    this.firstname = user.firstname;
-                    this.lastname = user.lastname;
-                    this.profileImage = user.profileImage;
-                    this.currency = user.currency
+                    self.firstname = user.firstname;
+                    self.lastname = user.lastname;
+                    self.profileImage = user.profileImage;
+                    self.currency = user.currency
 
-                    this.price = link.amount;
-                    this.paymentLinkId = link._id;
-                    this.linkName = link.name;
-                    this.type = link.type;
-                    this.description = link.description;
+                    self.price = link.amount;
+                    self.paymentLinkId = link._id;
+                    self.linkName = link.name;
+                    self.type = link.type;
+                    self.description = link.description;
 
                     const emoji = emojis.find(em => em.name === link.type);
-                    this.emoji = emoji.data;
+                    self.emoji = emoji.data;
 
-                    this.displayLoader = false;
-                    this.showPaymentSection = true;
+                    self.displayLoader = false;
+                    self.showPaySect = true;
 
-                    console.log("showPaymentSection => ",this.showPaymentSection )
+                    console.log("showPaySect => ", self.showPaySect )
                 }catch(_){
                     // If for any reason, this payment link cannot be fetched or an error occured while trying to fetch this payment link, show the error page
-                    this.displayLoader = false;
-                    this.showPaymentSection = true;
-                    this.errorOccured = true;
+                    self.displayLoader = false;
+                    self.showPaySect = true;
+                    self.errorOccured = true;
                 }
            }
         }
