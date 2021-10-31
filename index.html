@@ -289,7 +289,7 @@
             errorOccured: false,
             displayLoader: true,
             name: '',
-            baseUrl: "https://getfidia-test.herokuapp.com/graphql",
+            baseUrl: "https://getfidia-staging.herokuapp.com/graphql",
             firstname: '',
             username: '',
             lastname: '',
@@ -478,7 +478,7 @@
 			payCreative(){
                 this.displayLoader = true;
 				const paymentData = {
-                    public_key: "FLWPUBK_TEST-5e9c0b1c61cd1ae7d700e350eff2f18f-X",
+                    public_key: "FLWPUBK-002b4d3ce050bd93f3b03f111bfba59f-X",
 					tx_ref: this.generateReference(),
 					amount: this.totalPayableAmount(),
 					currency: this.currency,
