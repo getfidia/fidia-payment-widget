@@ -12,6 +12,7 @@
     <script src="https://vuejs.org/js/vue.min.js"></script>
     <script src="https://checkout.flutterwave.com/v3.js"></script>
     <script src="https://embed.getfidia.com/js/emojis.js"></script>
+    <!-- <script src="./js/emojis.js"></script> -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -25,7 +26,7 @@
         <!-- Payment prompts section -->
         <div id="paymentPromptsBody" class="d-flex justify-content-center align-items-center">
             <!-- Receive payment -->
-            <div class="" v-show="showPaySect" id="paymentContainer">
+            <div class="" v-if="showPaySect" id="paymentContainer">
                 <div class="row">
                     <div class="col-10"></div>
                     <div class="col-2 p-0">
@@ -273,7 +274,7 @@
 
 
         <!-- Loader section -->
-        <div class="loader" :class="{ active: displayLoader }">
+        <div class="loader" id="loader" :class="{ active: displayLoader }">
             <img src="https://embed.getfidia.com/images/loader.svg" alt="Loader Image here.." />
         </div>
     </div>
@@ -512,11 +513,11 @@
            window.onmessage = async (e) => {
                 // Get relevant data from the server and populate the DOM
                 const { fidiaUsername, fidiaSlug } = JSON.parse(e.data);
-                console.log("Posted message gotten => ", e.data);
 
                 self.username = fidiaUsername;
                 self.slug = fidiaSlug;
                 self.errorOccured = false;
+
 
                 let data;
                 try {
@@ -552,7 +553,6 @@
                     })
 
                     data = await data.json();
-                    console.log("Widget data is => ", data);
 
                     const { user, link } = data.data.viewPaymentLinkWithSlug;
                     self.firstname = user.firstname;
@@ -571,8 +571,6 @@
 
                     self.displayLoader = false;
                     self.showPaySect = true;
-
-                    console.log("showPaySect => ", self.showPaySect )
                 }catch(_){
                     // If for any reason, this payment link cannot be fetched or an error occured while trying to fetch this payment link, show the error page
                     self.displayLoader = false;

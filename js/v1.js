@@ -51,18 +51,19 @@
         newFidiaButton.addEventListener("click", (e) => {
             const fidiaUsername = e.target.getAttribute("data-fidia-username");
             const fidiaSlug = e.target.getAttribute("data-fidia-slug");
-
+            
             const fidiaEmbedData = JSON.stringify({
                 fidiaUsername,
                 fidiaSlug,
             })
-
+            
             const fidiaIframe = d.querySelector("#fidia-embed-iframe");
-            fidiaIframe.style.display = "block";
+            setTimeout(() => {
+                fidiaIframe.style.display = "block";
+            }, 30);
 
             // Child window and parent window can only communicate over events
             fidiaIframe.contentWindow.postMessage(fidiaEmbedData, '*');
-            console.log("Dialogue message posted => ", fidiaEmbedData);
         });
     }
 
