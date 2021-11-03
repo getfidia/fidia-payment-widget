@@ -509,19 +509,18 @@
 		},
 
         created(){
-            const self = this;
            window.onmessage = async (e) => {
                 // Get relevant data from the server and populate the DOM
                 const { fidiaUsername, fidiaSlug } = JSON.parse(e.data);
 
-                self.username = fidiaUsername;
-                self.slug = fidiaSlug;
-                self.errorOccured = false;
+                this.username = fidiaUsername;
+                this.slug = fidiaSlug;
+                this.errorOccured = false;
 
 
                 let data;
                 try {
-                    data = await fetch(self.baseUrl, {
+                    data = await fetch(this.baseUrl, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -555,27 +554,27 @@
                     data = await data.json();
 
                     const { user, link } = data.data.viewPaymentLinkWithSlug;
-                    self.firstname = user.firstname;
-                    self.lastname = user.lastname;
-                    self.profileImage = user.profileImage;
-                    self.currency = user.currency
+                    this.firstname = user.firstname;
+                    this.lastname = user.lastname;
+                    this.profileImage = user.profileImage;
+                    this.currency = user.currency
 
-                    self.price = link.amount;
-                    self.paymentLinkId = link._id;
-                    self.linkName = link.name;
-                    self.type = link.type;
-                    self.description = link.description;
+                    this.price = link.amount;
+                    this.paymentLinkId = link._id;
+                    this.linkName = link.name;
+                    this.type = link.type;
+                    this.description = link.description;
 
                     const emoji = emojis.find(em => em.name === link.type);
-                    self.emoji = emoji.data;
+                    this.emoji = emoji.data;
 
-                    self.displayLoader = false;
-                    self.showPaySect = true;
+                    this.displayLoader = false;
+                    this.showPaySect = true;
                 }catch(_){
                     // If for any reason, this payment link cannot be fetched or an error occured while trying to fetch this payment link, show the error page
-                    self.displayLoader = false;
-                    self.showPaySect = true;
-                    self.errorOccured = true;
+                    this.displayLoader = false;
+                    this.showPaySect = true;
+                    this.errorOccured = true;
                 }
            }
         }
