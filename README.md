@@ -2,7 +2,7 @@
 
 <img width="1232" alt="Screenshot 2021-10-09 at 12 30 50 AM" src="https://user-images.githubusercontent.com/29985200/136634468-e4c09e65-8685-4b8c-ac7c-aef26cf1d1f3.png">
 
-Fidia payment widget embeds a Fidia [payment link](https://getfidia-frontend-test.herokuapp.com/payment-links) on your website. This widget allows you specify a trigger button which when clicked pops up Fidia's payment link and allows you receive support from your fans/audience without them having to leave your website.
+Fidia payment widget embeds a Fidia [payment link](https://getfidia.com/payment-links) on your website. This widget allows you specify a trigger button which when clicked pops up Fidia's payment link and allows you receive support from your fans/audience without them having to leave your website.
 
 <img height="80px" src="https://res.cloudinary.com/fidia/image/upload/v1633732179/Payment_Button_1_wdddah.png"/>
 
