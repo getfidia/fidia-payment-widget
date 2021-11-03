@@ -31,13 +31,17 @@ This will look as shown below:
 You can add as many buttons as desired and each of them will be replaced by Fidia's custom button.
 
 ### Vue
-Include Fidia's embed script in the head tag of your `public/index.html` file.
-
-```html
-<script src="https://embed.getfidia.com/js/v1.js" async></script>
+Add the below script to your mounted hook.
+```javascript
+mounted(){
+    const fidiaScript = document.createElement('script');
+    fidiaScript.async = true;
+    fidiaScript.setAttribute('src', "https://embed.getfidia.com/js/v1.js");
+    document.getElementsByTagName("head")[0].appendChild(fidiaScript);
+}
 ```
 
-Specify a target button anywhere within your views/components
+Then add your button anywhere in your component or it's child component.
 
 ```html
 <button class="fidia-embed-target" data-fidia-username="gbahdeyboh" data-fidia-slug="laptop"></button>
