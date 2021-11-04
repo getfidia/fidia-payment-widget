@@ -79,6 +79,7 @@
     justify-content: center;
     font-family: 'Work Sans', sans-serif;
     transition: opacity .5s ease-in-out;
+    font-family: 'Work Sans', sans-serif!important;
 }
 
 .fidia-widget-button:hover {

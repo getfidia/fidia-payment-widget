@@ -1,8 +1,3 @@
-/* The styles in this file are meant for just the iFrame in index.html */
-* {
-    font-family: 'Work Sans', sans-serif!important;
-}
-
 :root {
     /* define colors to be used across all pages as variables*/
     --fidiaColor: #292a73;
@@ -24,6 +19,7 @@ body{
     background: none transparent!important;
     padding-left: .3em;
     padding-right: .3em;
+    font-family: 'Work Sans', sans-serif!important;
 }
 
 .button {
@@ -39,11 +35,13 @@ body{
     height: 60px;
     max-width: 90%;
     transition: .5s linear;
+    font-family: 'Work Sans', sans-serif!important;
 }
 
 #supportB > button {
     width: 250px;
     background: #292a73;
+    font-family: 'Work Sans', sans-serif!important;
 }
 
 button:hover {
