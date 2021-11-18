@@ -1,24 +1,42 @@
-# fidia-vue
+# Fidia Payment Widget
 
-## Project setup
-```
-npm install
-```
+<img width="1232" alt="Screenshot 2021-10-09 at 12 30 50 AM" src="https://user-images.githubusercontent.com/29985200/136634468-e4c09e65-8685-4b8c-ac7c-aef26cf1d1f3.png">
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+Fidia payment widget embeds a Fidia [payment link](https://getfidia.com/payment-links) on your website. This widget allows you specify a trigger button which when clicked pops up Fidia's payment link and allows you receive support from your fans/audience without them having to leave your website.
 
-### Compiles and minifies for production
-```
-npm run build
-```
+<br>  <br>
 
-### Lints and fixes files
-```
-npm run lint
+<br>
+
+## Installation
+
+```shell
+npm install fidia-vue
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Basic Use
+
+```html
+<template>
+  <fidia-vue username="Jane Doe" text="Support Me" purpose="Buy me a coffee" />
+</template>
+```
+
+```js
+import FidiaVue from 'fidia-vue'
+<script>
+export default{
+    components:{
+        FidiaVue
+    }
+}
+</script>
+```
+
+## Props
+
+props |  default value | type | required
+------ | ------- | -------| --------
+username | null  | string | true
+text | Support Me | sting | false
+porpose | null | String | false 
