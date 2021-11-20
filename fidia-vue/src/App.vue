@@ -1,17 +1,16 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <fidia-vue username="Drizzle" purpose="buy me a laptop" />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import FidiaVue from './components/FidiaVue.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    FidiaVue
   }
 }
 </script>
