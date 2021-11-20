@@ -4,14 +4,14 @@
 
 Fidia payment widget embeds a Fidia [payment link](https://getfidia.com/payment-links) on your website. This widget allows you specify a trigger button which when clicked pops up Fidia's payment link and allows you receive support from your fans/audience without them having to leave your website.
 
-<br>  <br>
+<br>
 
 <br>
 
 ## Installation
 
 ```shell
-npm install fidia-vue
+npm install fidia-vue --save
 ```
 
 ## Basic Use
@@ -34,9 +34,19 @@ export default{
 ```
 
 ## Props
+<br>
 
-props |  default value | type | required
------- | ------- | -------| --------
-username | null  | string | true
-text | Support Me | sting | false
-porpose | null | String | false 
+**PROPS** | **DESCRIPTION** |  **DEFAULT VALUE** | **DATA TYPE** | **REQUIRED**
+------ | ------- | -------| -------- | -------
+username |  your fidia username| null  | String | true
+text | text content of the widget button | Support Me | String | false
+purpose | purpose for support | null | String | false 
+size | component size in px | 210 | Number | false
+color | your brand color | #292A73 | String | false
+
+<br> 
+
+## Task List  🐱
+- [X] init Fidia-Vue
+- [ ] pull request
+- [ ] deploy to [npm](https://www.npmjs.com) 

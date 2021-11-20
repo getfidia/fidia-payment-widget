@@ -1,6 +1,7 @@
 <template>
-  <button @click="support">
-    <fidia-logo />{{supportText}}
+  <button @click="support" class="fidia-widget-button">
+    <fidia-logo />
+    {{ purpose }}
   </button>
 </template>
 
@@ -9,7 +10,7 @@ import FidiaLogo from "./FidiaLogo.vue";
 export default {
   components: { FidiaLogo },
   props: {
-    supportText: {
+    text: {
       type: String,
       default: "Support Me",
     },
@@ -17,7 +18,7 @@ export default {
       type: String,
       required: true,
     },
-    supportPurpose: {
+    purpose: {
       type: String,
       required: true,
     },
@@ -25,7 +26,7 @@ export default {
 
   methods: {
     support() {
-      //pass data to iframe for exec
+      //pass data to iframe to exec to the payment
       console.log("supported");
     },
   },
@@ -35,4 +36,8 @@ export default {
 <style scoped>
 @import url(./../assets/css/button.css);
 @import url(./../assets/css/style.css);
+
+button {
+  text-transform: capitalize;
+}
 </style>
