@@ -1,5 +1,9 @@
 <template>
-  <button @click="support" class="fidia-widget-button">
+  <button
+    @click="support"
+    class="fidia-widget-button"
+    :style="{ backgroundColor: color, size: size + 'px'  }"
+  >
     <fidia-logo />
     {{ purpose }}
   </button>
@@ -9,6 +13,7 @@
 import FidiaLogo from "./FidiaLogo.vue";
 export default {
   components: { FidiaLogo },
+
   props: {
     text: {
       type: String,
@@ -22,15 +27,19 @@ export default {
       type: String,
       required: true,
     },
-    fixed:{
+    fixed: {
       type: Boolean,
-      required: false
+      required: false,
     },
-    color:{
+    color: {
       type: String,
     },
-    size:{
+    size: {
       type: Number,
+    },
+    position: {
+      type: String,
+      default: 'bottom-right'
     }
   },
 

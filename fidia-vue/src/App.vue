@@ -1,18 +1,19 @@
 <template>
   <div id="app">
-    <fidia-vue username="Drizzle" purpose="buy me a laptop" />
+    <fidia-vue username="Drizzle" purpose="buy me a camera" />
+    <fidia-vue username="Drizzle" purpose="buy me a phone" color="green" />
   </div>
 </template>
 
 <script>
-import FidiaVue from './components/FidiaVue.vue'
+import FidiaVue from "./components/FidiaVue.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    FidiaVue
-  }
-}
+    FidiaVue,
+  },
+};
 </script>
 
 <style>
