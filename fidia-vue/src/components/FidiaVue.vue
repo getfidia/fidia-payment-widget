@@ -22,11 +22,21 @@ export default {
       type: String,
       required: true,
     },
+    fixed:{
+      type: Boolean,
+      required: false
+    },
+    color:{
+      type: String,
+    },
+    size:{
+      type: Number,
+    }
   },
 
   methods: {
     support() {
-      //pass data to iframe to exec to the payment
+      //pass data to API to exec to the payment
       console.log("supported");
     },
   },
