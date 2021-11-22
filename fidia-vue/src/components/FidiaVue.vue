@@ -36,6 +36,7 @@ export default {
     },
     text: {
       type: String,
+      default: "#fff"
     },
     size: {
       type: Number,
