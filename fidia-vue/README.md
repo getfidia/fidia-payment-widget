@@ -18,7 +18,7 @@ npm install fidia-vue --save
 
 ```html
 <template>
-  <fidia-vue username="Jane Doe" text="Support Me" purpose="Buy me a coffee" />
+  <fidia-vue username="Jane Doe" text="Support Me" slug="Buy me a coffee" />
 </template>
 ```
 
@@ -42,8 +42,8 @@ username |  your fidia username| null  | String | true
 text | text content of the widget button | Support Me | String | false
 slug | purpose for support | null | String | false 
 size | component size in px | 210 | Number | false
-color | your brand color | #292A73 | String | false
-
+background | your brand color | #292A73 | String | false
+foreground | button text color | #ffffff | String | false
 <br> 
 
 ## Task List  🐱
