@@ -2,7 +2,7 @@
   <button
     @click="support"
     class="fidia-widget-button"
-    :style="{ backgroundColor: color, width: size + 'px' }"
+    :style="{ backgroundColor: color, width: size + 'px'  , color : text}"
   >
     <fidia-logo />
     {{ slug }}
@@ -34,6 +34,9 @@ export default {
     color: {
       type: String,
     },
+    text: {
+      type: String,
+    },
     size: {
       type: Number,
     },
@@ -50,7 +53,6 @@ export default {
       const fidiaEmbedData = JSON.stringify({ username, slug });
       console.log(fidiaEmbedData);
 
-
       const d = document;
       // // const w = window;
       const f = d.createElement("iframe");
@@ -65,7 +67,6 @@ export default {
       f.name = "Fidia Widget";
       f.id = "fidia-embed-iframe";
       d.getElementsByTagName("body")[0].appendChild(f);
-
 
       const fidiaIframe = document.querySelector("#fidia-embed-iframe");
       setTimeout(() => {
