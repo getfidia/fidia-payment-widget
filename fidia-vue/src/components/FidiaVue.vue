@@ -2,7 +2,7 @@
   <button
     @click="support"
     class="fidia-widget-button"
-    :style="{ backgroundColor: color, width: size + 'px'  , color : text}"
+    :style="{ backgroundColor: color, width: size + 'px'  , color : textColor}"
   >
     <fidia-logo />
     {{ slug }}
@@ -31,10 +31,10 @@ export default {
       type: Boolean,
       required: false,
     },
-    color: {
+    background: {
       type: String,
     },
-    text: {
+    foreground: {
       type: String,
       default: "#fff"
     },
