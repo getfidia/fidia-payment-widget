@@ -40,7 +40,7 @@ export default{
 ------ | ------- | -------| -------- | -------
 username |  your fidia username| null  | String | true
 text | text content of the widget button | Support Me | String | false
-purpose | purpose for support | null | String | false 
+slug | purpose for support | null | String | false 
 size | component size in px | 210 | Number | false
 color | your brand color | #292A73 | String | false
 
