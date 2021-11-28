@@ -1,6 +1,6 @@
 module.exports = {
     devServer: {
-        proxy: "https://localhost:3000/"
+        proxy: "https://embed.getfidia.com/"
     }
 }
 

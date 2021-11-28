@@ -43,7 +43,7 @@ export default {
       default: "#fff",
     },
     size: {
-      type: Number,
+      type:  String || Number,
     },
     position: {
       type: String,
@@ -61,7 +61,6 @@ export default {
       // const w = window;
       const f = d.createElement("iframe");
       f.src = "https://embed.getfidia.com/";
-      // f.src = "http://localhost:8082/";
 
       f.frameborder = 0;
       f.allowtransparency = true;
