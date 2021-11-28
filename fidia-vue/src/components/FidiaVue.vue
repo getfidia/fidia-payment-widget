@@ -2,7 +2,11 @@
   <button
     @click="support"
     class="fidia-widget-button"
-    :style="{ backgroundColor: color, width: size + 'px'  , color : textColor}"
+    :style="{
+      backgroundColor: background,
+      width: size + 'px',
+      color: foreground,
+    }"
   >
     <fidia-logo />
     {{ slug }}
@@ -36,7 +40,7 @@ export default {
     },
     foreground: {
       type: String,
-      default: "#fff"
+      default: "#fff",
     },
     size: {
       type: Number,
@@ -49,18 +53,16 @@ export default {
 
   methods: {
     support() {
-      //pass data to API to exec to the payment
+      //extract data from props
       const { username, slug } = this;
       const fidiaEmbedData = JSON.stringify({ username, slug });
-      console.log(fidiaEmbedData);
 
       const d = document;
-      // // const w = window;
+      // const w = window;
       const f = d.createElement("iframe");
-      // f.src = "https://embed.getfidia.com/";
-      f.src = "http://localhost:8082/";
+      f.src = "https://embed.getfidia.com/";
+      // f.src = "http://localhost:8082/";
 
-      // // f.src = "../index.html";
       f.frameborder = 0;
       f.allowtransparency = true;
       f.style =
@@ -77,8 +79,7 @@ export default {
       // Child window and parent window can only communicate over events
       fidiaIframe.contentWindow.postMessage(fidiaEmbedData, "*");
 
-      /*  window.onmessage = async (e) => {
-      await e.data
+      /*     w.onmessage = (e) => {
         if ((e.data = "closeFidiaIframe")) {
           // Close the iframe when this event is emitted to the parent document,
           const fidiaIframe = document.querySelector("#fidia-embed-iframe");
@@ -86,20 +87,6 @@ export default {
         }
       }; */
     },
-  },
-  created() {
-    /* const d = document;
-    // // const w = window;
-    const f = d.createElement("iframe");
-    f.src = "https://embed.getfidia.com/";
-    // // f.src = "../index.html";
-    f.frameborder = 0;
-    f.allowtransparency = true;
-    f.style =
-      "display:none; position: fixed; top: 0px; left: 0px; z-index: 2147483647; border: none; opacity: 1; width: 100%; height: 100%;";
-    f.name = "Fidia Widget";
-    f.id = "fidia-embed-iframe";
-    d.getElementsByTagName("body")[0].appendChild(f); */
   },
 };
 </script>

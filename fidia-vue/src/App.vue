@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <fidia-vue username="drizzle" slug="buy me a coffee" />
-    <fidia-vue username="olga filipova" slug="buy me a drone"  color="green" size="270"/>
+    <fidia-vue username="opeolluwa" slug="buy me a drone"  background="black" size="200" foreground="grey"/>
+
   </div>
 </template>
 

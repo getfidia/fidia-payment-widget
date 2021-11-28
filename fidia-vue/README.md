@@ -46,7 +46,3 @@ background | your brand color | #292A73 | String | false
 foreground | button text color | #ffffff | String | false
 <br> 
 
-## Task List  🐱
-- [X] init Fidia-Vue
-- [ ] pull request
-- [ ] deploy to [npm](https://www.npmjs.com) 
