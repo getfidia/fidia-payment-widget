@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fidia Product Page Widget</title>
+    <!-- 
+        Use this URL for Vue in development mode 
+        https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js
+     -->
+     <script src="https://vuejs.org/js/vue.min.js"></script>
+     <script src="https://checkout.flutterwave.com/v3.js"></script>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"> 
+    <link href="https://embed.getfidia.com/css/product.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="./css/product.css"> -->
+</head>
+<body>
+    <div id="app">
+        <!-- PRODUCT SECTION -->
+        <div v-if="showProduct" id="productInformationBody" class="d-flex justify-content-center align-items-center">
+            <div class="contentWrapper">
+                <div class="productInformation">
+                    <!-- CLOSE BUTTON -->
+                    <button class="closeIcon bg-white ml-auto rounded-circle border-0 d-flex justify-content-center align-items-center" @click="closeProductPopup">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 10.5857L16.95 5.63574L18.364 7.04974L13.414 11.9997L18.364 16.9497L16.95 18.3637L12 13.4137L7.04999 18.3637L5.63599 16.9497L10.586 11.9997L5.63599 7.04974L7.04999 5.63574L12 10.5857Z" fill="#787676"/>
+                        </svg>
+                    </button>
+                    <!-- ERROR CONTENT -->
+                    <div v-if="errorOccured" class="errorContent d-flex flex-column justify-content-center align-items-center text-center">
+                        <div>
+                            <svg width="51" height="50" viewBox="0 0 51 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0)">
+                                <path d="M32.037 6.11777L49.4918 36.3505C50.1319 37.4592 50.5 38.7445 50.5 40.1167C50.5 44.2837 47.1219 47.662 42.9547 47.662H25.5L19.4638 25.0004L25.5 2.33887C28.2949 2.33887 30.7331 3.85967 32.037 6.11777Z" fill="#3B4145"/>
+                                <path d="M18.963 6.11777L1.50811 36.3505C0.868066 37.4592 0.5 38.7445 0.5 40.1167C0.5 44.2837 3.87812 47.662 8.04531 47.662H25.5V2.33887C22.7051 2.33887 20.2669 3.85967 18.963 6.11777Z" fill="#525A61"/>
+                                <path d="M46.8782 37.8594L29.4235 7.62695C28.6368 6.26377 27.1922 5.40361 25.6298 5.35938L40.5584 44.644H42.9548C45.4508 44.644 47.4819 42.613 47.4819 40.1169C47.4819 39.3241 47.2727 38.5435 46.8782 37.8594Z" fill="#FFB751"/>
+                                <path d="M43.9427 37.859C44.2837 38.5431 44.4638 39.3237 44.4638 40.1165C44.4638 42.6125 42.7123 44.6437 40.5583 44.6437H8.04531C5.54931 44.6437 3.51816 42.6125 3.51816 40.1165C3.51816 39.3237 3.72744 38.5431 4.12177 37.859L21.5765 7.62656C22.3853 6.22617 23.8884 5.35596 25.5 5.35596C25.5433 5.35596 25.5865 5.35693 25.6298 5.35898C26.9708 5.41133 28.2093 6.26943 28.8843 7.62656L43.9427 37.859Z" fill="#FFD764"/>
+                                <path d="M25.5 34.583V39.6132C26.8894 39.6132 28.0151 38.4874 28.0151 37.098C28.0151 35.7088 26.8894 34.583 25.5 34.583Z" fill="#3B4145"/>
+                                <path d="M25.5 34.583C25.7776 34.583 26.003 35.7088 26.003 37.0981C26.003 38.4875 25.7776 39.6133 25.5 39.6133C24.1106 39.6133 22.9849 38.4875 22.9849 37.0981C22.9849 35.7088 24.1106 34.583 25.5 34.583Z" fill="#525A61"/>
+                                <path d="M25.5 12.9536V31.5653C26.8894 31.5653 28.0151 30.4386 28.0151 29.0502V15.4688C28.0151 14.0794 26.8894 12.9536 25.5 12.9536Z" fill="#3B4145"/>
+                                <path d="M25.5 12.9536C25.7776 12.9536 26.003 14.0794 26.003 15.4688V29.0502C26.003 30.4385 25.7776 31.5653 25.5 31.5653C24.1106 31.5653 22.9849 30.4386 22.9849 29.0502V15.4688C22.9849 14.0794 24.1106 12.9536 25.5 12.9536Z" fill="#525A61"/>
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0">
+                                        <rect width="50" height="50" fill="white" transform="translate(0.5)"/>
+                                    </clipPath>
+                                </defs>
+                            </svg>                                
+                        </div>
+                        <h6 class="pt-2">Error loading widget!</h6>
+                        <p>This product does not exist. It is either been deleted or disabled.</p>
+                    </div>
+                    <!-- PRODUCT CONTENT -->
+                    <div v-else class="productContent">
+                        <div class="productImage">
+                            <img :src="image" :alt="name" class="img-fluid d-block mx-auto h-100 w-100">
+                        </div>
+                        <div class="productDescription">
+                            <h4 class="title text-capitalize">{{ name }}</h4>
+                            <h6 class="creator">By {{ creator }}</h6>
+                            <h5 class="amount">
+                                <template v-if="amount === 0">FREE</template>
+                                <template v-else>NGN {{ amount }}</template>
+                            </h5>
+                            <div class="tiptapWrapper" v-html="description"></div>
+                        </div>
+                        <button class="buyButton button" @click="openBuyProduct(true)">
+                            {{ amount === 0 ? 'Get for Free' : 'Buy Now'}}
+                        </button>
+                    </div>
+                    <!-- POWERED BY FIDIA -->
+                    <div class="poweredByFidia d-flex justify-content-center">
+                        <a href="http://getfidia.com" target="_blank" rel="noopener noreferrer" class="mx-auto d-inline-flex align-items-center justify-content-center bg-white">
+                            <img src="https://embed.getfidia.com/images/fidia-powered.svg" alt="Fidia Logo">
+                            <span>Powered by Fidia</span>
+                        </a>
+                    </div>
+                </div>
+            </div>   
+        </div>
+
+        <!-- BUY PRODUCT MODAL -->
+        <div v-if="showBuyProduct" class="modalWrapper position-fixed">
+            <div class="modalContainer d-flex align-items-center">
+                <div class="modalContent bg-white d-flex flex-column w-100">
+                    <div class="modalHeader d-flex align-items-start justify-content-between">
+                        <h4>Buy Now</h4>
+                        <button class="closeModalButton bg-white border-0 m-0 p-0 ml-auto" @click="openBuyProduct(false)">
+                            &times;
+                        </button>
+                    </div>
+                    <div class="modalBody">
+                        <form class="buyProductForm" @submit.prevent="getProduct">
+                            <div class="inputField">
+                                <label for="buyersName">Name</label>
+                                <input type="text" name="buyersName" id="buyersName" v-model="buyersName" placeholder="John Doe" :class="{ error: invalidBuyersName }" @focus="invalidBuyersName = false">
+                            </div>
+                            <div class="inputField">
+                                <label for="buyersEmail">Email</label>
+                                <input type="email" name="buyersEmail" id="buyersEmail" v-model="buyersEmail" placeholder="example@gmail.com" :class="{ error: invalidBuyersEmail }" @focus="invalidBuyersEmail = false">
+                            </div>
+                            <button class="button">
+                                {{ amount === 0 ? 'Proceed' : 'Make Payment' }}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TRANSACTION STATUS -->
+        <div v-if="showTransactionStatus" class="modalWrapper position-fixed">
+            <div class="modalContainer d-flex align-items-center">
+                <div class="modalContent bg-white d-flex flex-column w-100">
+                    <div class="modalHeader d-flex align-items-start justify-content-between">
+                        <button class="closeModalButton bg-white border-0 m-0 p-0 ml-auto" @click="openTransactionStatus(false)">
+                            &times;
+                        </button>
+                    </div>
+                    <div class="modalBody">
+                        <div v-if="transactionStatus === 'processing'" class="processingPayment text-center">
+                            <span class="loading d-inline-block mx-auto"></span>
+                            <h4>Your payment is processing...</h4>
+                            <p>We are waiting to confirm your payment. This can take up to a minute and you will get an email when it succeeds.</p>
+                        </div>
+                        <div v-else-if="transactionStatus === 'successful'" class="successModal">
+                            <div class="icon">
+                                <svg width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M35.0001 0.000142739C54.33 0.000142739 70 15.6702 70 35.0001C70 54.33 54.33 70 35.0001 70C15.6702 70 0.000145175 54.33 0.000145175 35.0001C-0.0548568 15.725 15.5259 0.0551448 34.8008 0.000142739C34.8672 -4.75796e-05 34.9337 -4.75796e-05 35.0001 0.000142739Z" fill="#3BB54A"/>
+                                    <path d="M54.3892 25.3553L29.5313 50.2131L15.6108 36.3922L21.2785 30.8241L29.5313 38.9775L48.7217 19.7871L54.3892 25.3553Z" fill="#D4E1F4"/>
+                                </svg>
+                            </div>
+                            <h5>Success 🎉</h5>
+                            <p>Thank you for purchasing {{ name }}! The download page has also been emailed to {{ buyersEmail }}.</p>
+                            <h6 v-if="filename && filesize">File Download</h6>
+                            <p v-if="filename">{{ filename }}</p>
+                            <p v-if="filesize">{{ filesize }} MB</p>
+                            <div v-if="downloadStarted" class="downloadStarted text-center">
+                                Thank You! Your download will begin shortly.
+                            </div>
+                            <div v-else class="downloadButton">
+                                <button class="button" @click="downloadProduct">
+                                    {{ type === 'file' ? 'Download' : 'View Product' }}
+                                </button>
+                            </div>
+                        </div>
+                        <div v-else class="failedModal text-center">
+                            <div class="icon">
+                                <svg width="71" height="70" viewBox="0 0 71 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <g clip-path="url(#clip0_4120:23626)">
+                                        <path d="M35.5 0C16.1703 0 0.5 15.6703 0.5 35C0.5 54.3297 16.1703 70 35.5 70C54.8297 70 70.5 54.3297 70.5 35C70.5 15.6703 54.8297 0 35.5 0ZM6.53448 35C6.53448 19.0291 19.5291 6.03448 35.5 6.03448C42.5555 6.03448 49.0269 8.57259 54.056 12.7798L13.2798 53.556C9.07259 48.5269 6.53448 42.0543 6.53448 35ZM35.5 63.9655C28.7534 63.9655 22.5428 61.6398 17.6138 57.7572L58.2572 17.1126C62.1398 22.0428 64.4655 28.2534 64.4655 35C64.4655 50.9709 51.4709 63.9655 35.5 63.9655Z" fill="#DD352E"/>
+                                    </g>
+                                <defs>
+                                    <clipPath id="clip0_4120:23626">
+                                        <rect width="70" height="70" fill="white" transform="translate(0.5)"/>
+                                    </clipPath>
+                                </defs>
+                                </svg>
+                            </div>
+                            <h5>
+                                <template v-if="amount === 0">
+                                    An error occured
+                                </template>
+                                <template v-else>
+                                    Transaction Failed
+                                </template>
+                            </h5>
+                            <p>
+                                <template v-if="amount === 0">
+                                    Your request could not be processed at the moment, kindly try again.
+                                </template>
+                                <template v-else>
+                                    Your payment could not be processed at the moment, kindly try again.
+                                </template>
+                            </p>
+                            <div class="tryAgain mx-auto">
+                                <button class="button" @click="tryAgain">Try Again</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LOADER SECTION -->
+        <div v-if="displayLoader" class="loader" id="loader" >
+            <img src="https://embed.getfidia.com/images/loader.svg" alt="Loader Image here.." />
+        </div>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                showProduct: false,
+                displayLoader: true,
+                baseUrl: 'https://getfidia-production.herokuapp.com/graphql',
+                username: '',
+                slug: '',
+                name: '',
+                image: '',
+                creator: '',
+                productId: '',
+                amount: '',
+                description: '',
+                type: '',
+                filename: '',
+                filesize: '',
+                errorOccured: false,
+                showBuyProduct: false,
+                buyersName: '',
+                buyersEmail: '',
+                invalidBuyersName: false,
+                invalidBuyersEmail: false,
+                showTransactionStatus: false,
+                transactionStatus: '',
+                productDownloadUrl: '',
+                downloadStarted: false,
+            },
+            created() {
+                window.onmessage = async (e) => {
+                    // Get relevant data from the server and populate the DOM
+                    const { fidiaUsername, fidiaSlug } = JSON.parse(e.data);
+
+                    this.username = fidiaUsername;
+                    this.slug = fidiaSlug;
+                    this.errorOccured = false;
+
+                    try {
+                        const data = await fetch(this.baseUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                query: `query($username: String!, $slug: String!) {
+                                            viewProductPage(username: $username, slug: $slug) {
+                                                _id
+                                                name
+                                                image
+                                                filename
+                                                filesize
+                                                description
+                                                amount
+                                                type
+                                                user {
+                                                    firstname
+                                                    lastname
+                                                }
+                                            }
+                                        }
+                                `,
+                                variables: { username: fidiaUsername, slug: fidiaSlug }
+                            })
+                        })
+
+                        const response = await data.json();
+
+                        // If for any reason, this product cannot be fetched or an error occured while trying to fetch this product, show the error page
+                        if(!response.data) {
+                            this.displayLoader = false;
+                            this.showProduct = true;
+                            this.errorOccured = true;
+                            return;
+                        }
+
+                        const product = response.data.viewProductPage;
+
+                        this.name = product.name;
+                        this.image = product.image;
+                        this.creator = `${product.user.firstname} ${product.user.lastname}`;
+                        this.description = product.description;
+                        this.amount = product.amount;
+                        this.productId = product._id;
+                        this.filename = product.filename;
+                        this.filesize = product.filesize;
+                        this.type = product.type;
+                        
+                        this.displayLoader = false;
+                        this.showProduct = true;
+                    } catch {
+                        // If for any reason, this product cannot be fetched or an error occured while trying to fetch this product, show the error page
+                        this.displayLoader = false;
+                        this.showProduct = true;
+                        this.errorOccured = true;
+                    }
+                }
+            },
+            methods: {
+                closeProductPopup() {
+                    // Tell the parent document to close the iframe
+                    window.parent.postMessage('closeFidiaIframe', '*');
+                },
+                openBuyProduct(value) {
+                    this.showBuyProduct = value;
+                    if(this.transactionStatus === 'successful') {
+                        this.buyersName = '';
+                        this.buyersEmail = '';
+                    }
+                },
+                openTransactionStatus(value) {
+                    this.showTransactionStatus = value
+                },
+                tryAgain() {
+                    this.openTransactionStatus(false);
+                    setTimeout(() => {
+                        this.openBuyProduct(true);
+                    }, 100)
+                },
+                closedPaymentModal() {
+                    console.log('payment is closed'); // eslint-disable-line no-console
+                },
+                generateReference(){
+                    const date = new Date()
+                    return date.getTime().toString();
+                },
+                async savePurchase(txId, productId, name, email) {
+                    try {
+                        const savePurchaseData = await fetch(this.baseUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                query: `
+                                    mutation($txId: String!, $productId: String!, $name: String!, $email: String!) {
+                                        buyProduct(txId: $txId, productId: $productId, name: $name, email: $email) {
+                                            url
+                                        }
+                                    }
+                                `,
+                                variables: { txId, productId, name, email }
+                            })
+                        })
+
+                        const responseData = await savePurchaseData.json()
+
+                        const productDownloadUrl = responseData.data.buyProduct.url;
+
+                        return productDownloadUrl;
+                    } catch {
+                        this.openTransactionStatus(true);
+                        this.transactionStatus = 'failed';
+                    }
+                },
+                async makePaymentCallback(response) {
+                    this.openBuyProduct(false);
+                    this.openTransactionStatus(true);
+                    this.transactionStatus = 'processing';
+
+                    if(response.status === 'successful' ||response.status === 'completed') {
+                        // Send data to server and display success message
+                        const txId = String(response.transaction_id);
+                        const productDownloadUrl = await this.savePurchase(txId, this.productId, this.buyersName, this.buyersEmail)
+                        if(productDownloadUrl) {
+                            this.transactionStatus = 'successful';
+                            this.productDownloadUrl = productDownloadUrl;
+                        }
+                    } else {
+                        // Show error message
+                        this.transactionStatus = 'failed';
+                    }
+                },
+                getProduct() {
+                    // Validate Buyer's Email
+                    if(this.buyersEmail === '') this.invalidBuyersEmail = true;
+                    // Validate Buyer's Name
+                    if(this.buyersName === '') this.invalidBuyersName = true;
+
+                    // Stop form submission if buyer have not entered a name or email
+                    if(this.invalidBuyersEmail || this.invalidBuyersName) return;
+
+                    if(this.amount === 0) {
+                        this.getProductForFree();
+                    } else {
+                        this.makePaymentForProduct();
+                    }
+                },
+                async getProductForFree() {
+                    this.openBuyProduct(false);
+                    this.displayLoader = true;
+                    // Save Purchase Record
+                    const productDownloadUrl = await this.savePurchase('free', this.productId, this.buyersName, this.buyersEmail);
+                    if(productDownloadUrl) {
+                        this.productDownloadUrl = productDownloadUrl;
+                        this.openTransactionStatus(true);
+                        this.transactionStatus = 'successful';
+                    }
+                    this.displayLoader = false;
+                },
+                makePaymentForProduct() {
+                    const paymentData = {
+                        public_key: "FLWPUBK-002b4d3ce050bd93f3b03f111bfba59f-X",
+                        tx_ref: this.generateReference(),
+                        amount: this.amount,
+                        currency: 'NGN',
+                        payment_options: '',
+                        redirect_url: '',
+                        meta: {
+                            productId: this.productId,
+                            buyersName: this.buyersName,
+                            buyersEmail: this.buyersEmail,
+                            purchaseType: 'productPage',
+                        },
+                        customer: {
+                            name: this.buyersName,
+                            email: this.buyersEmail,
+                        } ,
+                        customizations: {
+                            title: `Purchase ${this.name} by ${this.creator}`,
+                            description: `Buy ${this.name} worth NGN ${this.amount}`,
+                            logo: this.image,
+                        },
+                        callback: this.makePaymentCallback,
+                        onclose: this.closedPaymentModal
+                    }
+
+                    window.FlutterwaveCheckout(paymentData);
+                },
+                downloadProduct() {
+                    if(this.type === 'redirect') {
+                        window.open(this.productDownloadUrl, '_blank')
+                    } else {
+                        this.downloadStarted = true;
+                        const request = new XMLHttpRequest();
+                        request.responseType = 'blob';
+                        request.onload = () => {
+                            const reader = new FileReader();
+                            reader.readAsDataURL(request.response);
+                            reader.onload = (e) => {
+                                this.downloadDataURL(e.target.result);
+                            };
+                        };
+                        request.open('GET', this.productDownloadUrl);
+                        request.send();
+                    }
+                },
+                downloadDataURL(url) {
+                    // Create anchor tag
+                    const link = document.createElement('a');
+                    // attach a filename to the anchor tag
+                    link.download = this.filename;
+                    // Set the anchor's href attribute to the product download url
+                    link.href = url;
+                    // Insert the anchor element into the DOM
+                    document.body.appendChild(link);
+                    // Initiate a click on the anchor element
+                    link.click();
+                    // Remove the anchor element from the DOM
+                    document.body.removeChild(link);
+                },
+            }
+        })
+    </script>
+</body>
+</html>
