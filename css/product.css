@@ -1,0 +1,567 @@
+:root {
+    /* define colors to be used across all pages as variables*/
+    --fidiaColor: #292a73;
+    --fidiaColorBlue: #3a9efd;
+    --fidiaColorBlack: #333;
+    --fidiaColorGrey: #787676;
+}
+
+/* CSS RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none !important;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    font-weight: normal;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: transparent !important;
+    font-family: 'Work Sans', sans-serif !important;
+}
+
+#app {
+    height: 100vh !important;
+    max-width: 1500px !important;
+    margin: auto !important;
+}
+
+/* PRODUCT INFORMATION BODY */
+#productInformationBody {
+    position: fixed;
+    overflow-y: scroll;
+    height: 100%;
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+    background: rgba(0, 0, 0, 0.25);
+}
+
+#productInformationBody::-webkit-scrollbar {
+    display: none;
+}
+
+#productInformationBody .contentWrapper {
+    height: 100%;
+    width: 100%;
+    padding: 2em 0px 2em 0px;
+    animation: glowIn .5s linear;
+}
+
+@keyframes glowIn{
+    from {
+        opacity: 0;
+    }
+}
+
+#productInformationBody .contentWrapper .productInformation {
+    width: 90%;
+    max-width: 750px;
+    margin: 0 auto;
+}
+
+/* CLOSE ICON */
+.closeIcon {
+    height: 30px;
+    width: 30px;
+    margin-bottom: 10px;
+}
+
+/* PRODUCT CONTENT */
+.errorContent,
+.productContent {
+    padding: 30px 58px;
+    background: #FFFFFF;
+    min-height: 590px;
+    box-shadow: 0px 1px 10px rgba(120, 118, 118, 0.05);
+    border-radius: 10px;
+}
+
+.productContent .productImage {
+    height: 406px;
+    background: #FAFAFA;
+    border-radius: 10px;
+    padding: 29px 5px;
+    margin-bottom: 30px;
+}
+
+.productContent .productImage img {
+    object-fit: cover;
+    max-width: 311px;
+    border-radius: 10px;
+}
+
+.productContent .productDescription .title {
+    font-weight: 500;
+    font-size: 28px;
+    line-height: 35px;
+    color: var(--fidiaColorBlack);
+    margin-bottom: 10px;
+}
+
+.productContent .productDescription .creator {
+    font-size: 18px;
+    line-height: 23px;
+    color: var(--fidiaColorGrey);
+    margin-bottom: 10px;
+}
+
+.productContent .productDescription .amount {
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 28px;
+    color: var(--fidiaColorBlack);
+    margin-bottom: 15px;
+}
+
+.buyButton {
+    max-width: 229px;
+    margin-top: 30px;
+}
+
+/* BUTTON COMPONENT */
+.button {
+    background-color: var(--fidiaColor);
+    color: #fff;
+    border-radius: 5px;
+    border: none;
+    text-align: center;
+    font-weight: 500;
+    font-size: 18px;
+    width: 100%;
+    padding: 17px 15px;
+    line-height: 28px;
+}
+
+/* ERROR CONTENT */
+.errorContent div {
+    margin-bottom: 15px;
+}
+
+.errorContent h6 {
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 35px;
+    color: var(--fidiaColorBlack);
+    margin-bottom: 10px;
+}
+
+.errorContent p {
+    font-size: 18px;
+    line-height: 23px;
+    color: var(--fidiaColorGrey);
+    margin-bottom: 10px;
+}
+
+/* POWERED BY FIDIA */
+.poweredByFidia {
+    margin-top: 9px;
+    margin-bottom: 20px;
+}
+
+.poweredByFidia a {
+    text-decoration: none;
+    color: var(--fidiaColor);
+    border: 1px solid #F8F8F8;
+    box-shadow: 0px 10px 50px rgba(120, 118, 118, 0.2);
+    border-radius: 2px;
+    padding: 8px;
+    font-weight: 500;
+    line-height: 19px;
+}
+
+.poweredByFidia a img {
+    margin-right: 7px;
+}
+
+/* WYSIWYG EDITOR */
+.tiptapWrapper a {
+    text-decoration: underline !important;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--fidiaColor);
+}
+
+.tiptapWrapper pre {
+    background: #0D0D0D;
+    color: #FFF;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+
+}
+
+.tiptapWrapper pre code {
+    color: inherit;
+    padding: 0;
+    background: none;
+    font-size: 0.8rem;
+  }
+
+.tiptapWrapper mark {
+      background-color: #ffe066;
+}
+
+.tiptapWrapper p {
+    margin-bottom: 8px;
+}
+
+.tiptapWrapper blockquote {
+    padding-left: 1rem;
+    border-left: 2px solid rgba(13, 13, 13,0.3);
+}
+
+.tiptapWrapper .ProseMirror p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    float: left;
+    color: var(--fidiaColorGrey);
+    pointer-events: none;
+    height: 0;
+    font-size: 18px;
+}
+
+/* LOADER SECTION */
+.loader {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.loader > img {
+    animation: spin 1.5s linear 0s infinite reverse;
+}
+
+.loader > img:hover {
+    animation-play-state: running;
+}
+
+@keyframes spin {
+    0% {
+      transform: rotate(360deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+}
+
+/* MODALS */
+.modalWrapper {
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.25);
+    padding-left: 0;
+    animation: show .5s linear;
+    z-index: 10;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.modalContainer {
+    margin: 3rem auto;
+    min-height: calc(100% - 3.5rem);
+    max-width: 592px;
+}
+
+@keyframes show {
+    from {
+        opacity: 0;
+    }
+}
+
+.modalContent {
+    padding: 32px;
+    width: 95%;
+    min-height: 50px;
+    border-radius: 10px;
+    animation: scale .3s linear;
+    transform: translateY(0px);
+    transition: transform .5s linear;
+}
+
+@keyframes scale {
+    from {
+        transform: scale(0.5);
+    }
+}
+
+.modalHeader {
+    margin-bottom: 30px;
+}
+
+.modalHeader h4 {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 28px;
+    color: #000;
+}
+
+.modalHeader .closeModalButton {
+    line-height: 24px;
+    font-size: 48px;
+    color: var(--fidiaColorGrey);
+}
+
+/* FORMS */
+.inputField {
+    margin-bottom: 30px;
+}
+
+.inputField label {
+    display: block;
+    font-size: 18px;
+    line-height: 23px;
+    margin-bottom: 14px;
+    color: #000;
+}
+
+.inputField input {
+    display: block;
+    width: 100%;
+    border-radius: 5px;
+    line-height: 20px;
+    padding: 1.1rem;
+    border: 1px solid var(--fidiaColorGrey);
+    font-size: 18px;
+    transition: .3s linear;
+}
+
+.inputField input:focus {
+    outline: none;
+    border: 1px solid var(--fidiaColorBlue);
+}
+
+.inputField input::placeholder {
+	color: var(--fidiaColorGrey);
+}
+
+.inputField input.error {
+    border-color: #EB5757;
+}
+
+/* TRANSACTION STATUSES */
+/* PROCESSING */
+.processingPayment .loading {
+    height: 70px;
+    width: 70px;
+    border: 10px solid var(--fidiaColor);
+    border-top-color: rgba(41, 42, 115, 0.2);
+    border-radius: 50%;
+    animation: spin 1200ms linear infinite;
+}
+
+.processingPayment h4 {
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 28px;
+    color: var(--fidiaColorBlack);
+    margin: 30px 0;
+}
+
+.processingPayment p {
+    font-size: 20px;
+    line-height: 28px;
+    color: var(--fidiaColorGrey);
+}
+
+/* SUCCESS */
+.successModal .icon {
+    margin-bottom: 20px;
+}
+
+.successModal .icon svg {
+    height: 50px;
+    width: 50px;
+}
+
+.successModal h6,
+.successModal h5 {
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 28px;
+    color: var(--fidiaColorBlack);
+    margin-bottom: 15px;
+}
+
+.successModal p {
+    line-height: 28px;
+    color: var(--fidiaColorGrey);
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.successModal .downloadButton {
+    margin-top: 30px;
+}
+
+.downloadStarted {
+    background: #FAFAFA;
+    border-radius: 5px;
+    padding: 22px;
+    font-weight: 500;
+    line-height: 21px;
+    color: var(--fidiaColorGrey);
+    margin: 30px 0 0;
+}
+
+/* FAILED */
+.failedModal .icon {
+   margin-bottom: 30px;
+}
+
+.failedModal .icon svg {
+    height: 60px;
+    width: 60px;
+}
+
+.failedModal h5 {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 28px;
+    color: #000;
+    margin-bottom: 30px;
+}
+
+.failedModal p {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 28px;
+    color: var(--fidiaColorGrey);
+    margin-bottom: 30px;
+}
+
+.failedModal .tryAgain {
+    max-width: 167px;
+    margin-bottom: 20px;
+}
+
+/* MEDIA QUERIES */
+@media only screen and (max-width: 770px){
+    .modalContent {
+        width: 90%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    #productInformationBody .contentWrapper {
+        padding: 0px 0px 0px 0px !important;
+        overflow-y: scroll;
+        position: fixed;
+        top: 0px;
+        bottom: 0px;
+        right: 0px;
+        left: 0px;
+    }
+
+    #productInformationBody .contentWrapper .productInformation {
+        max-height: 90%;
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+    }
+
+    .closeIcon {
+        margin-right: 10px;
+    }
+
+    .errorContent,
+    .productContent {
+        padding: 30px 18px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    .productContent .productImage {
+        height: 213px;
+        padding: 15px 5px;
+    }
+
+    .productContent .productImage img {
+        max-width: 163px;
+    }
+
+    .productContent .productDescription .title {
+        font-size: 24px;
+        margin-bottom: 5px;
+    }
+    
+    .productContent .productDescription .creator {
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+    
+    .productContent .productDescription .amount {
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+
+    .buyButton {
+        max-width: 100%;
+    }
+
+    .poweredByFidia {
+        background-color: #fff;
+        margin: 0;
+        padding: 0 0 30px;
+    }
+
+    .modalContainer {
+        margin: 0;
+        overflow-y: hidden !important;
+    }
+
+    .modalContent{
+        margin: 0 !important;
+        padding: 32px 18px;
+        width: 100%;
+        position: absolute;
+        bottom: 0px;
+        min-height: 0px;
+        border-bottom-right-radius: 0px;
+        border-bottom-left-radius: 0px;
+        height: 600px !important;
+        max-height: 90% !important;
+        height: auto;
+    }
+
+    .modalBody {
+        overflow-y: scroll !important;
+        height: 100%;
+    }
+}
+
+@media screen and (min-width: 600px) {
+    .failedModal p {
+        font-size: 20px;
+    }
+
+    .downloadStarted {
+        font-size: 18px;
+    }
+}
+
+@media screen and (min-width: 420px) {
+    .successModal .downloadButton {
+        max-width: 289px;
+    }
+}
