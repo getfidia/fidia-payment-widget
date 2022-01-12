@@ -45,7 +45,7 @@ Add the below script to your mounted hook.
 mounted(){
     const fidiaScript = document.createElement('script');
     fidiaScript.async = true;
-    fidiaScript.setAttribute('src', "https://embed.getfidia.com/js/payment-embed.js"");
+    fidiaScript.setAttribute('src', "https://embed.getfidia.com/js/payment-embed.js");
     document.getElementsByTagName("head")[0].appendChild(fidiaScript);
 }
 ```
