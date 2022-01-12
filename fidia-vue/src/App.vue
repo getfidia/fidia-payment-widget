@@ -1,28 +1,27 @@
 <template>
-  <div id="app">
-    <fidia-vue username="opeolluwa" slug="buy me a drone"  background="black" size="200" foreground="grey"/>
-
-  </div>
+  <button
+    class="fidia-embed-target"
+    data-fidia-username="opeolluwa"
+    data-fidia-slug="Opeolluwa"
+  >
+    ooo
+  </button>
 </template>
 
-<script>
-import FidiaVue from "./components/FidiaVue.vue";
 
+<script>
 export default {
-  name: "App",
-  components: {
-    FidiaVue,
+  mounted() {
+    const fidiaScript = document.createElement("script");
+    fidiaScript.async = true;
+    fidiaScript.setAttribute(
+      "src",
+      "https://embed.getfidia.com/js/payment-embed.js"
+    );
+    document.getElementsByTagName("head")[0].appendChild(fidiaScript);
   },
 };
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
