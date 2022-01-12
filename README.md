@@ -69,7 +69,10 @@ export default () => {
   (function () {
     const fidiaScript = document.createElement("script");
     fidiaScript.async = true;
-    fidiaScript.setAttribute("src", "https://embed.getfidia.com/js/payment-embed.js");
+    fidiaScript.setAttribute(
+      "src",
+      "https://embed.getfidia.com/js/payment-embed.js"
+    );
     document.getElementsByTagName("head")[0].appendChild(fidiaScript);
   })();
 };
