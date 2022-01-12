@@ -9,7 +9,7 @@
     }"
   >
     <fidia-logo />
-    {{ slug }}
+    {{ text }}
   </button>
 </template>
 
@@ -43,7 +43,7 @@ export default {
       default: "#fff",
     },
     size: {
-      type:  String || Number,
+      type: String || Number,
     },
     position: {
       type: String,
@@ -53,14 +53,16 @@ export default {
 
   methods: {
     support() {
-      //extract data from props
+      //extract data from  component props
       const { username, slug } = this;
+      console.log(username, slug);
+
       const fidiaEmbedData = JSON.stringify({ username, slug });
 
       const d = document;
       // const w = window;
       const f = d.createElement("iframe");
-      f.src = "https://embed.getfidia.com/";
+      f.src = "https://embed.getfidia.com/payment.html";
 
       f.frameborder = 0;
       f.allowtransparency = true;
@@ -71,20 +73,24 @@ export default {
       d.getElementsByTagName("body")[0].appendChild(f);
 
       const fidiaIframe = document.querySelector("#fidia-embed-iframe");
+
       setTimeout(() => {
         fidiaIframe.style.display = "block";
       }, 30);
 
       // Child window and parent window can only communicate over events
-      fidiaIframe.contentWindow.postMessage(fidiaEmbedData, "*");
+      fidiaIframe.contentWindow.postMessage(
+        fidiaEmbedData,
+        "*"
+      );
 
-      /*     w.onmessage = (e) => {
+       /*    w.onmessage = (e) => {
         if ((e.data = "closeFidiaIframe")) {
           // Close the iframe when this event is emitted to the parent document,
           const fidiaIframe = document.querySelector("#fidia-embed-iframe");
           fidiaIframe.style.display = "none";
         }
-      }; */
+      };  */
     },
   },
 };
