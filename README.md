@@ -11,32 +11,41 @@ To give you a feel of how this works, we created a [demo website](https://embed.
 ## 🚀 Usage
 
 ### HTML
+
 Embedding a Fidia payment link on your website is super simple. First, you need to import our embed script. Add the below snippet to anywhere within your html code.
 
 ```html
-<script src="https://embed.getfidia.com/js/v1.js" async></script>
+<script src="https://embed.getfidia.com/js/payment-embed.js" async></script>
 ```
 
 Specify a button which when clicked would popup our payment link widget. This button can be placed anywhere within the body tag and has to have the following attributes:
-- class - fidia-embed-target
-- data-fidia-username - Your Fidia username
-- data-fidia-slug - The slug of the payment link you want to embed
+
+- **class** - fidia-embed-target
+- **data-fidia-username** - Your Fidia username
+- **data-fidia-slug** - The slug of the payment link you want to embed, typically the text you filled in the input tagged "madkus-design" while creating your link
+  <img src=images/slug.png width=300 height=200 style="margin:15px 15px 15px 0px;display:block">
 
 This will look as shown below:
 
 ```html
-<button class="fidia-embed-target" data-fidia-username="gbahdeyboh" data-fidia-slug="laptop"></button>
+<button
+  class="fidia-embed-target"
+  data-fidia-username="gbahdeyboh"
+  data-fidia-slug="laptop"
+></button>
 ```
 
 You can add as many buttons as desired and each of them will be replaced by Fidia's custom button.
 
 ### Vue
+
 Add the below script to your mounted hook.
+
 ```javascript
 mounted(){
     const fidiaScript = document.createElement('script');
     fidiaScript.async = true;
-    fidiaScript.setAttribute('src', "https://embed.getfidia.com/js/v1.js");
+    fidiaScript.setAttribute('src', "https://embed.getfidia.com/js/payment-embed.js"");
     document.getElementsByTagName("head")[0].appendChild(fidiaScript);
 }
 ```
@@ -44,22 +53,28 @@ mounted(){
 Then add your button anywhere in your component or it's child component.
 
 ```html
-<button class="fidia-embed-target" data-fidia-username="gbahdeyboh" data-fidia-slug="laptop"></button>
+<button
+  class="fidia-embed-target"
+  data-fidia-username="gbahdeyboh"
+  data-fidia-slug="laptop"
+></button>
 ```
 
 ### Nuxt
+
 In your plugins folder, create a file named `fidia-widget.js`. Copy and paste the below code into this file.
 
 ```javascript
-export default () => { 
-    (function() {
-        const fidiaScript = document.createElement('script');
-        fidiaScript.async = true;
-        fidiaScript.setAttribute('src', "https://embed.getfidia.com/js/v1.js")
-        document.getElementsByTagName("head")[0].appendChild(fidiaScript);
-    })();
+export default () => {
+  (function () {
+    const fidiaScript = document.createElement("script");
+    fidiaScript.async = true;
+    fidiaScript.setAttribute("src", "https://embed.getfidia.com/js/payment-embed.js");
+    document.getElementsByTagName("head")[0].appendChild(fidiaScript);
+  })();
 };
 ```
+
 In your `nuxt.config.js` file, import this plugin as shown below.
 
 ```javascript
@@ -71,8 +86,13 @@ plugins: [
 Now you can specify a target button anywhere within your layouts, pages, or components.
 
 ```html
-<button class="fidia-embed-target" data-fidia-username="gbahdeyboh" data-fidia-slug="laptop"></button>
+<button
+  class="fidia-embed-target"
+  data-fidia-username="gbahdeyboh"
+  data-fidia-slug="laptop"
+></button>
 ```
 
 ## ✨ Contribution
+
 This widget still needs a lot of customizations, improvements, and fixes. PRs and issues are definitely welcomed!
