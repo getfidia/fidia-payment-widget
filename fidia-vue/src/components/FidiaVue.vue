@@ -31,10 +31,12 @@ export default {
       type: String,
       required: true,
     },
+    //TODO: give option of making component a floating action buttton
     fixed: {
       type: Boolean,
       required: false,
     },
+
     background: {
       type: String,
     },
@@ -45,6 +47,7 @@ export default {
     size: {
       type: String || Number,
     },
+    //TODO: set position for fixed button options are {top right, top left, buttom right, buttom left}
     position: {
       type: String,
       default: "bottom-right",
@@ -79,12 +82,9 @@ export default {
       }, 30);
 
       // Child window and parent window can only communicate over events
-      fidiaIframe.contentWindow.postMessage(
-        fidiaEmbedData,
-        "*"
-      );
+      fidiaIframe.contentWindow.postMessage(fidiaEmbedData, "*");
 
-       /*    w.onmessage = (e) => {
+      /*    w.onmessage = (e) => {
         if ((e.data = "closeFidiaIframe")) {
           // Close the iframe when this event is emitted to the parent document,
           const fidiaIframe = document.querySelector("#fidia-embed-iframe");
