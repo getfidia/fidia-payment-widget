@@ -22,7 +22,7 @@ Specify a button which when clicked would popup our payment link widget. This bu
 
 - **class** - fidia-embed-target
 - **data-fidia-username** - Your Fidia username
-- **data-fidia-slug** - The slug of the payment link you want to embed, typically the text you filled in the input tagged "madkus-design" while creating your link
+- **data-fidia-slug** - The slug of the payment link you want to embed, typically the text you filled in the input tagged **"madkus-design"** while creating your link
   <img src=images/slug.png width=300 height=200 style="margin:15px 15px 15px 0px;display:block">
 
 This will look as shown below:
