@@ -17,7 +17,6 @@
 import FidiaLogo from "./FidiaLogo.vue";
 export default {
   components: { FidiaLogo },
-
   props: {
     text: {
       type: String,
@@ -58,7 +57,8 @@ export default {
     support() {
       //extract data from  component props
       const { username, slug } = this;
-      console.log(username, slug);
+
+      //console.log(username, slug);
 
       const fidiaEmbedData = JSON.stringify({ username, slug });
 
