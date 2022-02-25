@@ -1,532 +1,474 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fidia Payment Link Widget</title>
-    <!-- 
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Fidia Payment Link Widget</title>
+        <!-- 
         Use this URL for Vue in development mode 
         https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js
      -->
-    <script src="https://vuejs.org/js/vue.min.js"></script>
-    <script src="https://checkout.flutterwave.com/v3.js"></script>
-    <script src="https://embed.getfidia.com/js/emojis.js"></script>
-    <!-- <script src="./js/emojis.js"></script> -->
+        <script src="https://unpkg.com/vue@3"></script>
+        <script src="https://checkout.flutterwave.com/v3.js"></script>
+        <script src="https://embed.getfidia.com/js/emojis.js"></script>
+        <!-- <script src="./js/emojis.js"></script> -->
 
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"> 
-    <link href="https://embed.getfidia.com/css/payment.css" rel="stylesheet">
-    <!-- <link href="./css/payment.css" rel="stylesheet"> -->
-</head>
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
+        <link href="https://embed.getfidia.com/css/payment.css" rel="stylesheet" />
+        <!-- <link href="./css/payment.css" rel="stylesheet"> -->
+    </head>
 
-<body>
-    <div id="app">
-        <!-- Payment prompts section -->
-        <div id="paymentPromptsBody" class="d-flex justify-content-center align-items-center">
-            <!-- Receive payment -->
-            <div class="" v-if="showPaySect" id="paymentContainer">
-                <div class="row">
-                    <div class="col-10"></div>
-                    <div class="col-2 p-0">
-                        <span class="m-2" id="cancelIcon" @click="closePaymentPopup">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 10.5857L16.95 5.63574L18.364 7.04974L13.414 11.9997L18.364 16.9497L16.95 18.3637L12 13.4137L7.04999 18.3637L5.63599 16.9497L10.586 11.9997L5.63599 7.04974L7.04999 5.63574L12 10.5857Z" fill="#787676"/>
-                            </svg>                            
+    <body>
+        <div id="app">
+            <!-- Payment prompts section -->
+            <div id="paymentPromptsBody" class="d-flex justify-content-center align-items-center">
+                <!-- Receive payment -->
+                <div class="" v-if="showPaySect" id="paymentContainer">
+                    <div class="row">
+                        <div class="col-10"></div>
+                        <div class="col-2 p-0">
+                            <span class="m-2" id="cancelIcon" @click="closePaymentPopup">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 10.5857L16.95 5.63574L18.364 7.04974L13.414 11.9997L18.364 16.9497L16.95 18.3637L12 13.4137L7.04999 18.3637L5.63599 16.9497L10.586 11.9997L5.63599 7.04974L7.04999 5.63574L12 10.5857Z" fill="#787676" />
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="paymentBodyContainer">
+                        <div v-if="!errorOccured" class="pr-3 pl-3 pr-md-5 pl-md-5" id="paymentBody">
+                            <!-- Users info -->
+                            <div class="row p-0 m-0" id="receiversInfo">
+                                <div class="col-12 col-md-2 d-flex justify-content-center">
+                                    <img :src="profileImage" alt="Users profile image" id="userProfileImage" />
+                                </div>
+                                <div class="col-12 col-md-10">
+                                    <div class="d-md-block d-flex justify-content-center align-items-center" id="usersName">{{ linkName }}</div>
+                                    <div class="d-md-block d-flex justify-content-center align-items-center" id="usersRole">By {{ firstname }} {{ lastname }}</div>
+                                    <div class="d-md-block d-flex justify-content-center align-items-center mt-1" id="usersDescription">{{ description }}</div>
+                                </div>
+                            </div>
+                            <div class="ml-3 mt-4" id="buyText">Buy <span>{{ firstname }}</span> a {{ type }}</div>
+                            <!-- Quantity info -->
+                            <div class="row p-0 m-0 mt-4" id="paymentQuantity">
+                                <div class="col-8 col-md-9">
+                                    <div class="fullHeight d-flex justify-content-center align-items-center itemCon" id="item">
+                                        <div class="d-flex align-items-center justify-content-center" id="itemBody">{{ emoji }}</div>
+                                    </div>
+                                    <div class="itemCon buy pl-3 d-flex align-items-center">
+                                        <div class="priceInfo">{{ currency }} {{ enterCustomeAmount ? displayedAmount() : unitPrice }} Each</div>
+                                    </div>
+                                </div>
+                                <div class="col-4 p-0 m-0 col-md-3 d-flex justify-content-end align-items-center">
+                                    <div class="row p-0 m-0" id="counterBody">
+                                        <div class="col-4 counter d-flex justify-content-center align-items-center" id="decrementCount" @click="donationCount > 1 ? donationCount-- : 0 ">-</div>
+                                        <div class="col-4 counted d-flex justify-content-center align-items-center" id="count">{{ donationCount }}</div>
+                                        <div class="col-4 counter d-flex justify-content-center align-items-center" id="incrementCount" @click="donationCount++">+</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Form to be filled -->
+                            <form @submit.prevent="showPaymentPromptContainer">
+                                <div class="mt-3">
+                                    <div class="inputName pt-2 pb-2">Name</div>
+                                    <input class="input" placeholder="John Doe" v-model="supportersName" />
+                                </div>
+                                <div class="mt-3">
+                                    <div class="inputName pt-2 pb-2">Email</div>
+                                    <input class="input" placeholder="john@email.com" v-model="supportersEmail" />
+                                </div>
+                                <div class="mt-3">
+                                    <div class="inputName pt-2 pb-2">Message</div>
+                                    <textarea v-model="supportersMessage" :placeholder="messagePlaceholder"></textarea>
+                                </div>
+                                <div class="mt-3 d-flex">
+                                    <div class="pr-3">
+                                        <input v-model="enterCustomeAmount" type="checkbox" />
+                                    </div>
+                                    <div class="">
+                                        <span>Enter Custom Amount</span>
+                                        <span v-if="amountError" class="pl-3 amountError">Amount must be atleast 200</span>
+                                    </div>
+                                </div>
+                                <div class="mt-3" v-if="enterCustomeAmount">
+                                    <input v-model="customeAmount" class="input" :placeholder="`How much would you like to pay ${firstname}?`" @keydown="validateAmount($event)" @focusout="formatCustomeAmount($event)" />
+                                </div>
+                                <div class="mt-3">
+                                    <div class="submitBtn" id="supportB">
+                                        <button class="button">{{ supportText }}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div v-else class="d-flex flex-column justify-content-center align-items-center" id="paymentErrorBody">
+                            <div>
+                                <svg width="51" height="50" viewBox="0 0 51 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <g clip-path="url(#clip0)">
+                                        <path d="M32.037 6.11777L49.4918 36.3505C50.1319 37.4592 50.5 38.7445 50.5 40.1167C50.5 44.2837 47.1219 47.662 42.9547 47.662H25.5L19.4638 25.0004L25.5 2.33887C28.2949 2.33887 30.7331 3.85967 32.037 6.11777Z" fill="#3B4145" />
+                                        <path d="M18.963 6.11777L1.50811 36.3505C0.868066 37.4592 0.5 38.7445 0.5 40.1167C0.5 44.2837 3.87812 47.662 8.04531 47.662H25.5V2.33887C22.7051 2.33887 20.2669 3.85967 18.963 6.11777Z" fill="#525A61" />
+                                        <path d="M46.8782 37.8594L29.4235 7.62695C28.6368 6.26377 27.1922 5.40361 25.6298 5.35938L40.5584 44.644H42.9548C45.4508 44.644 47.4819 42.613 47.4819 40.1169C47.4819 39.3241 47.2727 38.5435 46.8782 37.8594Z" fill="#FFB751" />
+                                        <path d="M43.9427 37.859C44.2837 38.5431 44.4638 39.3237 44.4638 40.1165C44.4638 42.6125 42.7123 44.6437 40.5583 44.6437H8.04531C5.54931 44.6437 3.51816 42.6125 3.51816 40.1165C3.51816 39.3237 3.72744 38.5431 4.12177 37.859L21.5765 7.62656C22.3853 6.22617 23.8884 5.35596 25.5 5.35596C25.5433 5.35596 25.5865 5.35693 25.6298 5.35898C26.9708 5.41133 28.2093 6.26943 28.8843 7.62656L43.9427 37.859Z" fill="#FFD764" />
+                                        <path d="M25.5 34.583V39.6132C26.8894 39.6132 28.0151 38.4874 28.0151 37.098C28.0151 35.7088 26.8894 34.583 25.5 34.583Z" fill="#3B4145" />
+                                        <path d="M25.5 34.583C25.7776 34.583 26.003 35.7088 26.003 37.0981C26.003 38.4875 25.7776 39.6133 25.5 39.6133C24.1106 39.6133 22.9849 38.4875 22.9849 37.0981C22.9849 35.7088 24.1106 34.583 25.5 34.583Z" fill="#525A61" />
+                                        <path d="M25.5 12.9536V31.5653C26.8894 31.5653 28.0151 30.4386 28.0151 29.0502V15.4688C28.0151 14.0794 26.8894 12.9536 25.5 12.9536Z" fill="#3B4145" />
+                                        <path d="M25.5 12.9536C25.7776 12.9536 26.003 14.0794 26.003 15.4688V29.0502C26.003 30.4385 25.7776 31.5653 25.5 31.5653C24.1106 31.5653 22.9849 30.4386 22.9849 29.0502V15.4688C22.9849 14.0794 24.1106 12.9536 25.5 12.9536Z" fill="#525A61" />
+                                    </g>
+                                    <defs>
+                                        <clipPath id="clip0">
+                                            <rect width="50" height="50" fill="white" transform="translate(0.5)" />
+                                        </clipPath>
+                                    </defs>
+                                </svg>
+                            </div>
+
+                            <div class="pt-2" id="widgetErrorHead">Error loading widget!</div>
+                            <div id="widgetErrorText">This payment link does not exist. It is either been deleted or disabled.</div>
+                        </div>
+                        <!-- Powered by -->
+                        <div class="d-flex justify-content-center align-items-center mt-2" id="poweredByBody">
+                            <div>
+                                <img src="https://embed.getfidia.com/images/fidia-powered.svg" alt="Fidia Logo" />
+                            </div>
+                            <div class="pl-2" id="poweredByText">Powered by Fidia</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment confirmation section -->
+            <div id="paymentConfirmationSection" :style="{display: showPaymentConfirmationPrompt ? 'flex' : 'none'}">
+                <div id="paymentPromptBody" class="pb-2">
+                    <div id="paymentHead" class="row m-0">
+                        <div id="paymentText" class="col-10 d-flex align-items-center">Confirmation</div>
+                        <div id="closePaymentPrompt" class="col-2 d-flex justify-content-end align-items-center pr-4" @click="closePaymentConfirmationPrompt">&times;</div>
+                    </div>
+
+                    <div id="paymentSupportText" class="p-3">Appreciate {{ firstname }} for his works.</div>
+
+                    <div id="paymentInfoHeader" class="pl-3 pr-3">PAYMENT INFORMATION</div>
+
+                    <div class="row paymentDetailsBody ml-3 mr-3 mt-3">
+                        <div class="col-6 paymentDetailTitle pt-2 pl-0">{{ type }}</div>
+                        <div class="col-6 paymentDetail pt-2">{{ currency }} {{ formatAmount( unitPrice ) }}</div>
+                    </div>
+
+                    <div class="row paymentDetailsBody ml-3 mr-3 mt-3">
+                        <div class="col-6 paymentDetailTitle pt-2 pl-0">Quantity</div>
+                        <div class="col-6 paymentDetail pt-2">x{{ quantity }}</div>
+                    </div>
+
+                    <div class="row paymentDetailsBody last ml-3 mr-3 mt-3">
+                        <div class="col-6 paymentDetailTitle pt-2 pl-0">Total</div>
+                        <div class="col-6 paymentDetail pt-2">{{ currency }} {{ formatAmount( totalPrice ) }}</div>
+                    </div>
+
+                    <div class="row mr-3 ml-3 mt-4">
+                        <div class="col-6 d-none d-md-block col-md-3"></div>
+                        <div id="cancelPaymentBtn" class="col-6 col-md-4 d-none d-md-flex align-items-center justify-content-center" @click="closePaymentConfirmationPrompt">Cancel</div>
+                        <div class="col-12 col-md-5 d-flex justify-content-center align-items-center">
+                            <button id="paymentBtn" class="" @click="payCreative">Make Payment</button>
+                        </div>
+                    </div>
+
+                    <div class="mr-3 ml-3 mt-4"></div>
+                </div>
+            </div>
+
+            <!-- Payment status section -->
+            <div id="paymentStatusSection" :style="{display: showPaymentStatus ? 'flex' : 'none'}">
+                <div id="paymentStatusBody" class="pb-2">
+                    <div class="d-flex justify-content-center align-items-center mt-5 pt-5">
+                        <span v-if="paymentSuccessful">
+                            <svg width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M35.0001 0.000142739C54.3299 0.000142739 70 15.6702 70 35.0001C70 54.3299 54.3299 70 35.0001 70C15.6702 70 0.000145175 54.3299 0.000145175 35.0001C-0.0548568 15.725 15.5259 0.0551447 34.8008 0.000142739C34.8672 -4.75796e-05 34.9337 -4.75796e-05 35.0001 0.000142739Z" fill="#3BB54A" />
+                                <path d="M54.3892 25.3553L29.5313 50.2131L15.6108 36.3922L21.2785 30.8241L29.5313 38.9775L48.7217 19.7871L54.3892 25.3553Z" fill="#D4E1F4" />
+                            </svg>
+                        </span>
+
+                        <span v-else>
+                            <svg width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M35 0C15.6703 0 0 15.6703 0 35C0 54.3297 15.6703 70 35 70C54.3297 70 70 54.3297 70 35C70 15.6703 54.3297 0 35 0ZM6.03448 35C6.03448 19.0291 19.0291 6.03448 35 6.03448C42.0555 6.03448 48.5269 8.57259 53.556 12.7798L12.7798 53.556C8.57259 48.5269 6.03448 42.0543 6.03448 35ZM35 63.9655C28.2534 63.9655 22.0428 61.6398 17.1138 57.7572L57.7572 17.1126C61.6398 22.0428 63.9655 28.2534 63.9655 35C63.9655 50.9709 50.9709 63.9655 35 63.9655Z" fill="#DD352E" />
+                            </svg>
                         </span>
                     </div>
-                </div>
-                <div id="paymentBodyContainer">
-                    <div v-if="!errorOccured" class="pr-3 pl-3 pr-md-5 pl-md-5" id="paymentBody">
-                        <!-- Users info -->
-                        <div class="row p-0 m-0" id="receiversInfo">
-                            <div class="col-12 col-md-2 d-flex justify-content-center">
-                                <img :src="profileImage" alt="Users profile image" id="userProfileImage">
-                            </div>
-                            <div class="col-12 col-md-10">
-                                <div class="d-md-block d-flex justify-content-center align-items-center" id="usersName">{{ linkName }}</div>
-                                <div class="d-md-block d-flex justify-content-center align-items-center" id="usersRole">By {{ firstname }}  {{ lastname }}</div>
-                                <div class="d-md-block d-flex justify-content-center align-items-center mt-1" id="usersDescription">
-                                    {{ description }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ml-3 mt-4" id="buyText">Buy <span>{{ firstname }}</span> a {{ type }}</div>
-                        <!-- Quantity info -->
-                        <div class="row p-0 m-0 mt-4" id="paymentQuantity">
-                            <div class="col-8 col-md-9">
-                                <div class="fullHeight d-flex justify-content-center align-items-center itemCon" id="item">
-                                    <div class="d-flex align-items-center justify-content-center" id="itemBody">
-                                        {{ emoji }}
-                                    </div>
-                                </div>
-                                <div class="itemCon buy pl-3 d-flex align-items-center">
-                                    <div class="priceInfo">{{ currency }} {{ enterCustomeAmount ? displayedAmount() : unitPrice }} Each</div>
-                                </div>
-                            </div>
-                            <div class="col-4 p-0 m-0 col-md-3 d-flex justify-content-end align-items-center">
-                                <div class="row p-0 m-0" id="counterBody">
-                                    <div class="col-4 counter d-flex justify-content-center align-items-center" id="decrementCount" @click="donationCount > 1 ? donationCount-- : 0 ">
-                                        -
-                                    </div>
-                                    <div class="col-4 counted d-flex justify-content-center align-items-center" id="count">
-                                        {{ donationCount }}
-                                    </div>
-                                    <div class="col-4 counter d-flex justify-content-center align-items-center" id="incrementCount" @click="donationCount++">
-                                        +
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
+                    <div id="successText" class="d-flex justify-content-center align-items-center mt-4">
+                        <span v-if="paymentSuccessful"> Payment Successful </span>
 
-                        <!-- Form to be filled -->
-                        <form @submit.prevent="showPaymentPromptContainer">
-                            <div class="mt-3">
-                                <div class="inputName pt-2 pb-2">Name</div>
-                                <input class="input" placeholder="John Doe"  v-model="supportersName" />
-                            </div>
-                            <div class="mt-3">
-                                <div class="inputName pt-2 pb-2">Email</div>
-                                <input class="input" placeholder="john@email.com" v-model="supportersEmail" />
-                            </div>
-                            <div class="mt-3">
-                                <div class="inputName pt-2 pb-2">Message</div>
-                                <textarea 
-                                    v-model="supportersMessage"
-                                    :placeholder="messagePlaceholder"
-                                ></textarea>
-                            </div>
-                            <div class="mt-3 d-flex">
-                                <div class="pr-3">
-                                    <input v-model="enterCustomeAmount" type="checkbox"/>
-                                </div>
-                                <div class="">
-                                    <span>Enter Custom Amount</span>
-                                    <span v-if="amountError" class="pl-3 amountError">Amount must be atleast 200</span>
-                                </div>
-                            </div>
-                            <div class="mt-3" v-if="enterCustomeAmount">
-                                <input 
-                                    v-model="customeAmount"  
-                                    class="input" 
-                                    :placeholder="`How much would you like to pay ${firstname}?`"
-                                    @keydown="validateAmount($event)"
-                                    @focusout="formatCustomeAmount($event)"
-                                />
-                            </div>
-                            <div class="mt-3">
-                                <div class="submitBtn" id="supportB">
-                                    <button class="button">
-                                        {{ supportText }}
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+                        <span v-else> Payment Failed </span>
                     </div>
 
-                    <div v-else class="d-flex flex-column justify-content-center align-items-center" id="paymentErrorBody">
-                        <div>
-                            <svg width="51" height="50" viewBox="0 0 51 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <g clip-path="url(#clip0)">
-                                <path d="M32.037 6.11777L49.4918 36.3505C50.1319 37.4592 50.5 38.7445 50.5 40.1167C50.5 44.2837 47.1219 47.662 42.9547 47.662H25.5L19.4638 25.0004L25.5 2.33887C28.2949 2.33887 30.7331 3.85967 32.037 6.11777Z" fill="#3B4145"/>
-                                <path d="M18.963 6.11777L1.50811 36.3505C0.868066 37.4592 0.5 38.7445 0.5 40.1167C0.5 44.2837 3.87812 47.662 8.04531 47.662H25.5V2.33887C22.7051 2.33887 20.2669 3.85967 18.963 6.11777Z" fill="#525A61"/>
-                                <path d="M46.8782 37.8594L29.4235 7.62695C28.6368 6.26377 27.1922 5.40361 25.6298 5.35938L40.5584 44.644H42.9548C45.4508 44.644 47.4819 42.613 47.4819 40.1169C47.4819 39.3241 47.2727 38.5435 46.8782 37.8594Z" fill="#FFB751"/>
-                                <path d="M43.9427 37.859C44.2837 38.5431 44.4638 39.3237 44.4638 40.1165C44.4638 42.6125 42.7123 44.6437 40.5583 44.6437H8.04531C5.54931 44.6437 3.51816 42.6125 3.51816 40.1165C3.51816 39.3237 3.72744 38.5431 4.12177 37.859L21.5765 7.62656C22.3853 6.22617 23.8884 5.35596 25.5 5.35596C25.5433 5.35596 25.5865 5.35693 25.6298 5.35898C26.9708 5.41133 28.2093 6.26943 28.8843 7.62656L43.9427 37.859Z" fill="#FFD764"/>
-                                <path d="M25.5 34.583V39.6132C26.8894 39.6132 28.0151 38.4874 28.0151 37.098C28.0151 35.7088 26.8894 34.583 25.5 34.583Z" fill="#3B4145"/>
-                                <path d="M25.5 34.583C25.7776 34.583 26.003 35.7088 26.003 37.0981C26.003 38.4875 25.7776 39.6133 25.5 39.6133C24.1106 39.6133 22.9849 38.4875 22.9849 37.0981C22.9849 35.7088 24.1106 34.583 25.5 34.583Z" fill="#525A61"/>
-                                <path d="M25.5 12.9536V31.5653C26.8894 31.5653 28.0151 30.4386 28.0151 29.0502V15.4688C28.0151 14.0794 26.8894 12.9536 25.5 12.9536Z" fill="#3B4145"/>
-                                <path d="M25.5 12.9536C25.7776 12.9536 26.003 14.0794 26.003 15.4688V29.0502C26.003 30.4385 25.7776 31.5653 25.5 31.5653C24.1106 31.5653 22.9849 30.4386 22.9849 29.0502V15.4688C22.9849 14.0794 24.1106 12.9536 25.5 12.9536Z" fill="#525A61"/>
-                                </g>
-                                <defs>
-                                    <clipPath id="clip0">
-                                        <rect width="50" height="50" fill="white" transform="translate(0.5)"/>
-                                    </clipPath>
-                                </defs>
-                            </svg>                                
-                        </div>
+                    <div id="depositText" class="d-flex justify-content-center align-items-center mt-4 p-3">
+                        <span v-if="paymentSuccessful"> Thank you for supporting {{ firstname }}!. </span>
 
-                        <div class="pt-2" id="widgetErrorHead">Error loading widget!</div>
-                        <div id="widgetErrorText">This payment link does not exist. It is either been deleted or disabled.</div>
+                        <span v-else> Your payment could not be processed at the moment, kindly try again. </span>
                     </div>
-                    <!-- Powered by -->
-                    <div class="d-flex justify-content-center align-items-center mt-2" id="poweredByBody">
-                        <div>
-                            <img src="https://embed.getfidia.com/images/fidia-powered.svg" alt="Fidia Logo"/>
-                        </div>
-                        <div class="pl-2" id="poweredByText">Powered by Fidia</div>
-                    </div>
-                </div>
-            </div>    
-        </div>
 
+                    <div class="row m-3 d-flex justify-content-center align-items-center mb-5">
+                        <button v-if="paymentSuccessful" id="paymentBtn" class="" @click="closePaymentStatusPrompt">Close</button>
 
+                        <button v-else id="paymentBtn" class="" @click="closePaymentStatusPrompt">Try Again</button>
+                    </div>
 
-        <!-- Payment confirmation section -->
-        <div id="paymentConfirmationSection" :style="{display: showPaymentConfirmationPrompt ? 'flex' : 'none'}">
-            <div id="paymentPromptBody" class="pb-2">
-                <div id="paymentHead" class="row m-0">
-                    <div id="paymentText" class="col-10 d-flex align-items-center">Confirmation</div>
-                    <div id="closePaymentPrompt" class="col-2 d-flex justify-content-end align-items-center pr-4" 
-                    @click="closePaymentConfirmationPrompt">
-                        &times;
-                    </div>
+                    <div class="mr-3 ml-3 mt-4"></div>
                 </div>
-    
-                <div id="paymentSupportText" class="p-3">
-                    Appreciate {{ firstname }} for his works.
-                </div>
-    
-                <div id="paymentInfoHeader" class="pl-3 pr-3">
-                    PAYMENT INFORMATION
-                </div>
-    
-                <div class="row paymentDetailsBody ml-3 mr-3 mt-3">
-                    <div class="col-6 paymentDetailTitle pt-2 pl-0">{{ type }}</div>
-                    <div class="col-6 paymentDetail pt-2">{{ currency }} {{ formatAmount( unitPrice ) }}</div>
-                </div>
-    
-                <div class="row paymentDetailsBody ml-3 mr-3 mt-3">
-                    <div class="col-6 paymentDetailTitle pt-2 pl-0">Quantity</div>
-                    <div class="col-6 paymentDetail pt-2">x{{ quantity }}</div>
-                </div>
-    
-                <div class="row paymentDetailsBody last ml-3 mr-3 mt-3">
-                    <div class="col-6 paymentDetailTitle pt-2 pl-0">Total</div>
-                    <div class="col-6 paymentDetail pt-2">{{ currency }} {{ formatAmount( totalPrice ) }}</div>
-                </div>
-    
-                <div class="row mr-3 ml-3 mt-4">
-                    <div class="col-6 d-none d-md-block col-md-3"></div>
-                    <div id="cancelPaymentBtn" class="col-6 col-md-4 d-none d-md-flex align-items-center justify-content-center" @click="closePaymentConfirmationPrompt">Cancel</div>
-                    <div class="col-12 col-md-5 d-flex justify-content-center align-items-center">
-                        <button id="paymentBtn" class="" @click="payCreative">
-                            Make Payment
-                        </button>
-                    </div>
-                </div>
-    
-                <div class="mr-3 ml-3 mt-4">
-                </div>
-    
+            </div>
+
+            <!-- Loader section -->
+            <div class="loader" id="loader" :class="{ active: displayLoader }">
+                <img src="https://embed.getfidia.com/images/loader.svg" alt="Loader Image here.." />
             </div>
         </div>
+    </body>
 
-
-
-        <!-- Payment status section -->
-        <div id="paymentStatusSection" :style="{display: showPaymentStatus ? 'flex' : 'none'}">
-            <div id="paymentStatusBody" class="pb-2">
-    
-                <div class="d-flex justify-content-center align-items-center mt-5 pt-5">
-                    <span v-if="paymentSuccessful">
-                        <svg width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M35.0001 0.000142739C54.3299 0.000142739 70 15.6702 70 35.0001C70 54.3299 54.3299 70 35.0001 70C15.6702 70 0.000145175 54.3299 0.000145175 35.0001C-0.0548568 15.725 15.5259 0.0551447 34.8008 0.000142739C34.8672 -4.75796e-05 34.9337 -4.75796e-05 35.0001 0.000142739Z" fill="#3BB54A"/>
-                            <path d="M54.3892 25.3553L29.5313 50.2131L15.6108 36.3922L21.2785 30.8241L29.5313 38.9775L48.7217 19.7871L54.3892 25.3553Z" fill="#D4E1F4"/>
-                        </svg>
-                    </span>
-                    
-                    <span v-else>
-                        <svg width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M35 0C15.6703 0 0 15.6703 0 35C0 54.3297 15.6703 70 35 70C54.3297 70 70 54.3297 70 35C70 15.6703 54.3297 0 35 0ZM6.03448 35C6.03448 19.0291 19.0291 6.03448 35 6.03448C42.0555 6.03448 48.5269 8.57259 53.556 12.7798L12.7798 53.556C8.57259 48.5269 6.03448 42.0543 6.03448 35ZM35 63.9655C28.2534 63.9655 22.0428 61.6398 17.1138 57.7572L57.7572 17.1126C61.6398 22.0428 63.9655 28.2534 63.9655 35C63.9655 50.9709 50.9709 63.9655 35 63.9655Z" fill="#DD352E"/>
-                        </svg>
-                    </span>
-                </div>
-    
-                <div id="successText" class="d-flex justify-content-center align-items-center mt-4">
-                    <span v-if="paymentSuccessful">
-                        Payment Successful
-                    </span>
-                    
-                    <span v-else>
-                        Payment Failed
-                    </span>
-                </div>
-    
-                <div id="depositText" class="d-flex justify-content-center align-items-center mt-4 p-3">
-                    <span v-if="paymentSuccessful">
-                        Thank you for supporting {{ firstname }}!.
-                    </span>
-    
-                    <span v-else>
-                        Your payment could not be processed at the moment, kindly try again.
-                    </span>
-                    
-                </div>
-    
-                <div class="row m-3 d-flex justify-content-center align-items-center mb-5">
-                    <button v-if="paymentSuccessful" id="paymentBtn" class="" @click="closePaymentStatusPrompt">
-                       Close
-                    </button>
-
-                    <button v-else id="paymentBtn" class="" @click="closePaymentStatusPrompt">
-                        Try Again
-                    </button>
-                </div>
-    
-                <div class="mr-3 ml-3 mt-4">
-                </div>
-    
-            </div>
-        </div>
-
-
-
-        <!-- Loader section -->
-        <div class="loader" id="loader" :class="{ active: displayLoader }">
-            <img src="https://embed.getfidia.com/images/loader.svg" alt="Loader Image here.." />
-        </div>
-    </div>
-</body>
-
-<script>
-    var app = new Vue({
-        el: '#app',
-        data: {
-            showPaymentConfirmationPrompt: false,
-            showPaymentStatus: false,
-            showPaySect: false,
-            errorOccured: false,
-            displayLoader: true,
-            name: '',
-            baseUrl: "https://getfidia-production.herokuapp.com/graphql",
-            firstname: '',
-            username: '',
-            lastname: '',
-            linkName: '',
-            role: '',
-            price: 0,
-            type: '',
-            emoji: '',
-            currency: '',
-            description: '',
-            supportersName: '',
-            supportersEmail: '',
-            supportersMessage: '',
-            itemImage: 'Pizza',
-            slug: '',
-            link: '',
-            paymentLinkId: '',
-            profileImage: '',
-            donationCount: 1,
-            paymentSuccessful: false,
-            showPaymentPrompt: false,
-            showStatusPrompt: false,
-            publiclyAvailable: false,
-            enterCustomeAmount: false,
-            customeAmount: '',
-            amountError: false,
-        },
-        computed: {
-			supportText(){
-				return `Support - ${ this.currency } ${ this.displayedAmount() }`;
-			},
-			amount(){
-				if(this.enterCustomeAmount){
-					return this.customeAmount;
-				}else{
-					return this.unitPrice * this.quantity;
-				}
-			},
-			messagePlaceholder(){
-				return `Leave ${this.firstname} some kind words`
-			},
-            totalPrice(){
-                return this.unitPrice * this.quantity;
+    <script>
+        const { createApp } = Vue;
+        const App = {
+            data() {
+                return {
+                    showPaymentConfirmationPrompt: false,
+                    showPaymentStatus: false,
+                    showPaySect: false,
+                    errorOccured: false,
+                    displayLoader: true,
+                    name: "",
+                    baseUrl: "https://getfidia-production.herokuapp.com/graphql",
+                    firstname: "",
+                    username: "",
+                    lastname: "",
+                    linkName: "",
+                    role: "",
+                    price: 0,
+                    type: "",
+                    emoji: "",
+                    currency: "",
+                    description: "",
+                    supportersName: "",
+                    supportersEmail: "",
+                    supportersMessage: "",
+                    itemImage: "Pizza",
+                    slug: "",
+                    link: "",
+                    paymentLinkId: "",
+                    profileImage: "",
+                    donationCount: 1,
+                    paymentSuccessful: false,
+                    showPaymentPrompt: false,
+                    showStatusPrompt: false,
+                    publiclyAvailable: false,
+                    enterCustomeAmount: false,
+                    customeAmount: "",
+                    amountError: false,
+                };
             },
-            quantity(){
-                return this.enterCustomeAmount ? 1 : this.donationCount;
+            computed: {
+                supportText() {
+                    return `Support - ${this.currency} ${this.displayedAmount()}`;
+                },
+                amount() {
+                    if (this.enterCustomeAmount) {
+                        return this.customeAmount;
+                    } else {
+                        return this.unitPrice * this.quantity;
+                    }
+                },
+                messagePlaceholder() {
+                    return `Leave ${this.firstname} some kind words`;
+                },
+                totalPrice() {
+                    return this.unitPrice * this.quantity;
+                },
+                quantity() {
+                    return this.enterCustomeAmount ? 1 : this.donationCount;
+                },
+                unitPrice() {
+                    return this.enterCustomeAmount ? Number(this.customeAmount.split(",").join("")) : this.price;
+                },
             },
-            unitPrice(){
-                return this.enterCustomeAmount ? Number(this.customeAmount.split(',').join('')) : this.price
-            },
-		},
+            methods: {
+                displayedAmount() {
+                    if (this.enterCustomeAmount) {
+                        return this.formatAmount(this.customeAmount);
+                    } else {
+                        return this.formatAmount(this.amount);
+                    }
+                },
+                validateAmount(event) {
+                    const charCode = event.which ? event.which : event.keyCode;
+                    const isNum = !isNaN(parseInt(event.key));
 
-        methods: {
-			displayedAmount(){
-				if(this.enterCustomeAmount){
-					return this.formatAmount( this.customeAmount );
-				}else{
-					return this.formatAmount( this.amount );
-				}
-			},
-			validateAmount(event){
-                const charCode = event.which ? event.which : event.keyCode;
-				const isNum = !isNaN( parseInt(event.key) );
-
-                
-		    	// Allow backspace and delete
-		    	if(charCode === 46 || charCode === 8 || charCode === 17 || charCode === 86 || charCode === 37 || charCode === 39 || isNum){
-                    // Let it happen don't do anything, but make sure you do not allow the user to enter a value greater than the max amount
-                    if(event.target.value.length > 5 && charCode !== 8){
+                    // Allow backspace and delete
+                    if (charCode === 46 || charCode === 8 || charCode === 17 || charCode === 86 || charCode === 37 || charCode === 39 || isNum) {
+                        // Let it happen don't do anything, but make sure you do not allow the user to enter a value greater than the max amount
+                        if (event.target.value.length > 5 && charCode !== 8) {
+                            event.preventDefault();
+                        }
+                    } else if (charCode < 48 || charCode > 57) {
+                        // Ensure it is a number and stop keypress otherwise
                         event.preventDefault();
                     }
-		    	} else if(charCode < 48 || charCode > 57){
-                    // Ensure it is a number and stop keypress otherwise
-	    			event.preventDefault();
-	    		}
-		    },
+                },
 
-			formatCustomeAmount(event){
-				const amount = event.target.value;
-				const formattedValue = this.formatAmount(amount);
-				this.customeAmount = formattedValue
-			},
+                formatCustomeAmount(event) {
+                    const amount = event.target.value;
+                    const formattedValue = this.formatAmount(amount);
+                    this.customeAmount = formattedValue;
+                },
 
-			showPaymentPromptContainer(){
-				if(this.enterCustomeAmount){
-					const customeAmount = this.customeAmount.split(',').join('');
+                showPaymentPromptContainer() {
+                    if (this.enterCustomeAmount) {
+                        const customeAmount = this.customeAmount.split(",").join("");
 
-					this.amountError = false;
-					if(customeAmount < 200){
-						this.amountError = true;
-						return;
-					}
-				}
-				this.showPaymentConfirmationPrompt = true;
-			},
+                        this.amountError = false;
+                        if (customeAmount < 200) {
+                            this.amountError = true;
+                            return;
+                        }
+                    }
+                    this.showPaymentConfirmationPrompt = true;
+                },
 
-            closePaymentConfirmationPrompt(){
-                this.showPaymentConfirmationPrompt = false;
-            },
+                closePaymentConfirmationPrompt() {
+                    this.showPaymentConfirmationPrompt = false;
+                },
 
-            closePaymentPopup(){
-                // Tell the parent document to close the iframe
-                window.parent.postMessage('closeFidiaIframe', '*');
-            },
+                closePaymentPopup() {
+                    // Tell the parent document to close the iframe
+                    window.parent.postMessage("closeFidiaIframe", "*");
+                },
 
-            closePaymentStatusPrompt(){
-                this.showPaymentStatus = false;
-                this.closePaymentPopup();
-            },
+                closePaymentStatusPrompt() {
+                    this.showPaymentStatus = false;
+                    this.closePaymentPopup();
+                },
 
-			formatAmount(amount){
-				amount = amount.toString().split(',').join('');
+                formatAmount(amount) {
+                    amount = amount.toString().split(",").join("");
 
-				return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-			},
+                    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                },
 
-			async makePaymentCallback(response) {
-                this.displayLoader = true;
+                async makePaymentCallback(response) {
+                    this.displayLoader = true;
 
-				this.closePaymentConfirmationPrompt();
-				// this.$nuxt.$emit('display-loader', true);
+                    this.closePaymentConfirmationPrompt();
+                    // this.$nuxt.$emit('display-loader', true);
 
-				if(response.status === 'successful'){
-					const txId = String(response.transaction_id);
-					const data = {
-						txId,
-						paymentLinkId: this.paymentLinkId,
-						name: this.supportersName,
-						email: this.supportersEmail,
-						amount: this.totalPayableAmount(),
-						quantity: this.quantity,
-						message: this.supportersMessage,
-					};
-                    
-					try{
-                        let createTransactionData = await fetch(this.baseUrl, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                query: `mutation($txId: String!, $paymentLinkId: String!, $name: String, $email: String, $amount: Int!, $quantity: Int, $message: String){
+                    if (response.status === "successful") {
+                        const txId = String(response.transaction_id);
+                        const data = {
+                            txId,
+                            paymentLinkId: this.paymentLinkId,
+                            name: this.supportersName,
+                            email: this.supportersEmail,
+                            amount: this.totalPayableAmount(),
+                            quantity: this.quantity,
+                            message: this.supportersMessage,
+                        };
+
+                        try {
+                            let createTransactionData = await fetch(this.baseUrl, {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify({
+                                    query: `mutation($txId: String!, $paymentLinkId: String!, $name: String, $email: String, $amount: Int!, $quantity: Int, $message: String){
                                     createTransaction(txId: $txId, paymentLinkId: $paymentLinkId, name: $name, email: $email, amount: $amount, quantity: $quantity, message: $message){
                                         amount
                                     }
                                 }
                             `,
-                                variables: { ...data }
-                            })
-                        });
+                                    variables: { ...data },
+                                }),
+                            });
 
-                        createTransactionData = await createTransactionData.json();
+                            createTransactionData = await createTransactionData.json();
 
-						if(createTransactionData.data.createTransaction.amount){
-							this.paymentSuccessful = true;
-                            this.showPaymentStatus = true;
-						}
+                            if (createTransactionData.data.createTransaction.amount) {
+                                this.paymentSuccessful = true;
+                                this.showPaymentStatus = true;
+                            }
+                            this.displayLoader = false;
+                        } catch (err) {
+                            this.displayLoader = false;
+                        }
+                    }
+                },
+
+                totalPayableAmount() {
+                    if (this.enterCustomeAmount) {
+                        const customeAmount = this.customeAmount.split(",").join("");
+                        return parseInt(customeAmount, 10);
+                    } else {
+                        return this.quantity * this.unitPrice;
+                    }
+                },
+
+                generateReference() {
+                    const date = new Date();
+                    return date.getTime().toString();
+                },
+
+                closedPaymentModal() {
+                    setTimeout(() => {
                         this.displayLoader = false;
-					}catch(err){
-                        this.displayLoader = false;
-					}
+                    }, 3000);
+                },
 
-				}
-			},
-
-			totalPayableAmount(){
-				if(this.enterCustomeAmount){
-					const customeAmount = this.customeAmount.split(',').join('');
-					return parseInt(customeAmount, 10);
-				}else{
-					return this.quantity * this.unitPrice;
-				}
-			},
-
-			generateReference(){
-				const date = new Date()
-				return date.getTime().toString();
-			},
-
-            closedPaymentModal() { 
-                setTimeout(() => {
-                    this.displayLoader = false;
-                }, 3000);
-			},
-
-			payCreative(){
-                this.displayLoader = true;
-				const paymentData = {
-                    public_key: "FLWPUBK-002b4d3ce050bd93f3b03f111bfba59f-X",
-					tx_ref: this.generateReference(),
-					amount: this.totalPayableAmount(),
-					currency: this.currency,
-					payment_options: '',
-					redirect_url: '',
-					meta: {
-						paymentLinkId: this.paymentLinkId,
-						paymentLinkSlug: this.slug,
-						quantity: this.quantity,
-						message: this.supportersMessage || ' ',
-					},
-					customer: {
-						name: this.supportersName,
-						email: this.supportersEmail || 'anonnymous@fidia.com',
-					} ,
-					customizations: {
-						title: `Support ${ this.firstname } on Fidia`,
-						description: `Buy ${this.firstname} a ${this.type} worth ${ this.totalPayableAmount() }`,
-						logo: this.profileImage,
-					},
-					callback: this.makePaymentCallback,
-					onclose: this.closedPaymentModal
-				}
-
-				window.FlutterwaveCheckout(paymentData); // Initialize the payment with flutterwave
-			},
-		},
-
-        created(){
-           window.onmessage = async (e) => {
-                // Get relevant data from the server and populate the DOM
-                const { fidiaUsername, fidiaSlug } = JSON.parse(e.data);
-
-                this.username = fidiaUsername;
-                this.slug = fidiaSlug;
-                this.errorOccured = false;
-
-
-                let data;
-                try {
-                    data = await fetch(this.baseUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
+                payCreative() {
+                    this.displayLoader = true;
+                    const paymentData = {
+                        public_key: "FLWPUBK-002b4d3ce050bd93f3b03f111bfba59f-X",
+                        tx_ref: this.generateReference(),
+                        amount: this.totalPayableAmount(),
+                        currency: this.currency,
+                        payment_options: "",
+                        redirect_url: "",
+                        meta: {
+                            paymentLinkId: this.paymentLinkId,
+                            paymentLinkSlug: this.slug,
+                            quantity: this.quantity,
+                            message: this.supportersMessage || " ",
                         },
-                        body: JSON.stringify({
-                            query: `query($username: String!, $slug: String!){
+                        customer: {
+                            name: this.supportersName,
+                            email: this.supportersEmail || "anonnymous@fidia.com",
+                        },
+                        customizations: {
+                            title: `Support ${this.firstname} on Fidia`,
+                            description: `Buy ${this.firstname} a ${this.type} worth ${this.totalPayableAmount()}`,
+                            logo: this.profileImage,
+                        },
+                        callback: this.makePaymentCallback,
+                        onclose: this.closedPaymentModal,
+                    };
+
+                    window.FlutterwaveCheckout(paymentData); // Initialize the payment with flutterwave
+                },
+            },
+            created() {
+                window.onmessage = async (e) => {
+                    // Get relevant data from the server and populate the DOM
+                    const { fidiaUsername, fidiaSlug } = JSON.parse(e.data);
+
+                    this.username = fidiaUsername;
+                    this.slug = fidiaSlug;
+                    this.errorOccured = false;
+
+                    let data;
+                    try {
+                        data = await fetch(this.baseUrl, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                query: `query($username: String!, $slug: String!){
                                     viewPaymentLinkWithSlug(username: $username, slug: $slug){
                                         user{
                                             _id
@@ -547,37 +489,41 @@
                                     }
                                 }
                         `,
-                            variables: { username: fidiaUsername, slug: fidiaSlug }
-                        })
-                    })
+                                variables: { username: fidiaUsername, slug: fidiaSlug },
+                            }),
+                        });
 
-                    data = await data.json();
+                        data = await data.json();
 
-                    const { user, link } = data.data.viewPaymentLinkWithSlug;
-                    this.firstname = user.firstname;
-                    this.lastname = user.lastname;
-                    this.profileImage = user.profileImage;
-                    this.currency = user.currency
+                        const { user, link } = data.data.viewPaymentLinkWithSlug;
+                        this.firstname = user.firstname;
+                        this.lastname = user.lastname;
+                        this.profileImage = user.profileImage;
+                        this.currency = user.currency;
 
-                    this.price = link.amount;
-                    this.paymentLinkId = link._id;
-                    this.linkName = link.name;
-                    this.type = link.type;
-                    this.description = link.description;
+                        this.price = link.amount;
+                        this.paymentLinkId = link._id;
+                        this.linkName = link.name;
+                        this.type = link.type;
+                        this.description = link.description;
 
-                    const emoji = emojis.find(em => em.name === link.type);
-                    this.emoji = emoji.data;
+                        const emoji = emojis.find((em) => em.name === link.type);
+                        this.emoji = emoji.data;
 
-                    this.displayLoader = false;
-                    this.showPaySect = true;
-                }catch(_){
-                    // If for any reason, this payment link cannot be fetched or an error occured while trying to fetch this payment link, show the error page
-                    this.displayLoader = false;
-                    this.showPaySect = true;
-                    this.errorOccured = true;
-                }
-           }
-        }
-    })
-</script>
+                        this.displayLoader = false;
+                        this.showPaySect = true;
+                    } catch (_) {
+                        // If for any reason, this payment link cannot be fetched or an error occured while trying to fetch this payment link, show the error page
+                        this.displayLoader = false;
+                        this.showPaySect = true;
+                        this.errorOccured = true;
+                    }
+                };
+            },
+        };
+
+        const app = createApp(App);
+
+        app.mount("#app");
+    </script>
 </html>

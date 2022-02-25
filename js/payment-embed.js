@@ -3,32 +3,32 @@
  * (c) 2021 - Present Gbadebo Bello
  * Released under the MIT License.
  */
-(function(){
+(function () {
     const d = document;
     const w = window;
     const f = d.createElement("iframe");
-    
+
     f.src = "https://embed.getfidia.com/payment.html";
     // f.src = "../payment.html";
     f.frameborder = 0;
-    f.allowtransparency= true;
+    f.allowtransparency = true;
     f.style = "display:none; position: fixed; top: 0px; left: 0px; z-index: 2147483647; border: none; opacity: 1; width: 100%; height: 100%;";
     f.name = "Fidia Widget";
     f.id = "fidia-embed-iframe";
     d.getElementsByTagName("body")[0].appendChild(f);
-    
-    const s = d.createElement('link');
-    s.rel = 'stylesheet';
-    s.href = 'https://embed.getfidia.com/css/button.css';
+
+    const s = d.createElement("link");
+    s.rel = "stylesheet";
+    s.href = "https://embed.getfidia.com/css/button.css";
     // s.href = '../css/button.css';
     d.getElementsByTagName("head")[0].appendChild(s);
 
     // Get the user specified template button(s)
-    let templateFidiaButton = d.querySelectorAll('.fidia-embed-target');
+    let templateFidiaButton = d.querySelectorAll(".fidia-embed-target");
     templateFidiaButton = Array.prototype.slice.call(templateFidiaButton);
 
     // Replace template buttons with fidia button(s)
-    for(let i = 0; i < templateFidiaButton.length; i++) {
+    for (let i = 0; i < templateFidiaButton.length; i++) {
         const currentButton = templateFidiaButton[i];
         const currentButtonParent = currentButton.parentNode;
 
@@ -42,8 +42,8 @@
             Support Me
         `;
         newFidiaButton.setAttribute("data-fidia-username", currentButton.getAttribute("data-fidia-username"));
-        newFidiaButton.setAttribute("data-fidia-slug",  currentButton.getAttribute("data-fidia-slug"));
-        newFidiaButton.setAttribute("class", 'fidia-widget-button');
+        newFidiaButton.setAttribute("data-fidia-slug", currentButton.getAttribute("data-fidia-slug"));
+        newFidiaButton.setAttribute("class", "fidia-widget-button");
 
         currentButtonParent.replaceChild(newFidiaButton, currentButton);
 
@@ -51,27 +51,27 @@
         newFidiaButton.addEventListener("click", (e) => {
             const fidiaUsername = e.target.getAttribute("data-fidia-username");
             const fidiaSlug = e.target.getAttribute("data-fidia-slug");
-            
+
             const fidiaEmbedData = JSON.stringify({
                 fidiaUsername,
                 fidiaSlug,
-            })
-            
+            });
+
             const fidiaIframe = d.querySelector("#fidia-embed-iframe");
             setTimeout(() => {
                 fidiaIframe.style.display = "block";
             }, 30);
 
             // Child window and parent window can only communicate over events
-            fidiaIframe.contentWindow.postMessage(fidiaEmbedData, '*');
+            fidiaIframe.contentWindow.postMessage(fidiaEmbedData, "*");
         });
     }
 
     w.onmessage = (e) => {
-        if(e.data = 'closeFidiaIframe'){
+        if ((e.data = "closeFidiaIframe")) {
             // Close the iframe when this event is emitted to the parent document,
-            const fidiaIframe = document.querySelector('#fidia-embed-iframe');
-            fidiaIframe.style.display = 'none';
+            const fidiaIframe = document.querySelector("#fidia-embed-iframe");
+            fidiaIframe.style.display = "none";
         }
-    }
-})()
+    };
+})();
