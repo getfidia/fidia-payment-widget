@@ -30,7 +30,7 @@ This will look as shown below:
 ```html
 <button
   class="fidia-embed-target"
-  data-fidia-username="gbahdeyboh"
+  data-fidia-username="GBAHDEYBOH"
   data-fidia-slug="laptop"
 ></button>
 ```
