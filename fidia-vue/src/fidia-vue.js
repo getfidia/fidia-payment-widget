@@ -3,11 +3,10 @@ import Vue from "vue"
 Vue.directive('fidia', {
     bind: function (el, binding) {
         //for debugging alone
-        el.style.color = "green";
+        el.style.color = "purple";
 
         //get the data bindings on the directive and set the element innerText to the provided text value
         const userData = binding.value;
-        el.innerText = userData.slug;
 
         el.onclick = () => {
             const d = document;
@@ -15,8 +14,8 @@ Vue.directive('fidia', {
             const w = window;
 
 
-            // f.src = "https://embed.getfidia.com/payment.html";
-            f.setAttribute("src", "http://127.0.0.1:3000/src/payment.html")
+            f.src = "https://embed.getfidia.com/payment.html";
+            // f.setAttribute("src", "http://127.0.0.1:3000/src/payment.html")
             f.frameborder = 0;
             f.allowtransparency = true;
             f.style = "display:block; position: fixed; top: 0px; left: 0px; z-index: 2147483647; border: none; opacity: 1; width: 100%; height: 100%;";
