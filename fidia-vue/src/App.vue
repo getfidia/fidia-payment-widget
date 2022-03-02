@@ -4,7 +4,6 @@
       Support Me 💜
     </button>
 
-    <div v-fidia="{ name: 'opeolluwa', slug: 'open-source' }"> some text here</div>
   </div>
 </template>
 
