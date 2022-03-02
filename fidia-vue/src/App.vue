@@ -4,9 +4,7 @@
       Support Me 💜
     </button>
 
-
-
-  
+    <div v-fidia="{ name: 'opeolluwa', slug: 'open-source' }"> some text here</div>
   </div>
 </template>
 
@@ -21,7 +19,6 @@ export default {
       user: { name: "Opeoluwa", slug: "buy me pizza" },
     };
   },
-
 };
 </script>
 
