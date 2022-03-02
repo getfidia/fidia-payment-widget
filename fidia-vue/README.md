@@ -1,4 +1,4 @@
-# Fidia Payment Widget 
+# Fidia Payment Widget
 
 ## Installation
 
@@ -26,4 +26,11 @@ Then in your component, add v-fidia binding on any element
 </button>
 ```
 
+## Run in development mode
 
+```
+git clone https://github.com/opeolluwa/fidia-payment-widget fidia
+cd fidia/fidia-vue
+npm i
+npm run serve
+```
