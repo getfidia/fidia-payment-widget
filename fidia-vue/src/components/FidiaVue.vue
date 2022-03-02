@@ -30,7 +30,7 @@ export default {
       type: String,
       required: true,
     },
-    //TODO: give option of making component a floating action buttton
+    //TODO: give option of making component a floating action button
     fixed: {
       type: Boolean,
       required: false,

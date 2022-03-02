@@ -11,10 +11,8 @@ Vue.directive('fidia', {
         document.getElementsByTagName("head")[0].appendChild(fidiaScript);
         const d = document;
 
-        
+
         el.onclick = () => {
-
-
             if (!d.getElementById("fidia-embed-iframe")) {
                 // const w = window;
                 const f = d.createElement("iframe");
