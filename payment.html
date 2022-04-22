@@ -46,7 +46,25 @@
                                 </div>
                                 <div class="col-12 col-md-10">
                                     <div class="d-md-block d-flex justify-content-center align-items-center" id="usersName">{{ linkName }}</div>
-                                    <div class="d-md-block d-flex justify-content-center align-items-center" id="usersRole">By {{ firstname }} {{ lastname }}</div>
+                                    <div class="d-md-block d-flex justify-content-center align-items-center" id="usersRole">By {{ firstname }} {{ lastname }}
+                                        <span v-if="isCreatorVerified">
+                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <g clip-path="url(#clip0_520_31534)">
+                                                    <path
+                                                        fill-rule="evenodd"
+                                                        clip-rule="evenodd"
+                                                        d="M15.67 7.06001L14.59 5.72001C14.42 5.50001 14.31 5.24001 14.28 4.95001L14.09 3.25001C14.0514 2.91055 13.8989 2.5942 13.6574 2.35263C13.4158 2.11106 13.0994 1.95855 12.76 1.92001L11.06 1.73001C10.76 1.70001 10.5 1.57001 10.28 1.40001L8.93999 0.320005C8.38999 -0.119995 7.60999 -0.119995 7.05999 0.320005L5.71999 1.40001C5.49999 1.57001 5.23999 1.68001 4.94999 1.71001L3.24999 1.90001C2.54999 1.98001 1.99999 2.53001 1.91999 3.23001L1.72999 4.93001C1.69999 5.23001 1.56999 5.49001 1.39999 5.71001L0.31999 7.05001C-0.12001 7.60001 -0.12001 8.38001 0.31999 8.93001L1.39999 10.27C1.56999 10.49 1.67999 10.75 1.70999 11.04L1.89999 12.74C1.97999 13.44 2.52999 13.99 3.22999 14.07L4.92999 14.26C5.22999 14.29 5.48999 14.42 5.70999 14.59L7.04999 15.67C7.59999 16.11 8.37999 16.11 8.92999 15.67L10.27 14.59C10.49 14.42 10.75 14.31 11.04 14.28L12.74 14.09C13.44 14.01 13.99 13.46 14.07 12.76L14.26 11.06C14.29 10.76 14.42 10.5 14.59 10.28L15.67 8.94001C16.11 8.39001 16.11 7.61001 15.67 7.06001ZM6.49999 12L2.99999 8.50001L4.49999 7.00001L6.49999 9.00001L11.5 4.00001L13 5.55001L6.49999 12Z"
+                                                        fill="#3A9EFD"
+                                                    />
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_520_31534">
+                                                        <rect width="16" height="16" fill="white" />
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>
+                                        </span>
+                                    </div>
                                     <div class="d-md-block d-flex justify-content-center align-items-center mt-1" id="usersDescription">{{ description }}</div>
                                 </div>
                             </div>
@@ -263,6 +281,7 @@
                     enterCustomeAmount: false,
                     customeAmount: "",
                     amountError: false,
+                    isCreatorVerified: false,
                 };
             },
             computed: {
@@ -472,11 +491,12 @@
                                     viewPaymentLinkWithSlug(username: $username, slug: $slug){
                                         user{
                                             _id
-                                            lastname
-                                            firstname
-                                            bio
+                                            bioSection {
+                                                name
+                                                profileImage
+                                            }
                                             currency
-                                            profileImage
+                                            isCreatorVerified
                                         }
                                         link{
                                             _id
@@ -496,9 +516,11 @@
                         data = await data.json();
 
                         const { user, link } = data.data.viewPaymentLinkWithSlug;
-                        this.firstname = user.firstname;
-                        this.lastname = user.lastname;
-                        this.profileImage = user.profileImage;
+                        const userSplittedName = user.bioSection.name.split(" ");
+                        this.firstname = userSplittedName[0];
+                        this.lastname = userSplittedName[1];
+                        this.profileImage = user.bioSection.profileImage;
+                        this.isCreatorVerified = user.isCreatorVerified;
                         this.currency = user.currency;
 
                         this.price = link.amount;
