@@ -297,7 +297,7 @@
                 methods: {
                     closeProductPopup() {
                         // Tell the parent document to close the iframe
-                        window.parent.postMessage("closeFidiaIframe", "*");
+                        window.parent.postMessage("closeFidiaProductIframe", "*");
                     },
                     openBuyProduct(value) {
                         this.showBuyProduct = value;
