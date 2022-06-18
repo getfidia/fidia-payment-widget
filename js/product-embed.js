@@ -8,8 +8,8 @@
 	const w = window;
 	const f = d.createElement("iframe");
 
-	f.src = "https://embed.getfidia.com/product.html";
-	// f.src = "../product.html";
+	// f.src = "https://embed.getfidia.com/product.html";
+	f.src = "../product.html";4
 	f.frameborder = 0;
 	f.allowtransparency = true;
 	f.style = "display:none; position: fixed; top: 0px; left: 0px; z-index: 2147483647; border: none; opacity: 1; width: 100%; height: 100%;";
@@ -70,7 +70,7 @@
 	w.onmessage = (e) => {
 		if (e.data.startsWith("close")) {
 			// Close the iframe when this event is emitted to the parent document,
-			const fidiaIframes = document.querySelectorAll("iframe");
+			const fidiaIframes = document.querySelectorAll("#fidia-product-embed-iframe, #fidia-embed-iframe");
 			fidiaIframes.forEach((iframe) => {
 				iframe.style.display = "none";
 			});
