@@ -17,8 +17,8 @@
 		<link rel="preconnect" href="https://fonts.gstatic.com" />
 		<link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
-		<!-- <link href="https://embed.getfidia.com/css/payment.css" rel="stylesheet" /> -->
-		<link href="./css/payment.css" rel="stylesheet" />
+		<link href="https://embed.getfidia.com/css/payment.css" rel="stylesheet" />
+		<!-- <link href="./css/payment.css" rel="stylesheet" /> -->
 	</head>
 
 	<body>
@@ -40,7 +40,7 @@
 					<div id="paymentBodyContainer">
 						<div v-if="!errorOccured" id="paymentBody">
 							<!-- Users info -->
-							<div class="d-flex p-0 m-0" id="receiversInfo">
+							<div class="d-flex p-0 m-0" id="receiversInfo" :class="{'paylink' : paymentType === 'paylink'}">
 								<div>
 									<img :src="profileImage" alt="Users profile image" id="userProfileImage" />
 								</div>
@@ -69,15 +69,15 @@
 									<div class="d-md-block d-flex justify-content-center align-items-center mt-1" id="usersDescription">{{ description }}</div>
 								</div>
 							</div>
-							<div class="mt-4" id="buyText">Buy <span>{{ firstname }}</span> a {{ type }}</div>
+							<div v-if="paymentType === 'tipjar'" class="mt-4" id="buyText">Buy <span>{{ firstname }}</span> a {{ type }}</div>
 							<!-- Quantity info -->
-							<div class="d-flex justify-content-between p-0 m-0 mt-4" id="paymentQuantity">
+							<div v-if="paymentType === 'tipjar'" class="d-flex justify-content-between p-0 m-0 mt-4" id="paymentQuantity">
 								<div class="d-flex align-items-center">
 									<div class="fullHeight d-flex justify-content-center align-items-center" id="item">
 										<div class="d-flex align-items-center justify-content-center" id="itemBody">{{ emoji }}</div>
 									</div>
 									<div class="itemCon buy pl-3 d-flex align-items-center">
-										<div class="priceInfo">{{ currency }} {{ enterCustomeAmount ? displayedAmount() : unitPrice }} Each</div>
+										<div class="priceInfo">{{ currency }} {{ enterCustomeAmount ? displayedAmount : unitPrice }} Each</div>
 									</div>
 								</div>
 								<div class="p-0 m-0 d-flex justify-content-end align-items-center">
@@ -91,29 +91,35 @@
 
 							<!-- Form to be filled -->
 							<form @submit.prevent="showPaymentPromptContainer">
-								<div class="paymentType">
-									<button type="button" :class="{ active: paymentType === 'one-time'}" @click="paymentType = 'one-time'">One-Time</button>
-									<button type="button" :class="{ active: paymentType === 'recurring'}" @click="paymentType = 'recurring'">Monthly</button>
+								<div v-if="paymentType === 'tipjar'" class="paymentType">
+									<button type="button" :class="{ active: paymentFrequency === 'oneTime'}" @click="paymentFrequency = 'oneTime'">One-Time</button>
+									<button type="button" :class="{ active: paymentFrequency === 'recurring'}" @click="paymentFrequency = 'recurring'">Monthly</button>
 								</div>
 								<div class="mt-3">
-									<div class="inputName pt-2 pb-2">Name</div>
-									<input class="input" placeholder="John Doe" v-model="supportersName" />
+									<label for="" class="inputName pt-2 pb-2">Name</label>
+									<input class="input" placeholder="John Doe" v-model="supportersName" @focus="invalidName = false" />
+									<small v-if="invalidName" class="errorMessage mt-2">Your name is required.</small>
 								</div>
 								<div class="mt-3">
-									<div class="inputName pt-2 pb-2">Email</div>
+									<label for="" class="inputName pt-2 pb-2">Email</label>
 									<input type="email" class="input" placeholder="john@email.com" v-model.trim="supportersEmail" @focus="invalidEmailAddress = false" />
-									<small v-if="invalidEmailAddress" class="errorMessage mt-2">Your email address is required for recurring payments.</small>
+									<small v-if="invalidEmailAddress" class="errorMessage mt-2">Your email address is required.</small>
+								</div>
+								<div class="mt-3" v-if="amountType === 'custom'">
+									<label for="" class="inputName pt-2 pb-2">Amount</label>
+									<input v-model="customeAmount" class="input" :placeholder="`${currency}`" @keydown="validateAmount($event)" @focusout="formatCustomeAmount($event)" @focus="amountError = false" />
+									<small v-if="amountError" class="errorMessage mt-2">Amount must be at least {{ currency }} 200.</small>
 								</div>
 								<div class="mt-3">
-									<div class="inputName pt-2 pb-2">Message</div>
+									<label for="" class="inputName pt-2 pb-2">Message</label>
 									<textarea v-model="supportersMessage" :placeholder="messagePlaceholder"></textarea>
 								</div>
-								<div class="mt-3">
+								<div v-if="paymentType === 'tipjar'" class="mt-3">
 									<div class="d-flex align-items-center customAmount">
 										<input v-model="enterCustomeAmount" type="checkbox" id="custom" />
 										<label for="custom" class="mb-0 ml-2">Enter Custom Amount</label>
 									</div>
-									<span v-if="amountError" class="pl-3 amountError">Amount must be atleast 200</span>
+									<span v-if="amountError" class="pl-3 amountError">Amount must be at least {{ currency }} 200.</span>
 								</div>
 								<div class="mt-3" v-if="enterCustomeAmount">
 									<input v-model="customeAmount" class="input" :placeholder="`How much would you like to pay ${firstname}?`" @keydown="validateAmount($event)" @focusout="formatCustomeAmount($event)" />
@@ -169,7 +175,7 @@
 						<div id="closePaymentPrompt" class="col-2 d-flex justify-content-end align-items-center pr-4" @click="closePaymentConfirmationPrompt">&times;</div>
 					</div>
 
-					<div id="paymentSupportText" class="p-3">Appreciate {{ firstname }} for their works.</div>
+					<div v-if="paymentType === 'tipjar'" id="paymentSupportText" class="p-3">Appreciate {{ firstname }} for their works.</div>
 
 					<div id="paymentInfoHeader" class="pl-3 pr-3">PAYMENT INFORMATION</div>
 
@@ -178,28 +184,28 @@
 						<div class="col-6 paymentDetail pt-2">{{ currency }} {{ formatAmount( unitPrice ) }}</div>
 					</div>
 
-					<div class="row paymentDetailsBody ml-3 mr-3 mt-3">
+					<div v-if="paymentType === 'tipjar'" class="row paymentDetailsBody ml-3 mr-3 mt-3">
 						<div class="col-6 paymentDetailTitle pt-2 pl-0">Quantity</div>
 						<div class="col-6 paymentDetail pt-2">x{{ quantity }}</div>
 					</div>
 
-					<div v-if="paymentType === 'recurring'" class="row paymentDetailsBody ml-3 mr-3 mt-3">
-						<div class="col-6 paymentDetailTitle pt-2 pl-0">Type</div>
-						<div class="col-6 paymentDetail pt-2">Monthly</div>
+					<div v-if="paymentFrequency === 'recurring'" class="row paymentDetailsBody ml-3 mr-3 mt-3">
+						<div class="col-6 paymentDetailTitle pt-2 pl-0">Frequency</div>
+						<div class="col-6 paymentDetail pt-2 text-capitalize">{{ paymentInterval.long }}</div>
 					</div>
 
-					<div class="row paymentDetailsBody last ml-3 mr-3 mt-3">
+					<div v-if="paymentType === 'tipjar'" class="row paymentDetailsBody last ml-3 mr-3 mt-3">
 						<div class="col-6 paymentDetailTitle pt-2 pl-0">Total</div>
 						<div class="col-6 paymentDetail pt-2">{{ currency }} {{ formatAmount( totalPrice ) }}</div>
 					</div>
 
-					<p v-if="paymentType === 'recurring'" class="recurringPaymentReminder">You'll be charged monthly for this, and you can cancel at anytime.</p>
+					<p v-if="paymentFrequency === 'recurring'" class="recurringPaymentReminder">You'll be charged {{ paymentInterval.longer }} for this, and you can cancel at anytime.</p>
 
 					<div class="row mr-3 ml-3 mt-4">
 						<div class="col-6 d-none d-md-block col-md-3"></div>
 						<div id="cancelPaymentBtn" class="col-6 col-md-4 d-none d-md-flex align-items-center justify-content-center" @click="closePaymentConfirmationPrompt">Cancel</div>
-						<div class="col-12 col-md-5 d-flex justify-content-center align-items-center">
-							<button id="paymentBtn" class="" @click="payCreative">Make Payment</button>
+						<div class="col-12 col-md-5 d-flex justify-content-center align-items-center pl-0 pr-0">
+							<button class="paymentBtn" class="" @click="payCreative">Make Payment</button>
 						</div>
 					</div>
 
@@ -226,21 +232,21 @@
 					</div>
 
 					<div id="successText" class="d-flex justify-content-center align-items-center mt-4">
-						<span v-if="paymentSuccessful"> Payment Successful </span>
+						<span v-if="paymentSuccessful"> Transaction Successful </span>
 
-						<span v-else> Payment Failed </span>
+						<span v-else> Transaction Failed </span>
 					</div>
 
 					<div id="depositText" class="d-flex justify-content-center align-items-center mt-4 p-3">
-						<span v-if="paymentSuccessful"> Thank you for supporting {{ firstname }}!. </span>
-
+						<span v-if="paymentSuccessful"> Your payment have been successfully deposited into Ayomide’s wallet. </span>
 						<span v-else> Your payment could not be processed at the moment, kindly try again. </span>
 					</div>
 
-					<div class="row m-3 d-flex justify-content-center align-items-center mb-5">
-						<button v-if="paymentSuccessful" id="paymentBtn" class="" @click="closePaymentStatusPrompt">Close</button>
+					<div class="row m-3 d-flex flex-column justify-content-center align-items-center mb-5">
+						<button v-if="paymentSuccessful" class="paymentBtn goHomeBtn" @click="closePaymentStatusPrompt">Close</button>
 
-						<button v-else id="paymentBtn" class="" @click="closePaymentStatusPrompt">Try Again</button>
+						<button v-else class="paymentBtn goHomeBtn" @click="closePaymentStatusPrompt">Try Again</button>
+						<span v-if="paymentSuccessful && !!redirectUrl" class="d-block mt-3">Redirecting in {{ secondsBeforeRedirecting }} seconds</span>
 					</div>
 
 					<div class="mr-3 ml-3 mt-4"></div>
@@ -293,17 +299,43 @@
 					customeAmount: "",
 					amountError: false,
 					isCreatorVerified: false,
-					paymentType: "one-time",
+					paymentType: "",
+					paymentFrequency: "",
+					buttonLabel: "",
+					amountType: "",
+					recurringInterval: "",
+					redirectUrl: "",
 					invalidEmailAddress: false,
+					invalidName: false,
+					secondsBeforeRedirecting: 3,
 					planId: "",
+					trustedOrigins: ["http://localhost:3000", "http://127.0.0.1:3000", "http://127.0.0.1:5500", "https://embed.getfidia.com", "https://getfidia-frontend-test.herokuapp.com", "https://getfidia-frontend-staging.herokuapp.com", "https://getfidia.com", "http://getfidia.com", "https://www.getfidia.com", "http://www.getfidia.com", "www.getfidia.com", "getfidia.com"],
 				};
 			},
 			computed: {
+				buttonLabelText() {
+					let label = "";
+					switch (this.buttonLabel) {
+						case "pay":
+							label = "Pay";
+							break;
+						case "support":
+							label = "Support";
+							break;
+						case "book":
+							label = "Book";
+							break;
+						case "donate":
+							label = "Donate";
+							break;
+					}
+					return label;
+				},
 				supportText() {
-					return `Support - ${this.currency} ${this.displayedAmount()}${this.paymentType === "recurring" ? "/month" : ""}`;
+					return `${this.buttonLabelText} - ${this.currency} ${this.displayedAmount}${this.paymentFrequency === "recurring" ? "/" + this.paymentInterval.short : ""}`;
 				},
 				amount() {
-					if (this.enterCustomeAmount) {
+					if (this.enterCustomeAmount || this.amountType === "custom") {
 						return this.customeAmount;
 					} else {
 						return this.unitPrice * this.quantity;
@@ -316,20 +348,62 @@
 					return this.unitPrice * this.quantity;
 				},
 				quantity() {
-					return this.enterCustomeAmount ? 1 : this.donationCount;
+					return this.enterCustomeAmount || this.amountType === "custom" ? 1 : this.donationCount;
 				},
 				unitPrice() {
-					return this.enterCustomeAmount ? Number(this.customeAmount.split(",").join("")) : this.price;
+					return this.enterCustomeAmount || this.amountType === "custom" ? Number(this.customeAmount.split(",").join("")) : this.price;
 				},
-			},
-			methods: {
 				displayedAmount() {
-					if (this.enterCustomeAmount) {
+					if (this.enterCustomeAmount || this.amountType === "custom") {
 						return this.formatAmount(this.customeAmount);
 					} else {
 						return this.formatAmount(this.amount);
 					}
 				},
+				totalPayableAmount() {
+					if (this.enterCustomeAmount || this.amountType === "custom") {
+						const customeAmount = this.customeAmount.split(",").join("");
+						return parseInt(customeAmount, 10);
+					} else {
+						return this.quantity * this.unitPrice;
+					}
+				},
+				paymentInterval() {
+					let paymentInterval;
+					if (this.paymentType === "tipjar" && this.paymentFrequency === "recurring") {
+						paymentInterval = { short: "month", long: "monthly", longer: "monthly" };
+						return paymentInterval;
+					}
+					switch (this.recurringInterval) {
+						case "none":
+							paymentInterval = { short: "", long: "", longer: "" };
+							break;
+						case "hourly":
+							paymentInterval = { short: "hour", long: "hourly", longer: "hourly" };
+							break;
+						case "daily":
+							paymentInterval = { short: "day", long: "daily", longer: "daily" };
+							break;
+						case "weekly":
+							paymentInterval = { short: "week", long: "weekly", longer: "weekly" };
+							break;
+						case "month":
+							paymentInterval = { short: "month", long: "monthly", longer: "monthly" };
+							break;
+						case "quarterly":
+							paymentInterval = { short: "quarter", long: "quaterly", longer: "quarterly" };
+							break;
+						case "sixMonths":
+							paymentInterval = { short: "six months", long: "six months", longer: "every six months" };
+							break;
+						case "yearly":
+							paymentInterval = { short: "year", long: "yearly", longer: "yearly" };
+							break;
+					}
+					return paymentInterval;
+				},
+			},
+			methods: {
 				validateAmount(event) {
 					const charCode = event.which ? event.which : event.keyCode;
 					const isNum = !isNaN(parseInt(event.key));
@@ -353,12 +427,17 @@
 				},
 
 				showPaymentPromptContainer() {
-					if (this.paymentType === "recurring" && this.supportersEmail === "") {
+					if (this.paymentType === "paylink" && this.supportersName === "") {
+						this.invalidName = true;
+						return;
+					}
+
+					if ((this.paymentFrequency === "recurring" && this.supportersEmail === "") || (this.paymentType === "paylink" && this.supportersEmail === "")) {
 						this.invalidEmailAddress = true;
 						return;
 					}
 
-					if (this.enterCustomeAmount) {
+					if (this.enterCustomeAmount || this.amountType === "custom") {
 						const customeAmount = this.customeAmount.split(",").join("");
 
 						this.amountError = false;
@@ -395,14 +474,14 @@
 
 					this.closePaymentConfirmationPrompt();
 
-					if (response.status === "successful") {
+					if (response.status === "successful" || response.status === "completed") {
 						const txId = String(response.transaction_id);
 						const data = {
 							txId,
 							paymentLinkId: this.paymentLinkId,
 							name: this.supportersName,
 							email: this.supportersEmail,
-							amount: this.totalPayableAmount(),
+							amount: this.totalPayableAmount,
 							quantity: this.quantity,
 							message: this.supportersMessage,
 						};
@@ -434,20 +513,26 @@
 							if (createTransactionData.data.createTransaction.amount) {
 								this.paymentSuccessful = true;
 								this.showPaymentStatus = true;
+								// Redirect Payer if there's a redirect url
+								if (!!this.redirectUrl) {
+									// Reduce the timer every second
+									const interval = setInterval(() => {
+										this.secondsBeforeRedirecting--;
+
+										if (this.secondsBeforeRedirecting === 0) {
+											clearInterval(interval);
+											this.secondsBeforeRedirecting = 3;
+										}
+									}, 1000);
+									setTimeout(() => {
+										this.redirectUserOnPaymentCompletion();
+									}, 3000);
+								}
 							}
 							this.displayLoader = false;
-						} catch (err) {
+						} catch {
 							this.displayLoader = false;
 						}
-					}
-				},
-
-				totalPayableAmount() {
-					if (this.enterCustomeAmount) {
-						const customeAmount = this.customeAmount.split(",").join("");
-						return parseInt(customeAmount, 10);
-					} else {
-						return this.quantity * this.unitPrice;
 					}
 				},
 
@@ -457,9 +542,7 @@
 				},
 
 				closedPaymentModal() {
-					setTimeout(() => {
-						this.displayLoader = false;
-					}, 3000);
+					// do nothing
 				},
 
 				async payCreative() {
@@ -467,7 +550,7 @@
 					const paymentData = {
 						public_key: "FLWPUBK-002b4d3ce050bd93f3b03f111bfba59f-X",
 						tx_ref: this.generateReference(),
-						amount: this.totalPayableAmount(),
+						amount: this.totalPayableAmount,
 						currency: this.currency,
 						payment_options: "",
 						redirect_url: "",
@@ -483,19 +566,19 @@
 						},
 						customizations: {
 							title: `Support ${this.firstname} on Fidia`,
-							description: `Buy ${this.firstname} a ${this.type} worth ${this.totalPayableAmount()}`,
+							description: `Buy ${this.firstname} a ${this.type} worth ${this.totalPayableAmount}`,
 							logo: this.profileImage,
 						},
 						callback: this.makePaymentCallback,
 						onclose: this.closedPaymentModal,
 					};
 
-					if (this.paymentType === "recurring") {
+					if (this.paymentFrequency === "recurring") {
 						// Create a Payment Plan for this payment
 						this.displayLoader = true;
 						try {
 							let data = {
-								amount: this.totalPayableAmount(),
+								amount: this.totalPayableAmount,
 								linkId: this.paymentLinkId,
 							};
 
@@ -506,15 +589,14 @@
 								},
 								body: JSON.stringify({
 									query: `mutation($linkId: String!, $amount: Int){
-                                        createPaymentPlan(linkId: $linkId, amount: $amount)
-                                    }
-                                `,
+		                                      createPaymentPlan(linkId: $linkId, amount: $amount)
+		                                  }
+		                              `,
 									variables: { ...data },
 								}),
 							});
 
 							const responseData = await createPaymentPlanData.json();
-
 							const planId = responseData.data.createPaymentPlan;
 
 							if (planId) {
@@ -523,30 +605,38 @@
 								paymentData.meta.planId = planId;
 								this.planId = planId;
 							}
-						} catch {}
+							this.displayLoader = false;
+						} catch {
+							this.displayLoader = false;
+						}
 					}
 
 					window.FlutterwaveCheckout(paymentData); // Initialize the payment with flutterwave
 				},
+				redirectUserOnPaymentCompletion() {
+					this.closePaymentStatusPrompt();
+					window.open(this.redirectUrl, "_blank");
+				},
 			},
 			created() {
-				window.onmessage = async (e) => {
-					// Get relevant data from the server and populate the DOM
-					const { fidiaUsername, fidiaSlug } = JSON.parse(e.data);
+				window.onmessage = async (event) => {
+					if (this.trustedOrigins.includes(event.origin)) {
+						// Get relevant data from the server and populate the DOM
+						const { fidiaUsername, fidiaSlug } = JSON.parse(event.data);
 
-					this.username = fidiaUsername;
-					this.slug = fidiaSlug;
-					this.errorOccured = false;
+						this.username = fidiaUsername;
+						this.slug = fidiaSlug;
+						this.errorOccured = false;
 
-					let data;
-					try {
-						data = await fetch(this.baseUrl, {
-							method: "POST",
-							headers: {
-								"Content-Type": "application/json",
-							},
-							body: JSON.stringify({
-								query: `query($username: String!, $slug: String!){
+						let data;
+						try {
+							data = await fetch(this.baseUrl, {
+								method: "POST",
+								headers: {
+									"Content-Type": "application/json",
+								},
+								body: JSON.stringify({
+									query: `query($username: String!, $slug: String!){
 		                                  viewPaymentLinkWithSlug(username: $username, slug: $slug){
 		                                      user{
 		                                          _id
@@ -564,40 +654,52 @@
 		                                          description
 		                                          isActive
 		                                          type
+                                                  paymentType
+                                                  amountType
+                                                  paymentFrequency
+                                                  recurringInterval
+                                                  redirectUrl
+                                                  buttonLabel
 		                                      }
 		                                  }
 		                              }
 		                      `,
-								variables: { username: fidiaUsername, slug: fidiaSlug },
-							}),
-						});
+									variables: { username: fidiaUsername, slug: fidiaSlug },
+								}),
+							});
 
-						data = await data.json();
+							data = await data.json();
+							const { user, link } = data.data.viewPaymentLinkWithSlug;
+							const userSplittedName = user.bioSection.name.split(" ");
+							this.firstname = userSplittedName[0];
+							this.lastname = userSplittedName[1];
+							this.profileImage = user.bioSection.profileImage;
+							this.isCreatorVerified = user.isCreatorVerified;
+							this.currency = user.currency;
 
-						const { user, link } = data.data.viewPaymentLinkWithSlug;
-						const userSplittedName = user.bioSection.name.split(" ");
-						this.firstname = userSplittedName[0];
-						this.lastname = userSplittedName[1];
-						this.profileImage = user.bioSection.profileImage;
-						this.isCreatorVerified = user.isCreatorVerified;
-						this.currency = user.currency;
+							this.price = link.amount;
+							this.paymentLinkId = link._id;
+							this.linkName = link.name;
+							this.type = link.type;
+							this.description = link.description;
+							this.buttonLabel = link.buttonLabel;
+							this.paymentType = link.paymentType;
+							this.paymentFrequency = link.paymentFrequency;
+							this.recurringInterval = link.recurringInterval;
+							this.amountType = link.amountType;
+							this.redirectUrl = link.redirectUrl;
 
-						this.price = link.amount;
-						this.paymentLinkId = link._id;
-						this.linkName = link.name;
-						this.type = link.type;
-						this.description = link.description;
+							const emoji = emojis.find((em) => em.name === link.type);
+							this.emoji = emoji?.data ?? "💸";
 
-						const emoji = emojis.find((em) => em.name === link.type);
-						this.emoji = emoji.data;
-
-						this.displayLoader = false;
-						this.showPaySect = true;
-					} catch (_) {
-						// If for any reason, this payment link cannot be fetched or an error occured while trying to fetch this payment link, show the error page
-						this.displayLoader = false;
-						this.showPaySect = true;
-						this.errorOccured = true;
+							this.displayLoader = false;
+							this.showPaySect = true;
+						} catch {
+							// If for any reason, this payment link cannot be fetched or an error occured while trying to fetch this payment link, show the error page
+							this.displayLoader = false;
+							this.showPaySect = true;
+							this.errorOccured = true;
+						}
 					}
 				};
 			},
