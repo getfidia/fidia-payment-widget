@@ -9,14 +9,14 @@
 	height: 100vh !important;
 	max-width: 1500px !important;
 	margin: auto !important;
-	font-family: "Work Sans", sans-serif !important;
+	font-family: "Sora", sans-serif !important;
 }
 
 body {
 	background: none transparent !important;
 	padding-left: 0.3em;
 	padding-right: 0.3em;
-	font-family: "Work Sans", sans-serif !important;
+	font-family: "Sora", sans-serif !important;
 }
 
 .button {
@@ -24,7 +24,7 @@ body {
 	justify-content: center;
 	align-items: center;
 	color: white;
-	font-family: "Work Sans", sans-serif;
+	font-family: "Sora", sans-serif;
 	font-size: 18px;
 	font-weight: 600;
 	border-radius: 5px;
@@ -32,7 +32,7 @@ body {
 	height: 60px;
 	max-width: 90%;
 	transition: 0.5s linear;
-	font-family: "Work Sans", sans-serif !important;
+	font-family: "Sora", sans-serif !important;
 }
 
 #supportB > button {
@@ -40,7 +40,7 @@ body {
 	width: 100%;
     max-width: 100%;
 	background: #292a73;
-	font-family: "Work Sans", sans-serif !important;
+	font-family: "Sora", sans-serif !important;
 }
 
 button:hover {
@@ -256,7 +256,7 @@ button:focus {
 	border: 1px solid transparent;
 	box-sizing: border-box;
 	border-radius: 5px;
-	font-family: Work Sans;
+	font-family: Sora;
 	font-style: normal;
 	font-weight: normal;
 	font-size: 18px;
@@ -284,7 +284,7 @@ textarea {
 	border: 1px solid transparent;
 	box-sizing: border-box;
 	border-radius: 5px;
-	font-family: Work Sans;
+	font-family: Sora;
 	font-style: normal;
 	font-weight: normal;
 	font-size: 18px;
@@ -426,7 +426,7 @@ textarea::placeholder {
 	justify-content: center;
 	align-items: center;
 	color: white;
-	font-family: "Work Sans", sans-serif;
+	font-family: "Sora", sans-serif;
 	font-size: 18px;
 	font-weight: 600;
 	border-radius: 5px;
