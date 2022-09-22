@@ -3,20 +3,23 @@
 	--fidiaColor: #292a73;
 	--fidiaBodyColor: rgb(250 250 250);
 	--fidiaColorBlue: #3a9efd;
+	--fidiaColorBlack: #333333;
+	--fidiaColorGrey: #787676;
+	--fidiaColorDeep: #1a1b4b;
 }
 
 #app {
 	height: 100vh !important;
 	max-width: 1500px !important;
 	margin: auto !important;
-	font-family: "Work Sans", sans-serif !important;
+	font-family: "Sora", sans-serif !important;
 }
 
 body {
 	background: none transparent !important;
 	padding-left: 0.3em;
 	padding-right: 0.3em;
-	font-family: "Work Sans", sans-serif !important;
+	font-family: "Sora", sans-serif !important;
 }
 
 .button {
@@ -24,7 +27,7 @@ body {
 	justify-content: center;
 	align-items: center;
 	color: white;
-	font-family: "Work Sans", sans-serif;
+	font-family: "Sora", sans-serif;
 	font-size: 18px;
 	font-weight: 600;
 	border-radius: 5px;
@@ -32,7 +35,8 @@ body {
 	height: 60px;
 	max-width: 90%;
 	transition: 0.5s linear;
-	font-family: "Work Sans", sans-serif !important;
+	font-family: "Sora", sans-serif !important;
+	text-transform: capitalize;
 }
 
 #supportB > button {
@@ -40,7 +44,7 @@ body {
 	width: 100%;
     max-width: 100%;
 	background: #292a73;
-	font-family: "Work Sans", sans-serif !important;
+	font-family: "Sora", sans-serif !important;
 }
 
 button:hover {
@@ -118,7 +122,7 @@ button:focus {
 #paymentBody,
 #paymentErrorBody {
 	width: 100%;
-	min-height: 800px;
+	min-height: 600px;
 	background: white;
 	border-radius: 10px;
 	box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);
@@ -256,7 +260,7 @@ button:focus {
 	border: 1px solid transparent;
 	box-sizing: border-box;
 	border-radius: 5px;
-	font-family: Work Sans;
+	font-family: Sora;
 	font-style: normal;
 	font-weight: normal;
 	font-size: 18px;
@@ -284,7 +288,7 @@ textarea {
 	border: 1px solid transparent;
 	box-sizing: border-box;
 	border-radius: 5px;
-	font-family: Work Sans;
+	font-family: Sora;
 	font-style: normal;
 	font-weight: normal;
 	font-size: 18px;
@@ -336,7 +340,7 @@ textarea::placeholder {
 
 #paymentPromptBody {
 	width: 500px;
-	min-height: 275px;
+	min-height: 250px;
 	background: white;
 	border-radius: 10px;
 	animation: scale 0.3s linear;
@@ -420,13 +424,13 @@ textarea::placeholder {
 	color: red;
 }
 
-#paymentBtn {
+.paymentBtn {
 	background: var(--fidiaColor);
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	color: white;
-	font-family: "Work Sans", sans-serif;
+	font-family: "Sora", sans-serif;
 	font-size: 18px;
 	font-weight: 600;
 	border-radius: 5px;
@@ -436,12 +440,17 @@ textarea::placeholder {
 	transition: 0.5s linear;
 }
 
-#paymentBtn:hover {
+.paymentBtn.goHomeBtn {
+    max-width: 167px;
+    margin: 0 auto;
+}
+
+.paymentBtn:hover {
 	cursor: pointer;
 	opacity: 0.8;
 }
 
-#paymentBtn:focus {
+.paymentBtn:focus {
 	outline: 0px;
 }
 
@@ -659,6 +668,14 @@ textarea::placeholder {
         flex-direction: row;
         align-items: flex-start;
         text-align: left;
+        justify-content: flex-start;
+    }
+
+    #receiversInfo.paylink {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
     }
 }
 
@@ -773,3 +790,120 @@ textarea::placeholder {
 		font-size: 16px;
 	}
 }
+
+/* PAY LINK SPECIFIC CSS */
+
+.creator__details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.userProfileImage {
+    height: 4.38rem;
+    width: 4.38rem;
+    border-radius: 50px;
+    object-fit: cover;
+}
+
+.creator__details h4 {
+    padding: 15px 0;
+    font-weight: 500;
+    font-size: 1.5rem;
+    line-height: 30px;
+    color: var(--fidiaColorBlack);
+}
+
+.creator__name {
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 20px;
+    color: var(--fidiaColorGrey);
+}
+
+.creator__description {
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 20px;
+    text-align: center;
+    color: var(--fidiaColorGrey);
+    margin-top: 15px;
+    margin-bottom: 24px;
+}
+
+.paylink__btn {
+    width: 100%;
+    padding: 22px 0;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 30px;
+    text-align: center;
+    color: var(--fidiaColorWhite);
+    background: var(--fidiaColor);
+    border: none;
+    border-radius: 10px;
+    text-transform: capitalize;
+    transition: 0.5s linear;
+}
+
+.paylink__btn:hover {
+    opacity: 0.8;
+}
+
+.payment__plan {
+    display: block;
+    position: relative;
+    top: 14px;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 20px;
+    color: var(--fidiaColorGrey);
+    padding-bottom: 18px;
+    text-align: center;
+    margin: auto !important;
+}
+
+.interval {
+    color: var(--fidiaColor);
+}
+
+.payLinkConfirmationPrompt h4 {
+    font-weight: 400;
+    font-size: 1.5rem;
+    line-height: 30px;
+    color: var(--fidiaColorGrey);
+    text-align: left;
+}
+
+.payLinkConfirmationPrompt p {
+    margin: 30px 0;
+    font-weight: 500;
+    font-size: 0.8rem;
+    line-height: 16px;
+    color: var(--fidiaColorDeep);
+    text-align: left;
+}
+
+.info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.info:first-child {
+    border-bottom: 1px solid #C4C4C4;
+}
+
+.info p {
+    font-weight: 500;
+    font-size: 1.13rem;
+    line-height: 23px;
+    color: var(--fidiaColorBlack);
+}
+
+.__amount {
+    color: var(--fidiaColorGrey) !important;
+}
+
+/* eND OF PAY LINK SPECIFIC CSS */
