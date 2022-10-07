@@ -16,8 +16,8 @@
 		<link href="https://fonts.googleapis.com/css2?family=Sora:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css" />
-		<!-- <link href="https://embed.getfidia.com/css/product.css" rel="stylesheet" /> -->
-		<link rel="stylesheet" href="./css/product.css" />
+		<link href="https://embed.getfidia.com/css/product.css" rel="stylesheet" />
+		<!-- <link rel="stylesheet" href="./css/product.css" /> -->
 	</head>
 	<body>
 		<div id="app">
@@ -259,12 +259,12 @@
 							<button class="base-modal__close bg-white border-0 m-0 p-0 ml-auto" @click="openTransactionStatus(false)">&times;</button>
 						</div>
 						<div class="base-modal__body">
-							<div v-if="transactionStatus === 'processing'" class="processingPayment text-center">
+							<div v-if="transactionStatus === 'processing'" class="processing-payment text-center">
 								<span class="loading d-inline-block mx-auto"></span>
 								<h4>Your payment is processing...</h4>
 								<p class="mb-0">We are waiting to confirm your payment. This can take up to a minute and you will get an email when it succeeds.</p>
 							</div>
-							<div v-else-if="transactionStatus === 'successful'" class="successModal d-flex flex-column justify-content-center" :class="type === 'file' ? 'align-items-start' : 'align-items-center text-center'">
+							<div v-else-if="transactionStatus === 'successful'" class="success-modal d-flex flex-column justify-content-center" :class="type === 'file' ? 'align-items-start' : 'align-items-center text-center'">
 								<div class="icon">
 									<svg width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
 										<path d="M35.0001 0.000142739C54.33 0.000142739 70 15.6702 70 35.0001C70 54.33 54.33 70 35.0001 70C15.6702 70 0.000145175 54.33 0.000145175 35.0001C-0.0548568 15.725 15.5259 0.0551448 34.8008 0.000142739C34.8672 -4.75796e-05 34.9337 -4.75796e-05 35.0001 0.000142739Z" fill="#3BB54A" />
@@ -281,7 +281,7 @@
 								<h6 v-if="filename && filesize">File Download</h6>
 								<p v-if="filename">{{ filename }}</p>
 								<p v-if="filesize">{{ filesize }} MB</p>
-								<div v-if="downloadStarted" class="downloadStarted text-center">Thank You! Your download will begin shortly.</div>
+								<div v-if="downloadStarted" class="download-started w-100 text-center">Thank You! Your download will begin shortly.</div>
 								<div v-else class="downloadButton w-100">
 									<button class="button" @click="downloadProduct">
 										<template v-if="type === 'file'">Download</template>
@@ -291,7 +291,7 @@
 								</div>
 								<p v-if="type === 'subscription' && !!subscriptionRedirectUrl" class="mb-0 mt-2">Redirecting in {{ secondsBeforeRedirect }} seconds</p>
 							</div>
-							<div v-else class="failedModal text-center">
+							<div v-else class="failed-modal text-center">
 								<div class="icon">
 									<svg width="71" height="70" viewBox="0 0 71 70" fill="none" xmlns="http://www.w3.org/2000/svg">
 										<g clip-path="url(#clip0_4120:23626)">

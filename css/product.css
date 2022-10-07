@@ -444,7 +444,7 @@ body {
 
 /* TRANSACTION STATUSES */
 /* PROCESSING */
-.processingPayment .loading {
+.processing-payment .loading {
   width: 7rem;
   height: 7rem;
   border: 1rem solid var(--fidiaColor);
@@ -454,14 +454,14 @@ body {
   -webkit-animation: spin 1200ms linear infinite;
           animation: spin 1200ms linear infinite;
 }
-.processingPayment h4 {
+.processing-payment h4 {
   font-weight: 500;
   font-size: 2.4rem;
   line-height: 2.8rem;
   color: var(--fidiaColorBlack);
   margin-bottom: 3rem;
 }
-.processingPayment p {
+.processing-payment p {
   font-weight: 400;
   font-size: 2rem;
   line-height: 2.8rem;
@@ -470,22 +470,22 @@ body {
 }
 
 /* SUCCESS */
-.successModal .icon {
+.success-modal .icon {
   margin-bottom: 2rem;
 }
-.successModal .icon svg {
+.success-modal .icon svg {
   width: 5rem;
   height: 5rem;
 }
-.successModal h6,
-.successModal h5 {
+.success-modal h6,
+.success-modal h5 {
   font-weight: 500;
   font-size: 2rem;
   line-height: 2.8rem;
   color: var(--fidiaColorBlack);
   margin-bottom: 1.5rem;
 }
-.successModal p {
+.success-modal p {
   font-weight: 400;
   font-size: 1.8rem;
   line-height: 2.8rem;
@@ -493,20 +493,20 @@ body {
   margin-bottom: 1.5rem;
 }
 @media screen and (min-width: 600px) {
-  .successModal p {
+  .success-modal p {
     font-size: 2rem;
   }
 }
-.successModal .downloadButton {
+.success-modal .downloadButton {
   margin-top: 2rem;
 }
 @media screen and (min-width: 42rem) {
-  .successModal .downloadButton {
+  .success-modal .downloadButton {
     max-width: 19rem;
   }
 }
 
-.downloadStarted {
+.download-started {
   font-weight: 500;
   font-size: 1.6rem;
   line-height: 2.1rem;
@@ -518,34 +518,34 @@ body {
   margin-top: 3rem;
 }
 @media screen and (min-width: 600px) {
-  .downloadStarted {
+  .download-started {
     font-size: 1.8rem;
   }
 }
 
 /* FAILED */
-.failedModal .icon {
+.failed-modal .icon {
   margin-bottom: 3rem;
 }
-.failedModal .icon svg {
+.failed-modal .icon svg {
   width: 6rem;
   height: 6rem;
 }
-.failedModal h5 {
+.failed-modal h5 {
   font-weight: 600;
   font-size: 2.4rem;
   line-height: 2.8rem;
   color: #000;
   margin-bottom: 3rem;
 }
-.failedModal p {
+.failed-modal p {
   font-weight: 500;
   font-size: 1.8rem;
   line-height: 2.8rem;
   color: var(--fidiaColorGrey);
   margin-bottom: 3rem;
 }
-.failedModal .tryAgain {
+.failed-modal .tryAgain {
   max-width: 16.7rem;
   margin-bottom: 2rem;
 }

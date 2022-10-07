@@ -420,7 +420,7 @@ body {
 
 /* TRANSACTION STATUSES */
 /* PROCESSING */
-.processingPayment {
+.processing-payment {
 	.loading {
 		@include icon-size(7rem, 7rem);
 		border: 1rem solid var(--fidiaColor);
@@ -440,7 +440,7 @@ body {
 }
 
 /* SUCCESS */
-.successModal {
+.success-modal {
 	.icon {
 		margin-bottom: 2rem;
 
@@ -471,7 +471,7 @@ body {
 	}
 }
 
-.downloadStarted {
+.download-started {
 	@include fontface(500, 1.6rem, 2.1rem, var(--fidiaColorGrey), 0);
 	background: #fafafa;
 	border-radius: 0.5rem;
@@ -484,7 +484,7 @@ body {
 }
 
 /* FAILED */
-.failedModal {
+.failed-modal {
 	.icon {
 		margin-bottom: 3rem;
 
