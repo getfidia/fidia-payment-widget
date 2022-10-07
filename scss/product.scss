@@ -37,79 +37,105 @@ body {
 	height: $height;
 }
 
-/* PRODUCT INFORMATION BODY */
-#productInformationBody {
-	position: fixed;
-	overflow-y: scroll;
-	height: 100%;
-	top: 0;
-	right: 0;
-	left: 0;
-	bottom: 0;
-	background: rgba(0, 0, 0, 0.25);
-
-	&::-webkit-scrollbar {
-		display: none;
-	}
-
-	.contentWrapper {
-		height: 100%;
-		width: 100%;
-		animation: glowIn 0.5s linear;
-		padding: 0;
-		overflow-y: scroll;
-		position: fixed;
-		top: 0;
-		bottom: 0;
-		right: 0;
-		left: 0;
-
-		@media screen and (min-width: 600px) {
-			padding: 2rem 0;
-			overflow-y: initial;
-			position: static;
-		}
-
-		.productInformation {
-			max-width: 60.8rem;
-			margin: 0 auto;
-			max-height: 90%;
-			width: 100%;
-			position: absolute;
-			bottom: 0;
-
-			@media screen and (min-width: 600px) {
-				max-height: 100%;
-				width: 90%;
-				position: static;
-			}
-		}
-	}
-}
-
-/* CLOSE ICON */
-.closeIcon {
-	@include icon-size(3rem, 3rem);
-	margin-bottom: 1rem;
-	margin-right: 1rem;
-
-	@media screen and (min-width: 600px) {
-		margin-right: 0;
-	}
-}
-
-/* PRODUCT CONTENT */
-.errorContent,
-.productContent {
+@mixin page-content {
 	background: #ffffff;
 	min-height: 59rem;
-	box-shadow: 0px 0.1rem 1rem rgba(120, 118, 118, 0.05);
+	box-shadow: 0rem 0.1rem 1rem rgba(120, 118, 118, 0.05);
 	border-radius: 1rem 1rem 0 0;
 	padding: 3rem 1.8rem;
 
 	@media screen and (min-width: 600px) {
 		padding: 2.2rem 3.6rem 2.8rem 3.6rem;
 		border-radius: 1rem;
+	}
+}
+
+@mixin fontface($font-weight, $font-size, $line-height, $color, $margin-bottom) {
+	font-weight: $font-weight;
+	font-size: $font-size;
+	line-height: $line-height;
+	color: $color;
+	margin-bottom: $margin-bottom;
+}
+
+@mixin fixed-element {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+/* PRODUCT INFORMATION BODY */
+.homepage {
+	@include fixed-element();
+	overflow-y: scroll;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.25);
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+
+	&__wrapper {
+		@include fixed-element();
+		height: 100%;
+		width: 100%;
+		animation: glowIn 0.5s linear;
+		padding: 0;
+		overflow-y: scroll;
+
+		@media screen and (min-width: 600px) {
+			padding: 2rem 0;
+			overflow-y: initial;
+			position: static;
+		}
+	}
+
+	&__information {
+		max-width: 60.8rem;
+		margin: 0 auto;
+		max-height: 90%;
+		width: 100%;
+		position: absolute;
+		bottom: 0;
+
+		@media screen and (min-width: 600px) {
+			max-height: 100%;
+			width: 90%;
+			position: static;
+		}
+	}
+
+	&__error {
+		@include page-content();
+
+		div {
+			margin-bottom: 1.5rem;
+		}
+
+		h6 {
+			@include fontface(500, 2.4rem, 3.5rem, var(--fidiaColorBlack), 1rem);
+		}
+
+		p {
+			@include fontface(400, 1.8rem, 2.3rem, var(--fidiaColorGrey), 1rem);
+		}
+	}
+
+	&__product {
+		@include page-content();
+	}
+}
+
+/* CLOSE ICON */
+.close-icon {
+	@include icon-size(3rem, 3rem);
+	margin-bottom: 1rem;
+	margin-right: 1rem;
+
+	@media screen and (min-width: 600px) {
+		margin-right: 0;
 	}
 }
 
@@ -139,11 +165,7 @@ body {
 	}
 
 	&__title {
-		font-weight: 500;
-		line-height: 3.5rem;
-		color: var(--fidiaColorBlack);
-		font-size: 2rem;
-		margin-bottom: 0.5rem;
+		@include fontface(500, 2rem, 3.5rem, var(--fidiaColorBlack), 0.5rem);
 
 		@media screen and (min-width: 600px) {
 			font-size: 2.4rem;
@@ -152,10 +174,7 @@ body {
 	}
 
 	&__creator {
-		line-height: 2.3rem;
-		color: var(--fidiaColorGrey);
-		font-size: 1.6rem;
-		margin-bottom: 0.5rem;
+		@include fontface(400, 1.6rem, 2.3rem, var(--fidiaColorGrey), 0.5rem);
 
 		@media screen and (min-width: 600px) {
 			font-size: 1.8rem;
@@ -164,11 +183,7 @@ body {
 	}
 
 	&__amount {
-		font-weight: 500;
-		line-height: 2.8rem;
-		color: var(--fidiaColorBlack);
-		font-size: 1.8rem;
-		margin-bottom: 0.5rem;
+		@include fontface(500, 1.8rem, 2.8rem, var(--fidiaColorBlack), 0.5rem);
 
 		@media screen and (min-width: 600px) {
 			font-size: 2rem;
@@ -178,54 +193,24 @@ body {
 
 	&__date,
 	&__location {
-		margin-bottom: 15px;
-		color: var(--fidiaColorGrey);
-		gap: 13px;
+		@include fontface(400, 1.6rem, 1.9rem, var(--fidiaColorGrey), 1.5rem);
+		gap: 1.3rem;
 	}
-}
-
-.buyButton {
-	margin-top: 3rem;
 }
 
 /* BUTTON COMPONENT */
 .button {
+	@include fontface(500, 1.8rem, 2.8rem, #fff, 0);
 	background-color: var(--fidiaColor);
-	color: #fff;
 	border-radius: 0.5rem;
 	border: none;
 	text-align: center;
-	font-weight: 500;
-	font-size: 1.8rem;
 	width: 100%;
 	padding: 1.7rem 1.5rem;
-	line-height: 2.8rem;
-}
-
-/* ERROR CONTENT */
-.errorContent {
-	div {
-		margin-bottom: 1.5rem;
-	}
-
-	h6 {
-		font-weight: 500;
-		font-size: 2.4rem;
-		line-height: 3.5rem;
-		color: var(--fidiaColorBlack);
-		margin-bottom: 1rem;
-	}
-
-	p {
-		font-size: 1.8rem;
-		line-height: 2.3rem;
-		color: var(--fidiaColorGrey);
-		margin-bottom: 1rem;
-	}
 }
 
 /* POWERED BY FIDIA */
-.poweredByFidia {
+.powered-by-fidia {
 	background-color: #fff;
 	margin: 0;
 	padding: 0 0 3rem;
@@ -237,23 +222,21 @@ body {
 	}
 
 	a {
+		@include fontface(500, 1.6rem, 1.9rem, var(--fidiaColor), 0);
 		text-decoration: none;
-		color: var(--fidiaColor);
 		border: 0.1rem solid #f8f8f8;
-		box-shadow: 0px 1rem 5rem rgba(120, 118, 118, 0.2);
-		border-radius: 2px;
-		padding: 8px;
-		font-weight: 500;
-		line-height: 1.9rem;
+		box-shadow: 0rem 1rem 5rem rgba(120, 118, 118, 0.2);
+		border-radius: 0.2rem;
+		padding: 0.8rem;
 
 		img {
-			margin-right: 7px;
+			margin-right: 0.7rem;
 		}
 	}
 }
 
 /* WYSIWYG EDITOR */
-.tiptapWrapper {
+.tiptap-wrapper {
 	a {
 		text-decoration: underline !important;
 		font-weight: 500;
@@ -280,37 +263,18 @@ body {
 	}
 
 	p {
-		margin-bottom: 8px;
+		margin-bottom: 0.8rem;
 	}
 
 	blockquote {
 		padding-left: 1rem;
-		border-left: 2px solid rgba(13, 13, 13, 0.3);
+		border-left: 0.2rem solid rgba(13, 13, 13, 0.3);
 	}
-}
-
-.tiptapWrapper .ProseMirror p.is-editor-empty:first-child::before {
-	content: attr(data-placeholder);
-	float: left;
-	color: var(--fidiaColorGrey);
-	pointer-events: none;
-	height: 0;
-	font-size: 1.8rem;
 }
 
 /* LOADER SECTION */
 .loader {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	position: fixed;
-	top: 0px;
-	right: 0px;
-	left: 0px;
-	bottom: 0px;
-	height: 100%;
-	width: 100%;
+	@include fixed-element();
 	background: rgba(0, 0, 0, 0.5);
 	z-index: 1000;
 
@@ -350,7 +314,7 @@ body {
 		min-height: 5rem;
 		border-radius: 1rem;
 		animation: scale 0.3s linear;
-		transform: translateY(0px);
+		transform: translateY(0rem);
 		transition: transform 0.5s linear;
 		max-height: 90%;
 		margin: 0;
@@ -381,17 +345,12 @@ body {
 		margin-bottom: 3rem;
 
 		h4 {
-			font-weight: 600;
-			font-size: 2.4rem;
-			line-height: 2.8rem;
-			color: #000;
+			@include fontface(600, 2.4rem, 2.8rem, #000, 0);
 		}
 	}
 
 	&__close {
-		line-height: 2.4rem;
-		font-size: 4.8rem;
-		color: var(--fidiaColorGrey);
+		@include fontface(400, 4.8rem, 2.4rem, var(--fidiaColorGrey), 0);
 	}
 }
 
@@ -407,22 +366,18 @@ body {
 	}
 
 	&__label {
+		@include fontface(400, 1.8rem, 2.3rem, #000, 1.4rem);
 		display: block;
-		font-size: 1.8rem;
-		line-height: 2.3rem;
-		margin-bottom: 1.4rem;
-		color: #000;
 	}
 
 	&__input,
 	&__select {
+		@include fontface(400, 1.8rem, 2rem, var(--fidiaColorBlack), 0);
 		display: block;
 		width: 100%;
 		border-radius: 0.5rem;
-		line-height: 2rem;
 		padding: 2rem 3.2rem;
 		border: 0.1rem solid var(--fidiaColorGrey);
-		font-size: 1.8rem;
 		transition: 0.3s linear;
 		background-color: transparent;
 
@@ -446,9 +401,10 @@ body {
 		-webkit-appearance: none;
 		appearance: none;
 		background-repeat: no-repeat;
-		background-position-x: calc(100% - 16px);
-		background-position-y: 18px;
+		background-position-x: calc(100% - 1.6rem);
+		background-position-y: 1.8rem;
 		background-image: url("../images/select-chevron.svg");
+		color: var(--fidiaColorGrey);
 	}
 
 	&__icon {
@@ -466,25 +422,20 @@ body {
 /* PROCESSING */
 .processingPayment {
 	.loading {
-		@include icon-size(70px, 70px);
+		@include icon-size(7rem, 7rem);
 		border: 1rem solid var(--fidiaColor);
 		border-top-color: rgba(41, 42, 115, 0.2);
 		border-radius: 50%;
+		margin-bottom: 3rem;
 		animation: spin 1200ms linear infinite;
 	}
 
 	h4 {
-		font-weight: 500;
-		font-size: 2.4rem;
-		line-height: 2.8rem;
-		color: var(--fidiaColorBlack);
-		margin: 3rem 0;
+		@include fontface(500, 2.4rem, 2.8rem, var(--fidiaColorBlack), 3rem);
 	}
 
 	p {
-		font-size: 2rem;
-		line-height: 2.8rem;
-		color: var(--fidiaColorGrey);
+		@include fontface(400, 2rem, 2.8rem, var(--fidiaColorGrey), 0);
 	}
 }
 
@@ -500,18 +451,11 @@ body {
 
 	h6,
 	h5 {
-		font-weight: 500;
-		font-size: 2rem;
-		line-height: 2.8rem;
-		color: var(--fidiaColorBlack);
-		margin-bottom: 1.5rem;
+		@include fontface(500, 2rem, 2.8rem, var(--fidiaColorBlack), 1.5rem);
 	}
 
 	p {
-		line-height: 2.8rem;
-		color: var(--fidiaColorGrey);
-		margin-bottom: 1.5rem;
-		font-size: 1.8rem;
+		@include fontface(400, 1.8rem, 2.8rem, var(--fidiaColorGrey), 1.5rem);
 
 		@media screen and (min-width: 600px) {
 			font-size: 2rem;
@@ -528,13 +472,11 @@ body {
 }
 
 .downloadStarted {
+	@include fontface(500, 1.6rem, 2.1rem, var(--fidiaColorGrey), 0);
 	background: #fafafa;
 	border-radius: 0.5rem;
 	padding: 2.2rem;
-	font-weight: 500;
-	line-height: 2.1rem;
-	color: var(--fidiaColorGrey);
-	margin: 3rem 0 0;
+	margin-top: 3rem;
 
 	@media screen and (min-width: 600px) {
 		font-size: 1.8rem;
@@ -552,23 +494,15 @@ body {
 	}
 
 	h5 {
-		font-weight: 600;
-		font-size: 2.4rem;
-		line-height: 2.8rem;
-		color: #000;
-		margin-bottom: 3rem;
+		@include fontface(600, 2.4rem, 2.8rem, #000, 3rem);
 	}
 
 	p {
-		font-weight: 500;
-		font-size: 1.8rem;
-		line-height: 2.8rem;
-		color: var(--fidiaColorGrey);
-		margin-bottom: 3rem;
+		@include fontface(500, 1.8rem, 2.8rem, var(--fidiaColorGrey), 3rem);
 	}
 
 	.tryAgain {
-		max-width: 167px;
+		max-width: 16.7rem;
 		margin-bottom: 2rem;
 	}
 }
@@ -576,12 +510,12 @@ body {
 /* SLIDER CHECKBOX */
 .switch {
 	.inner {
-		@include icon-size(4.4rem, 26px);
+		@include icon-size(4.4rem, 2.6rem);
 	}
 
 	input {
 		opacity: 0;
-		@include icon-size(0px, 0px);
+		@include icon-size(0rem, 0rem);
 
 		&:checked + .slider {
 			background-color: var(--fidiaColorBlue);
@@ -615,15 +549,15 @@ body {
 			position: absolute;
 			content: "";
 			@include icon-size(2rem, 2rem);
-			left: 3px;
-			bottom: 3px;
+			left: 0.3rem;
+			bottom: 0.3rem;
 			background-color: #eceff1;
 			-webkit-transition: 0.4s;
 			transition: 0.4s;
 		}
 
 		&.round {
-			border-radius: 34px;
+			border-radius: 3.4rem;
 
 			&::before {
 				border-radius: 50%;
@@ -638,7 +572,7 @@ body {
 
 // PRODUCT PRICING
 .product-pricing {
-	margin-bottom: 20px;
+	margin-bottom: 2rem;
 
 	&__text {
 		color: var(--fidiaColorGrey);
@@ -660,10 +594,7 @@ body {
 // SHIPPING INFORMATION
 .shipping-information {
 	&__title {
-		font-size: 1.8rem;
-		line-height: 2.5rem;
-		color: var(--fidiaColorBlack);
-		margin-bottom: 2rem;
+		@include fontface(400, 1.8rem, 2.5rem, var(--fidiaColorBlack), 2rem);
 	}
 }
 
@@ -672,11 +603,7 @@ body {
 	margin-top: 1.5rem;
 
 	&__header {
-		margin-bottom: 1.5rem;
-		font-weight: 400;
-		font-size: 1.6rem;
-		line-height: 2rem;
-		color: var(--fidiaColorBlack);
+		@include fontface(400, 1.6rem, 2rem, var(--fidiaColorBlack), 1.5rem);
 	}
 }
 
@@ -701,17 +628,11 @@ body {
 	}
 
 	&__name {
-		font-weight: 500;
-		font-size: 1.8rem;
-		line-height: 2.3rem;
-		color: var(--fidiaColorBlack);
-		margin-bottom: 0.5rem;
+		@include fontface(500, 1.8rem, 2.3rem, var(--fidiaColorBlack), 0.5rem);
 	}
 
 	&__text {
-		font-size: 1.4rem;
-		line-height: 1.8rem;
-		color: var(--fidiaColorGrey);
+		@include fontface(400, 1.4rem, 1.8rem, var(--fidiaColorGrey), 0);
 	}
 
 	&__option {
@@ -720,67 +641,62 @@ body {
 }
 
 // RADIO BUTTON
-.radioInput input[type="radio"]:checked,
-.radioInput input[type="radio"]:not(:checked) {
+.radio-input input[type="radio"]:checked,
+.radio-input input[type="radio"]:not(:checked) {
 	display: none;
 	position: absolute;
-	left: -9999px;
+	left: -999.9rem;
 }
 
-.radioInput input[type="radio"]:checked + label,
-.radioInput input[type="radio"]:not(:checked) + label {
+.radio-input input[type="radio"]:checked + label,
+.radio-input input[type="radio"]:not(:checked) + label {
+	@include fontface(400, 1.6rem, 2.1rem, var(--fidiaColorBlack), 0);
 	position: relative;
-	padding-left: 30px;
+	padding-left: 3rem;
 	cursor: pointer;
-	line-height: 21px;
 	display: block;
-	color: var(--fidiaColorBlack);
-	font-size: 16px;
-	margin-bottom: 0;
 
 	@media screen and (min-width: 600px) {
-		font-size: 18px;
+		font-size: 1.8rem;
 	}
 }
 
-.radioInput input[type="radio"]:checked + label:before,
-.radioInput input[type="radio"]:not(:checked) + label:before {
+.radio-input input[type="radio"]:checked + label:before,
+.radio-input input[type="radio"]:not(:checked) + label:before {
 	content: "";
 	position: absolute;
 	left: 0;
 	top: 0;
-	width: 22px;
-	height: 22px;
-	border: 2px solid var(--fidiaColorBlue);
+	@include icon-size(2.2rem, 2.2rem);
+	border: 0.2rem solid var(--fidiaColorBlue);
 	border-radius: 100%;
 	background: #fff;
 }
 
-.radioInput input[type="radio"]:not(:checked) + label:before {
-	border: 2px solid var(--fidiaColorGrey);
+.radio-input input[type="radio"]:not(:checked) + label:before {
+	border: 0.2rem solid var(--fidiaColorGrey);
 }
 
-.radioInput input[type="radio"]:checked + label:after,
-.radioInput input[type="radio"]:not(:checked) + label:after {
+.radio-input input[type="radio"]:checked + label:after,
+.radio-input input[type="radio"]:not(:checked) + label:after {
 	content: "";
-	width: 14px;
-	height: 14px;
+	@include icon-size(1.4rem, 1.4rem);
 	background: var(--fidiaColorBlue);
 	position: absolute;
-	top: 4px;
-	left: 4px;
+	top: 0.4rem;
+	left: 0.4rem;
 	border-radius: 100%;
 	-webkit-transition: all 0.2s ease;
 	transition: all 0.2s ease;
 }
 
-.radioInput [type="radio"]:not(:checked) + label:after {
+.radio-input [type="radio"]:not(:checked) + label:after {
 	opacity: 0;
 	-webkit-transform: scale(0);
 	transform: scale(0);
 }
 
-.radioInput [type="radio"]:checked + label:after {
+.radio-input [type="radio"]:checked + label:after {
 	opacity: 1;
 	-webkit-transform: scale(1);
 	transform: scale(1);

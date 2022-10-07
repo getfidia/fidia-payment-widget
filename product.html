@@ -22,17 +22,17 @@
 	<body>
 		<div id="app">
 			<!-- PRODUCT SECTION -->
-			<main v-if="showProduct" id="productInformationBody" class="d-flex justify-content-center align-items-center">
-				<div class="contentWrapper">
-					<div class="productInformation">
+			<main v-if="showProduct" class="homepage d-flex justify-content-center align-items-center">
+				<div class="homepage__wrapper">
+					<div class="homepage__information">
 						<!-- CLOSE BUTTON -->
-						<button class="closeIcon bg-white ml-auto rounded-circle border-0 d-flex justify-content-center align-items-center" @click="closeProductPopup">
+						<button class="close-icon bg-white ml-auto rounded-circle border-0 d-flex justify-content-center align-items-center" @click="closeProductPopup">
 							<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<path d="M12 10.5857L16.95 5.63574L18.364 7.04974L13.414 11.9997L18.364 16.9497L16.95 18.3637L12 13.4137L7.04999 18.3637L5.63599 16.9497L10.586 11.9997L5.63599 7.04974L7.04999 5.63574L12 10.5857Z" fill="#787676" />
 							</svg>
 						</button>
 						<!-- ERROR CONTENT -->
-						<div v-if="errorOccured" class="errorContent d-flex flex-column justify-content-center align-items-center text-center">
+						<div v-if="errorOccured" class="homepage__error d-flex flex-column justify-content-center align-items-center text-center">
 							<div>
 								<svg width="51" height="50" viewBox="0 0 51 50" fill="none" xmlns="http://www.w3.org/2000/svg">
 									<g clip-path="url(#clip0)">
@@ -56,7 +56,7 @@
 							<p>This product does not exist. It is either been deleted or disabled.</p>
 						</div>
 						<!-- PRODUCT CONTENT -->
-						<div v-else class="productContent">
+						<div v-else class="homepage__product">
 							<div class="product__image">
 								<img :src="image" :alt="name" class="img-fluid d-block mx-auto h-100 w-100" />
 							</div>
@@ -119,7 +119,7 @@
 									<template v-if="totalAmount === 0">FREE</template>
 									<template v-else>NGN {{ totalAmount }}</template>
 								</h5>
-								<div class="tiptapWrapper product__description" v-html="description"></div>
+								<div class="tiptap-wrapper product__description" v-html="description"></div>
 
 								<section class="subscription-tiers" v-if="type === 'subscription' && subscriptionTiers && subscriptionTiers.length > 0">
 									<p class="subscription-tiers__header">CHOOSE A SUBSCRIPTION TIER</p>
@@ -131,7 +131,7 @@
 											</span>
 										</div>
 										<div class="labelled-radio__option">
-											<div class="radioInput">
+											<div class="radio-input">
 												<input v-model="selectedTier" :id="tier._id" :value="tier._id" type="radio" name="subscription-tier" :checked="tier._id === selectedTier" />
 												<label :for="tier._id"></label>
 											</div>
@@ -139,14 +139,14 @@
 									</div>
 								</section>
 							</div>
-							<button v-if="shouldShowBuyButton" class="buyButton button" @click="openBuyProduct(true)">
+							<button v-if="shouldShowBuyButton" class="button mt-5" @click="openBuyProduct(true)">
 								<template v-if="type === 'ticket'">Register</template>
 								<template v-else-if="type !== 'ticket' && totalAmount === 0">Get For Free</template>
 								<template v-else-if="type !== 'ticket' && totalAmount > 0">Buy Now</template>
 							</button>
 						</div>
 						<!-- POWERED BY FIDIA -->
-						<div class="poweredByFidia d-flex justify-content-center">
+						<div class="powered-by-fidia d-flex justify-content-center">
 							<a href="http://getfidia.com" target="_blank" rel="noopener noreferrer" class="mx-auto d-inline-flex align-items-center justify-content-center bg-white">
 								<img src="https://embed.getfidia.com/images/fidia-powered.svg" alt="Fidia Logo" />
 								<span>Powered by Fidia</span>
@@ -322,7 +322,7 @@
 			</div>
 
 			<!-- LOADER SECTION -->
-			<div v-if="displayLoader" class="loader" id="loader">
+			<div v-if="displayLoader" class="loader d-flex flex-column align-items-center justify-content-center h-100 w-100">
 				<img src="https://embed.getfidia.com/images/loader.svg" alt="Loader Image here.." />
 			</div>
 		</div>

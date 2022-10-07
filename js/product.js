@@ -337,7 +337,6 @@ const App = {
 						tier: this.selectedTier,
 					};
 				}
-				console.log("Product Input >>>>>", purchaseProductInput);
 				const { _id, url } = await this.purchaseProduct(purchaseProductInput);
 				if (_id) {
 					this.transactionStatus = "successful";
@@ -444,7 +443,6 @@ const App = {
 					tier: this.selectedTier,
 				});
 			}
-			console.log("meta >>>>>", meta);
 			const paymentData = {
 				public_key: "FLWPUBK_TEST-5e9c0b1c61cd1ae7d700e350eff2f18f-X",
 				tx_ref: this.generateReference(),
