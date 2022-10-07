@@ -157,7 +157,7 @@ body {
 @media screen and (min-width: 600px) {
   .product__creator {
     font-size: 1.8rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
   }
 }
 .product__amount {
@@ -172,6 +172,11 @@ body {
     font-size: 2rem;
     margin-bottom: 1.5rem;
   }
+}
+.product__date, .product__location {
+  margin-bottom: 15px;
+  color: var(--fidiaColorGrey);
+  gap: 13px;
 }
 
 .buyButton {

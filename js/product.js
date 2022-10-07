@@ -1,6 +1,7 @@
 const { createApp } = Vue;
 const { required, requiredIf, email } = window.VuelidateValidators;
 const { useVuelidate } = window.Vuelidate;
+const DateTime = window.luxon.DateTime;
 
 const App = {
 	data() {
@@ -40,6 +41,7 @@ const App = {
 			isValidPhoneNumber: true,
 			autocomplete: null,
 			deliveryAddress: "",
+			ticket: {},
 		};
 	},
 
@@ -53,6 +55,16 @@ const App = {
 		},
 		totalAmount() {
 			return this.amount + this.deliveryFee;
+		},
+		formattedEventDate() {
+			const startDate = this.formatTicketDate(this.ticket.startDate, this.ticket.timezone);
+			const endDate = this.formatTicketDate(this.ticket.endDate, this.ticket.timezone);
+
+			if (startDate.date === endDate.date) {
+				return `${startDate.date} ${startDate.time} - ${endDate.time} ${startDate.offset}`;
+			} else {
+				return `${startDate.date} ${startDate.time} - ${endDate.date} ${endDate.time} ${startDate.offset}`;
+			}
 		},
 	},
 
@@ -95,6 +107,14 @@ const App = {
                                             amount
                                             order
                                         }
+                                    }
+                                    ticket {
+                                        location
+                                        locationUrl
+                                        startDate
+                                        endDate
+                                        timezone
+                                        maxCapacity
                                     }
                                 }
                             }
@@ -154,6 +174,8 @@ const App = {
 						utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js",
 					});
 				}
+
+				if (product.type === "ticket") this.ticket = product.ticket;
 
 				this.displayLoader = false;
 				this.showProduct = true;
@@ -275,7 +297,7 @@ const App = {
 						phoneNumber: this.phoneNumberInput.getNumber(),
 					};
 				}
-
+				console.log("Product Input >>>>>", purchaseProductInput);
 				const { _id, url } = await this.purchaseProduct(purchaseProductInput);
 				if (_id) {
 					this.transactionStatus = "successful";
@@ -290,9 +312,9 @@ const App = {
 		getProduct() {
 			this.v$.$touch();
 
-			this.isValidPhoneNumber = this.phoneNumberInput.isValidNumber();
+			if (this.type === "physical") this.isValidPhoneNumber = this.phoneNumberInput.isValidNumber();
 
-			if (this.v$.$invalid || !this.isValidPhoneNumber) return;
+			if (this.v$.$invalid || (this.type === "physical" && !this.isValidPhoneNumber)) return;
 
 			if (this.totalAmount === 0) {
 				this.getProductForFree();
@@ -358,7 +380,7 @@ const App = {
 					phoneNumber: this.phoneNumberInput.getNumber(),
 				});
 			}
-
+			console.log("meta >>>>>", meta);
 			const paymentData = {
 				public_key: "FLWPUBK_TEST-5e9c0b1c61cd1ae7d700e350eff2f18f-X",
 				tx_ref: this.generateReference(),
@@ -417,6 +439,16 @@ const App = {
 			link.click();
 			// Remove the anchor element from the DOM
 			document.body.removeChild(link);
+		},
+
+		formatTicketDate(ticketDate, zone = "Africa/Lagos") {
+			const parsedDate = parseInt(ticketDate, 10);
+			const date = DateTime.fromMillis(parsedDate, { zone }).toFormat("ccc, LLL dd, y");
+			const time = DateTime.fromMillis(parsedDate, { zone }).toFormat("h:mm a");
+
+			const offset = DateTime.fromMillis(parsedDate, { zone }).toFormat("ZZZZ");
+
+			return { date, time, offset };
 		},
 	},
 

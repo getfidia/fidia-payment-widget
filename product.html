@@ -82,13 +82,50 @@
 										</svg>
 									</span>
 								</h6>
+								<template v-if="type === 'ticket'">
+									<p class="product__date d-flex align-items-center">
+										<svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<g clip-path="url(#clip0_1030_8445)">
+												<path d="M14.1667 2.99967H17.5C17.721 2.99967 17.933 3.08747 18.0893 3.24375C18.2456 3.40003 18.3334 3.61199 18.3334 3.83301V17.1663C18.3334 17.3874 18.2456 17.5993 18.0893 17.7556C17.933 17.9119 17.721 17.9997 17.5 17.9997H2.50002C2.27901 17.9997 2.06704 17.9119 1.91076 17.7556C1.75448 17.5993 1.66669 17.3874 1.66669 17.1663V3.83301C1.66669 3.61199 1.75448 3.40003 1.91076 3.24375C2.06704 3.08747 2.27901 2.99967 2.50002 2.99967H5.83335V1.33301H7.50002V2.99967H12.5V1.33301H14.1667V2.99967ZM12.5 4.66634H7.50002V6.33301H5.83335V4.66634H3.33335V7.99967H16.6667V4.66634H14.1667V6.33301H12.5V4.66634ZM16.6667 9.66634H3.33335V16.333H16.6667V9.66634Z" fill="#787676" />
+											</g>
+											<defs>
+												<clipPath id="clip0_1030_8445">
+													<rect width="20" height="20" fill="white" transform="translate(0 0.5)" />
+												</clipPath>
+											</defs>
+										</svg>
+										{{ formattedEventDate }}
+									</p>
+									<p class="product__location d-flex align-items-center">
+										<svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<g clip-path="url(#clip0_1030_8450)">
+												<path
+													d="M10 17.9169L14.125 13.7919C14.9408 12.9761 15.4963 11.9367 15.7213 10.8052C15.9463 9.67362 15.8308 8.50076 15.3892 7.43489C14.9477 6.36902 14.2 5.45802 13.2408 4.81707C12.2815 4.17612 11.1537 3.83401 10 3.83401C8.8463 3.83401 7.71851 4.17612 6.75924 4.81707C5.79997 5.45802 5.05229 6.36902 4.61076 7.43489C4.16923 8.50076 4.05368 9.67362 4.27871 10.8052C4.50374 11.9367 5.05926 12.9761 5.875 13.7919L10 17.9169ZM10 20.2736L4.69667 14.9703C3.64779 13.9214 2.93349 12.585 2.64411 11.1301C2.35473 9.67528 2.50326 8.16729 3.07092 6.79684C3.63858 5.4264 4.59987 4.25507 5.83324 3.43096C7.0666 2.60686 8.51665 2.16699 10 2.16699C11.4834 2.16699 12.9334 2.60686 14.1668 3.43096C15.4001 4.25507 16.3614 5.4264 16.9291 6.79684C17.4968 8.16729 17.6453 9.67528 17.3559 11.1301C17.0665 12.585 16.3522 13.9214 15.3033 14.9703L10 20.2736ZM10 11.3336C10.442 11.3336 10.866 11.158 11.1785 10.8454C11.4911 10.5329 11.6667 10.109 11.6667 9.66693C11.6667 9.2249 11.4911 8.80098 11.1785 8.48842C10.866 8.17586 10.442 8.00026 10 8.00026C9.55798 8.00026 9.13405 8.17586 8.82149 8.48842C8.50893 8.80098 8.33334 9.2249 8.33334 9.66693C8.33334 10.109 8.50893 10.5329 8.82149 10.8454C9.13405 11.158 9.55798 11.3336 10 11.3336ZM10 13.0003C9.11595 13.0003 8.2681 12.6491 7.64298 12.0239C7.01786 11.3988 6.66667 10.551 6.66667 9.66693C6.66667 8.78287 7.01786 7.93503 7.64298 7.3099C8.2681 6.68478 9.11595 6.33359 10 6.33359C10.8841 6.33359 11.7319 6.68478 12.357 7.3099C12.9821 7.93503 13.3333 8.78287 13.3333 9.66693C13.3333 10.551 12.9821 11.3988 12.357 12.0239C11.7319 12.6491 10.8841 13.0003 10 13.0003Z"
+													fill="#787676"
+												/>
+											</g>
+											<defs>
+												<clipPath id="clip0_1030_8450">
+													<rect width="20" height="20" fill="white" transform="translate(0 0.5)" />
+												</clipPath>
+											</defs>
+										</svg>
+										<template v-if="ticket.location === 'googleMeet'">Google Meet</template>
+										<template v-else-if="ticket.location === 'virtual'">Virtual</template>
+										<template v-else>{{ ticket.locationUrl }}</template>
+									</p>
+								</template>
 								<h5 v-if="type !== 'subscription'" class="product__amount">
 									<template v-if="totalAmount === 0">FREE</template>
 									<template v-else>NGN {{ totalAmount }}</template>
 								</h5>
 								<div class="tiptapWrapper product__description" v-html="description"></div>
 							</div>
-							<button class="buyButton button" @click="openBuyProduct(true)">{{ totalAmount === 0 ? 'Get for Free' : 'Buy Now'}}</button>
+							<button class="buyButton button" @click="openBuyProduct(true)">
+								<template v-if="type === 'ticket'">Register</template>
+								<template v-else-if="type !== 'ticket' && totalAmount === 0">Get For Free</template>
+								<template v-else-if="type !== 'ticket' && totalAmount > 0">Buy Now</template>
+							</button>
 						</div>
 						<!-- POWERED BY FIDIA -->
 						<div class="poweredByFidia d-flex justify-content-center">
@@ -180,7 +217,7 @@
 										<span>AMOUNT</span>
 										<span>NGN {{ amount }}</span>
 									</span>
-									<span class="product-pricing__text product-pricing__delivery d-flex align-items-center justify-content-between">
+									<span v-if="type === 'physical'" class="product-pricing__text product-pricing__delivery d-flex align-items-center justify-content-between">
 										<span>DELIVERY FEE</span>
 										<span>NGN {{ deliveryFee }}</span>
 									</span>
@@ -189,7 +226,7 @@
 										<span>NGN {{ totalAmount }}</span>
 									</span>
 								</div>
-								<button class="button">{{ amount === 0 ? 'Proceed' : 'Make Payment' }}</button>
+								<button class="button">{{ totalAmount === 0 ? 'Proceed' : 'Make Payment' }}</button>
 							</form>
 						</div>
 					</div>
@@ -220,6 +257,7 @@
 								<p>
 									<template v-if="type === 'file' || type === 'redirect'">Thank you for purchasing {{ name }}! The download page has also been emailed to {{ buyersEmail }}.</template>
 									<template v-else-if="type === 'physical'">You just bought {{ name }} by {{ creator }} for NGN {{ totalAmount }}.</template>
+									<template v-else-if="type === 'ticket'">You've just registered for {{ name }} by {{ creator }} for NGN {{ totalAmount }}. We've sent a calender invite to {{ buyersEmail }} to confirm your registration.</template>
 								</p>
 								<h6 v-if="filename && filesize">File Download</h6>
 								<p v-if="filename">{{ filename }}</p>
@@ -247,11 +285,11 @@
 									</svg>
 								</div>
 								<h5>
-									<template v-if="amount === 0"> An error occured </template>
+									<template v-if="totalAmount === 0"> An error occured </template>
 									<template v-else> Transaction Failed </template>
 								</h5>
 								<p>
-									<template v-if="amount === 0"> Your request could not be processed at the moment, kindly try again. </template>
+									<template v-if="totalAmount === 0"> Your request could not be processed at the moment, kindly try again. </template>
 									<template v-else> Your payment could not be processed at the moment, kindly try again. </template>
 								</p>
 								<div class="tryAgain mx-auto">
@@ -275,6 +313,7 @@
 		<script src="https://cdn.jsdelivr.net/npm/@vuelidate/validators"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
 		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJenGg63bxPLQhFyVXXMMpycuuxFei_V4&libraries=places" async></script>
+		<script src="https://cdn.jsdelivr.net/npm/luxon@3.0.4/build/global/luxon.min.js"></script>
 		<script src="js/product.js"></script>
 	</body>
 </html>
