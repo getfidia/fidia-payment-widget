@@ -1,0 +1,689 @@
+:root {
+	/* define colors to be used across all pages as variables*/
+	--fidiaColor: #292a73;
+	--fidiaColorBlue: #3a9efd;
+	--fidiaColorBlack: #333;
+	--fidiaColorGrey: #787676;
+}
+
+/* CSS RESET */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	outline: none !important;
+}
+
+html {
+	scroll-behavior: smooth;
+	font-size: 62.5%;
+}
+
+body {
+	background: transparent !important;
+	font-family: "Sora", sans-serif !important;
+	font-size: 1.6rem;
+}
+
+#app {
+	height: 100vh !important;
+	max-width: 150rem !important;
+	margin: auto !important;
+}
+
+// MIXINS
+@mixin icon-size($width, $height) {
+	width: $width;
+	height: $height;
+}
+
+/* PRODUCT INFORMATION BODY */
+#productInformationBody {
+	position: fixed;
+	overflow-y: scroll;
+	height: 100%;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.25);
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+
+	.contentWrapper {
+		height: 100%;
+		width: 100%;
+		animation: glowIn 0.5s linear;
+		padding: 0;
+		overflow-y: scroll;
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		left: 0;
+
+		@media screen and (min-width: 600px) {
+			padding: 2rem 0;
+			overflow-y: initial;
+			position: static;
+		}
+
+		.productInformation {
+			max-width: 60.8rem;
+			margin: 0 auto;
+			max-height: 90%;
+			width: 100%;
+			position: absolute;
+			bottom: 0;
+
+			@media screen and (min-width: 600px) {
+				max-height: 100%;
+				width: 90%;
+				position: static;
+			}
+		}
+	}
+}
+
+/* CLOSE ICON */
+.closeIcon {
+	@include icon-size(3rem, 3rem);
+	margin-bottom: 1rem;
+	margin-right: 1rem;
+
+	@media screen and (min-width: 600px) {
+		margin-right: 0;
+	}
+}
+
+/* PRODUCT CONTENT */
+.errorContent,
+.productContent {
+	background: #ffffff;
+	min-height: 59rem;
+	box-shadow: 0px 0.1rem 1rem rgba(120, 118, 118, 0.05);
+	border-radius: 1rem 1rem 0 0;
+	padding: 3rem 1.8rem;
+
+	@media screen and (min-width: 600px) {
+		padding: 2.2rem 3.6rem 2.8rem 3.6rem;
+		border-radius: 1rem;
+	}
+}
+
+// PRODUCT CONTENT
+.product {
+	&__image {
+		background: #fafafa;
+		border-radius: 1rem;
+		margin-bottom: 3rem;
+		height: 21.3rem;
+		padding: 1.5rem 0.5rem;
+
+		@media screen and (min-width: 600px) {
+			height: 40.6rem;
+			padding: 2.9rem 0.5rem;
+		}
+
+		img {
+			object-fit: cover;
+			max-width: 16.3rem;
+			border-radius: 1rem;
+
+			@media screen and (min-width: 600px) {
+				max-width: 31.1rem;
+			}
+		}
+	}
+
+	&__title {
+		font-weight: 500;
+		line-height: 3.5rem;
+		color: var(--fidiaColorBlack);
+		font-size: 2rem;
+		margin-bottom: 0.5rem;
+
+		@media screen and (min-width: 600px) {
+			font-size: 2.4rem;
+			margin-bottom: 1rem;
+		}
+	}
+
+	&__creator {
+		line-height: 2.3rem;
+		color: var(--fidiaColorGrey);
+		font-size: 1.6rem;
+		margin-bottom: 0.5rem;
+
+		@media screen and (min-width: 600px) {
+			font-size: 1.8rem;
+			margin-bottom: 1rem;
+		}
+	}
+
+	&__amount {
+		font-weight: 500;
+		line-height: 2.8rem;
+		color: var(--fidiaColorBlack);
+		font-size: 1.8rem;
+		margin-bottom: 0.5rem;
+
+		@media screen and (min-width: 600px) {
+			font-size: 2rem;
+			margin-bottom: 1.5rem;
+		}
+	}
+}
+
+.buyButton {
+	margin-top: 3rem;
+}
+
+/* BUTTON COMPONENT */
+.button {
+	background-color: var(--fidiaColor);
+	color: #fff;
+	border-radius: 0.5rem;
+	border: none;
+	text-align: center;
+	font-weight: 500;
+	font-size: 1.8rem;
+	width: 100%;
+	padding: 1.7rem 1.5rem;
+	line-height: 2.8rem;
+}
+
+/* ERROR CONTENT */
+.errorContent {
+	div {
+		margin-bottom: 1.5rem;
+	}
+
+	h6 {
+		font-weight: 500;
+		font-size: 2.4rem;
+		line-height: 3.5rem;
+		color: var(--fidiaColorBlack);
+		margin-bottom: 1rem;
+	}
+
+	p {
+		font-size: 1.8rem;
+		line-height: 2.3rem;
+		color: var(--fidiaColorGrey);
+		margin-bottom: 1rem;
+	}
+}
+
+/* POWERED BY FIDIA */
+.poweredByFidia {
+	background-color: #fff;
+	margin: 0;
+	padding: 0 0 3rem;
+
+	@media screen and (min-width: 600px) {
+		background-color: transparent;
+		margin: 0.9rem auto 2rem;
+		padding: 0;
+	}
+
+	a {
+		text-decoration: none;
+		color: var(--fidiaColor);
+		border: 0.1rem solid #f8f8f8;
+		box-shadow: 0px 1rem 5rem rgba(120, 118, 118, 0.2);
+		border-radius: 2px;
+		padding: 8px;
+		font-weight: 500;
+		line-height: 1.9rem;
+
+		img {
+			margin-right: 7px;
+		}
+	}
+}
+
+/* WYSIWYG EDITOR */
+.tiptapWrapper {
+	a {
+		text-decoration: underline !important;
+		font-weight: 500;
+		cursor: pointer;
+		color: var(--fidiaColor);
+	}
+
+	pre {
+		background: #0d0d0d;
+		color: #fff;
+		padding: 0.75rem 1rem;
+		border-radius: 0.5rem;
+
+		code {
+			color: inherit;
+			padding: 0;
+			background: none;
+			font-size: 0.8rem;
+		}
+	}
+
+	mark {
+		background-color: #ffe066;
+	}
+
+	p {
+		margin-bottom: 8px;
+	}
+
+	blockquote {
+		padding-left: 1rem;
+		border-left: 2px solid rgba(13, 13, 13, 0.3);
+	}
+}
+
+.tiptapWrapper .ProseMirror p.is-editor-empty:first-child::before {
+	content: attr(data-placeholder);
+	float: left;
+	color: var(--fidiaColorGrey);
+	pointer-events: none;
+	height: 0;
+	font-size: 1.8rem;
+}
+
+/* LOADER SECTION */
+.loader {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	left: 0px;
+	bottom: 0px;
+	height: 100%;
+	width: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 1000;
+
+	> img {
+		animation: spin 1.5s linear 0s infinite reverse;
+
+		&:hover {
+			animation-play-state: running;
+		}
+	}
+}
+
+/* MODALS */
+.base-modal {
+	top: 0;
+	left: 0;
+	background: rgba(0, 0, 0, 0.25);
+	padding-left: 0;
+	animation: show 0.5s linear;
+	z-index: 10;
+	overflow-x: hidden;
+	overflow-y: auto;
+
+	&__container {
+		min-height: calc(100% - 3.5rem);
+		max-width: 59.2rem;
+		margin: 0;
+		overflow-y: hidden;
+
+		@media screen and (min-width: 600px) {
+			margin: 3rem auto;
+			overflow-y: auto;
+		}
+	}
+
+	&__content {
+		min-height: 5rem;
+		border-radius: 1rem;
+		animation: scale 0.3s linear;
+		transform: translateY(0px);
+		transition: transform 0.5s linear;
+		max-height: 90%;
+		margin: 0;
+		padding: 3.2rem 1.8rem;
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+
+		@media screen and (min-width: 600px) {
+			padding: 3.2rem;
+			max-height: 100%;
+			position: initial;
+			min-height: initial;
+			height: auto;
+		}
+	}
+
+	&__body {
+		overflow-y: scroll;
+		height: 100%;
+
+		@media screen and (min-width: 600px) {
+			overflow-y: auto;
+		}
+	}
+
+	&__header {
+		margin-bottom: 3rem;
+
+		h4 {
+			font-weight: 600;
+			font-size: 2.4rem;
+			line-height: 2.8rem;
+			color: #000;
+		}
+	}
+
+	&__close {
+		line-height: 2.4rem;
+		font-size: 4.8rem;
+		color: var(--fidiaColorGrey);
+	}
+}
+
+/* FORMS */
+.iti {
+	width: 100%;
+}
+
+.form {
+	&__element {
+		margin-bottom: 2.8rem;
+		position: relative;
+	}
+
+	&__label {
+		display: block;
+		font-size: 1.8rem;
+		line-height: 2.3rem;
+		margin-bottom: 1.4rem;
+		color: #000;
+	}
+
+	&__input,
+	&__select {
+		display: block;
+		width: 100%;
+		border-radius: 0.5rem;
+		line-height: 2rem;
+		padding: 2rem 3.2rem;
+		border: 0.1rem solid var(--fidiaColorGrey);
+		font-size: 1.8rem;
+		transition: 0.3s linear;
+		background-color: transparent;
+
+		&:focus {
+			outline: none;
+			border: 0.1rem solid var(--fidiaColorBlue);
+		}
+
+		&::placeholder {
+			color: var(--fidiaColorGrey);
+		}
+
+		&.error {
+			border-color: #eb5757;
+		}
+	}
+
+	&__select {
+		cursor: pointer;
+		-moz-appearance: none;
+		-webkit-appearance: none;
+		appearance: none;
+		background-repeat: no-repeat;
+		background-position-x: calc(100% - 16px);
+		background-position-y: 18px;
+		background-image: url("../images/select-chevron.svg");
+	}
+
+	&__icon {
+		position: absolute;
+		top: calc(50% + 0.5rem);
+		right: 2rem;
+	}
+
+    &__error {
+        color: #eb5757
+    }
+}
+
+/* TRANSACTION STATUSES */
+/* PROCESSING */
+.processingPayment {
+	.loading {
+		@include icon-size(70px, 70px);
+		border: 1rem solid var(--fidiaColor);
+		border-top-color: rgba(41, 42, 115, 0.2);
+		border-radius: 50%;
+		animation: spin 1200ms linear infinite;
+	}
+
+	h4 {
+		font-weight: 500;
+		font-size: 2.4rem;
+		line-height: 2.8rem;
+		color: var(--fidiaColorBlack);
+		margin: 3rem 0;
+	}
+
+	p {
+		font-size: 2rem;
+		line-height: 2.8rem;
+		color: var(--fidiaColorGrey);
+	}
+}
+
+/* SUCCESS */
+.successModal {
+	.icon {
+		margin-bottom: 2rem;
+
+		svg {
+			@include icon-size(5rem, 5rem);
+		}
+	}
+
+	h6,
+	h5 {
+		font-weight: 500;
+		font-size: 2rem;
+		line-height: 2.8rem;
+		color: var(--fidiaColorBlack);
+		margin-bottom: 1.5rem;
+	}
+
+	p {
+		line-height: 2.8rem;
+		color: var(--fidiaColorGrey);
+		margin-bottom: 1.5rem;
+		font-size: 1.8rem;
+
+		@media screen and (min-width: 600px) {
+			font-size: 2rem;
+		}
+	}
+
+	.downloadButton {
+		margin-top: 3rem;
+
+		@media screen and (min-width: 42rem) {
+			max-width: 19rem;
+		}
+	}
+}
+
+.downloadStarted {
+	background: #fafafa;
+	border-radius: 0.5rem;
+	padding: 2.2rem;
+	font-weight: 500;
+	line-height: 2.1rem;
+	color: var(--fidiaColorGrey);
+	margin: 3rem 0 0;
+
+	@media screen and (min-width: 600px) {
+		font-size: 1.8rem;
+	}
+}
+
+/* FAILED */
+.failedModal {
+	.icon {
+		margin-bottom: 3rem;
+
+		svg {
+			@include icon-size(6rem, 6rem);
+		}
+	}
+
+	h5 {
+		font-weight: 600;
+		font-size: 2.4rem;
+		line-height: 2.8rem;
+		color: #000;
+		margin-bottom: 3rem;
+	}
+
+	p {
+		font-weight: 500;
+		font-size: 1.8rem;
+		line-height: 2.8rem;
+		color: var(--fidiaColorGrey);
+		margin-bottom: 3rem;
+	}
+
+	.tryAgain {
+		max-width: 167px;
+		margin-bottom: 2rem;
+	}
+}
+
+/* SLIDER CHECKBOX */
+.switch {
+	.inner {
+		@include icon-size(4.4rem, 26px);
+	}
+
+	input {
+		opacity: 0;
+		@include icon-size(0px, 0px);
+
+		&:checked + .slider {
+			background-color: var(--fidiaColorBlue);
+
+			&:before {
+				-webkit-transform: translateX(1.8rem);
+				-ms-transform: translateX(1.8rem);
+				transform: translateX(1.8rem);
+			}
+		}
+
+		&:focus + .slider {
+			box-shadow: 0 0 0.1rem transparent;
+		}
+	}
+
+	.slider {
+		position: absolute;
+		cursor: pointer;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: #b0bec5;
+		-webkit-transition: 0.4s;
+		transition: 0.4s;
+		width: inherit;
+		height: inherit;
+
+		&::before {
+			position: absolute;
+			content: "";
+			@include icon-size(2rem, 2rem);
+			left: 3px;
+			bottom: 3px;
+			background-color: #eceff1;
+			-webkit-transition: 0.4s;
+			transition: 0.4s;
+		}
+
+		&.round {
+			border-radius: 34px;
+
+			&::before {
+				border-radius: 50%;
+			}
+		}
+	}
+
+	p {
+		cursor: pointer;
+	}
+}
+
+// PRODUCT PRICING
+.product-pricing {
+	margin-bottom: 20px;
+
+	&__text {
+		color: var(--fidiaColorGrey);
+
+		&:not(:last-child) {
+			margin-bottom: 1.5rem;
+		}
+
+		span:first-child {
+			font-weight: 500;
+		}
+	}
+
+	&__total {
+		color: var(--fidiaColorBlack);
+	}
+}
+
+// SHIPPING INFORMATION
+.shipping-information {
+	&__title {
+		font-size: 1.8rem;
+		line-height: 2.5rem;
+		color: var(--fidiaColorBlack);
+		margin-bottom: 2rem;
+	}
+}
+
+// KEYFRAMES
+@keyframes show {
+	from {
+		opacity: 0;
+	}
+}
+
+@keyframes scale {
+	from {
+		transform: scale(0.5);
+	}
+}
+
+@keyframes glowIn {
+	from {
+		opacity: 0;
+	}
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(360deg);
+	}
+	100% {
+		transform: rotate(0deg);
+	}
+}
