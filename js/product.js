@@ -8,8 +8,7 @@ const App = {
 		return {
 			showProduct: false,
 			displayLoader: true,
-			// baseUrl: "https://getfidia-production.herokuapp.com/graphql",
-			baseUrl: "http://localhost:8000/graphql",
+			baseUrl: "https://getfidia-production.herokuapp.com/graphql",
 			username: "",
 			slug: "",
 			name: "",
@@ -418,7 +417,6 @@ const App = {
 		},
 
 		makePaymentForProduct() {
-			// public_key: "FLWPUBK-002b4d3ce050bd93f3b03f111bfba59f-X", flutterwave producttion key
 			const meta = {
 				productId: this.productId,
 				buyersName: this.buyersName,
@@ -444,7 +442,7 @@ const App = {
 				});
 			}
 			const paymentData = {
-				public_key: "FLWPUBK_TEST-5e9c0b1c61cd1ae7d700e350eff2f18f-X",
+				public_key: "FLWPUBK-002b4d3ce050bd93f3b03f111bfba59f-X",
 				tx_ref: this.generateReference(),
 				amount: this.totalAmount,
 				currency: "NGN",
