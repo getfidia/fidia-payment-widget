@@ -120,8 +120,26 @@
 									<template v-else>NGN {{ totalAmount }}</template>
 								</h5>
 								<div class="tiptapWrapper product__description" v-html="description"></div>
+
+								<section class="subscription-tiers" v-if="type === 'subscription' && subscriptionTiers && subscriptionTiers.length > 0">
+									<p class="subscription-tiers__header">CHOOSE A SUBSCRIPTION TIER</p>
+									<div v-for="tier in subscriptionTiers" :key="tier._id" class="labelled-radio d-flex align-items-center justify-content-between" :class="{ selected: tier._id === selectedTier }" @click="selectedTier = tier._id">
+										<div class="labelled-radio__content d-flex align-items-center">
+											<span>
+												<h6 class="labelled-radio__name">{{ tier.name }}</h6>
+												<p class="labelled-radio__text mb-0">NGN {{ tier.amount }} {{ formatSubscriptionInterval(tier.interval) }}</p>
+											</span>
+										</div>
+										<div class="labelled-radio__option">
+											<div class="radioInput">
+												<input v-model="selectedTier" :id="tier._id" :value="tier._id" type="radio" name="subscription-tier" :checked="tier._id === selectedTier" />
+												<label :for="tier._id"></label>
+											</div>
+										</div>
+									</div>
+								</section>
 							</div>
-							<button class="buyButton button" @click="openBuyProduct(true)">
+							<button v-if="shouldShowBuyButton" class="buyButton button" @click="openBuyProduct(true)">
 								<template v-if="type === 'ticket'">Register</template>
 								<template v-else-if="type !== 'ticket' && totalAmount === 0">Get For Free</template>
 								<template v-else-if="type !== 'ticket' && totalAmount > 0">Buy Now</template>
@@ -157,7 +175,7 @@
 									<input type="email" class="form__input" name="buyersEmail" id="buyersEmail" v-model="v$.buyersEmail.$model" placeholder="yourname@gmail.com" :class="{ error: v$.buyersEmail.$error }" />
 								</div>
 								<!-- GIFTING SECTION -->
-								<div class="form__element">
+								<div v-if="totalAmount > 0" class="form__element">
 									<label class="switch d-inline-flex align-items-center position-relative mb-0">
 										<div class="inner">
 											<input id="checkbox" type="checkbox" v-model="isGiftingSomeone" :checked="isGiftingSomeone" />
@@ -166,7 +184,7 @@
 										<p class="mb-0 ml-3 d-inline-block">Give this as a gift</p>
 									</label>
 								</div>
-								<template v-show="isGiftingSomeone">
+								<template v-if="isGiftingSomeone">
 									<div class="form__element">
 										<label class="form__label" for="recipientName">Recipient Name</label>
 										<input type="text" class="form__input" name="recipientName" id="recipientName" v-model="v$.recipientName.$model" placeholder="John Doe" :class="{ error: v$.recipientName.$error }" />
@@ -212,10 +230,10 @@
 										<small v-if="v$.phoneNumber.$error || !isValidPhoneNumber" class="form__error">Please enter a valid phone number</small>
 									</div>
 								</section>
-								<div class="product-pricing">
+								<div v-if="totalAmount > 0" class="product-pricing">
 									<span class="product-pricing__text product-pricing__amount d-flex align-items-center justify-content-between">
 										<span>AMOUNT</span>
-										<span>NGN {{ amount }}</span>
+										<span>NGN {{ type === "subscription" ? totalAmount : amount }} <span v-if="type === 'subscription' && selectedTier">{{ formatSubscriptionInterval(selectedTierData.interval) }}</span></span>
 									</span>
 									<span v-if="type === 'physical'" class="product-pricing__text product-pricing__delivery d-flex align-items-center justify-content-between">
 										<span>DELIVERY FEE</span>
@@ -234,17 +252,17 @@
 			</div>
 
 			<!-- TRANSACTION STATUS -->
-			<div v-show="showTransactionStatus" class="base-modal position-fixed w-100 h-100">
+			<div v-if="showTransactionStatus" class="base-modal position-fixed w-100 h-100">
 				<div class="base-modal__container d-flex align-items-center">
 					<div class="base-modal__content bg-white d-flex flex-column w-100">
-						<div class="base-modal__header d-flex align-items-start justify-content-between">
+						<div v-if="transactionStatus !== 'processing'" class="base-modal__header d-flex align-items-start justify-content-between">
 							<button class="base-modal__close bg-white border-0 m-0 p-0 ml-auto" @click="openTransactionStatus(false)">&times;</button>
 						</div>
 						<div class="base-modal__body">
 							<div v-if="transactionStatus === 'processing'" class="processingPayment text-center">
 								<span class="loading d-inline-block mx-auto"></span>
 								<h4>Your payment is processing...</h4>
-								<p>We are waiting to confirm your payment. This can take up to a minute and you will get an email when it succeeds.</p>
+								<p class="mb-0">We are waiting to confirm your payment. This can take up to a minute and you will get an email when it succeeds.</p>
 							</div>
 							<div v-else-if="transactionStatus === 'successful'" class="successModal d-flex flex-column justify-content-center" :class="type === 'file' ? 'align-items-start' : 'align-items-center text-center'">
 								<div class="icon">
@@ -258,6 +276,7 @@
 									<template v-if="type === 'file' || type === 'redirect'">Thank you for purchasing {{ name }}! The download page has also been emailed to {{ buyersEmail }}.</template>
 									<template v-else-if="type === 'physical'">You just bought {{ name }} by {{ creator }} for NGN {{ totalAmount }}.</template>
 									<template v-else-if="type === 'ticket'">You've just registered for {{ name }} by {{ creator }} for NGN {{ totalAmount }}. We've sent a calender invite to {{ buyersEmail }} to confirm your registration.</template>
+									<template v-else-if="type === 'subscription'">You've just subscribed to {{ name }} by {{ creator }} for NGN {{ totalAmount }} {{ formatSubscriptionInterval(selectedTierData.interval) }}.</template>
 								</p>
 								<h6 v-if="filename && filesize">File Download</h6>
 								<p v-if="filename">{{ filename }}</p>
@@ -270,6 +289,7 @@
 										<template v-else>Done</template>
 									</button>
 								</div>
+								<p v-if="type === 'subscription' && !!subscriptionRedirectUrl" class="mb-0 mt-2">Redirecting in {{ secondsBeforeRedirect }} seconds</p>
 							</div>
 							<div v-else class="failedModal text-center">
 								<div class="icon">

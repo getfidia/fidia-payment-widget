@@ -519,7 +519,7 @@ body {
 	}
 
 	.downloadButton {
-		margin-top: 3rem;
+		margin-top: 2rem;
 
 		@media screen and (min-width: 42rem) {
 			max-width: 19rem;
@@ -665,6 +665,125 @@ body {
 		color: var(--fidiaColorBlack);
 		margin-bottom: 2rem;
 	}
+}
+
+// SUBSCRIPTION TIERS
+.subscription-tiers {
+	margin-top: 1.5rem;
+
+	&__header {
+		margin-bottom: 1.5rem;
+		font-weight: 400;
+		font-size: 1.6rem;
+		line-height: 2rem;
+		color: var(--fidiaColorBlack);
+	}
+}
+
+// SUBSCRIPTION TIER SELECTOR
+.labelled-radio {
+	border: 0.15rem solid #e5e9f2;
+	border-radius: 0.5rem;
+	cursor: pointer;
+	padding: 2.8rem 2.6rem 2.6rem 2.3rem;
+	transition: all 0.3s;
+
+	&.selected {
+		border-color: var(--fidiaColorBlue);
+	}
+
+	&:not(:last-child) {
+		margin-bottom: 1.5rem;
+	}
+
+	&__content {
+		gap: 1.7rem;
+	}
+
+	&__name {
+		font-weight: 500;
+		font-size: 1.8rem;
+		line-height: 2.3rem;
+		color: var(--fidiaColorBlack);
+		margin-bottom: 0.5rem;
+	}
+
+	&__text {
+		font-size: 1.4rem;
+		line-height: 1.8rem;
+		color: var(--fidiaColorGrey);
+	}
+
+	&__option {
+		margin-top: -2.4rem;
+	}
+}
+
+// RADIO BUTTON
+.radioInput input[type="radio"]:checked,
+.radioInput input[type="radio"]:not(:checked) {
+	display: none;
+	position: absolute;
+	left: -9999px;
+}
+
+.radioInput input[type="radio"]:checked + label,
+.radioInput input[type="radio"]:not(:checked) + label {
+	position: relative;
+	padding-left: 30px;
+	cursor: pointer;
+	line-height: 21px;
+	display: block;
+	color: var(--fidiaColorBlack);
+	font-size: 16px;
+	margin-bottom: 0;
+
+	@media screen and (min-width: 600px) {
+		font-size: 18px;
+	}
+}
+
+.radioInput input[type="radio"]:checked + label:before,
+.radioInput input[type="radio"]:not(:checked) + label:before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 22px;
+	height: 22px;
+	border: 2px solid var(--fidiaColorBlue);
+	border-radius: 100%;
+	background: #fff;
+}
+
+.radioInput input[type="radio"]:not(:checked) + label:before {
+	border: 2px solid var(--fidiaColorGrey);
+}
+
+.radioInput input[type="radio"]:checked + label:after,
+.radioInput input[type="radio"]:not(:checked) + label:after {
+	content: "";
+	width: 14px;
+	height: 14px;
+	background: var(--fidiaColorBlue);
+	position: absolute;
+	top: 4px;
+	left: 4px;
+	border-radius: 100%;
+	-webkit-transition: all 0.2s ease;
+	transition: all 0.2s ease;
+}
+
+.radioInput [type="radio"]:not(:checked) + label:after {
+	opacity: 0;
+	-webkit-transform: scale(0);
+	transform: scale(0);
+}
+
+.radioInput [type="radio"]:checked + label:after {
+	opacity: 1;
+	-webkit-transform: scale(1);
+	transform: scale(1);
 }
 
 // KEYFRAMES

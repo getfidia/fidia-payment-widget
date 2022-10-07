@@ -42,6 +42,11 @@ const App = {
 			autocomplete: null,
 			deliveryAddress: "",
 			ticket: {},
+			subscriptionRedirectUrl: "",
+			subscriptionTiers: [],
+			selectedTier: "",
+			secondsBeforeRedirect: 3,
+			redirectInterval: null,
 		};
 	},
 
@@ -54,6 +59,9 @@ const App = {
 			return 0;
 		},
 		totalAmount() {
+			if (this.type === "subscription") {
+				return this.selectedTierData.amount;
+			}
 			return this.amount + this.deliveryFee;
 		},
 		formattedEventDate() {
@@ -65,6 +73,15 @@ const App = {
 			} else {
 				return `${startDate.date} ${startDate.time} - ${endDate.date} ${endDate.time} ${startDate.offset}`;
 			}
+		},
+		selectedTierData() {
+			if (this.selectedTier) {
+				return this.subscriptionTiers.find((tier) => tier._id === this.selectedTier);
+			}
+			return {};
+		},
+		shouldShowBuyButton() {
+			return (this.type === "subscription" && this.selectedTier) || ["physical", "file", "redirect", "ticket"].includes(this.type);
 		},
 	},
 
@@ -115,6 +132,16 @@ const App = {
                                         endDate
                                         timezone
                                         maxCapacity
+                                    }
+                                    subscription {
+                                        redirect
+                                        tier {
+                                            _id
+                                            name
+                                            amount
+                                            order
+                                            interval
+                                        }
                                     }
                                 }
                             }
@@ -177,6 +204,11 @@ const App = {
 
 				if (product.type === "ticket") this.ticket = product.ticket;
 
+				if (product.type === "subscription") {
+					if (product.subscription.redirect) this.subscriptionRedirectUrl = product.subscription.redirect;
+					this.subscriptionTiers = product.subscription.tier.sort((a, b) => a.order - b.order);
+				}
+
 				this.displayLoader = false;
 				this.showProduct = true;
 			} catch {
@@ -209,6 +241,10 @@ const App = {
 
 		openBuyProduct(value) {
 			this.showBuyProduct = value;
+		},
+
+		openTransactionStatus(value) {
+			this.showTransactionStatus = value;
 			if (this.transactionStatus === "successful") {
 				this.buyersName = "";
 				this.buyersEmail = "";
@@ -218,12 +254,11 @@ const App = {
 				this.deliveryAddress = "";
 				this.deliveryLocation = "";
 				this.phoneNumber = "";
+				this.selectedTier = "";
 				this.v$.$reset();
+				this.closeProductPopup();
+				this.transactionStatus = "";
 			}
-		},
-
-		openTransactionStatus(value) {
-			this.showTransactionStatus = value;
 		},
 
 		tryAgain() {
@@ -297,11 +332,30 @@ const App = {
 						phoneNumber: this.phoneNumberInput.getNumber(),
 					};
 				}
+				if (this.type === "subscription") {
+					purchaseProductInput.subscription = {
+						tier: this.selectedTier,
+					};
+				}
 				console.log("Product Input >>>>>", purchaseProductInput);
 				const { _id, url } = await this.purchaseProduct(purchaseProductInput);
 				if (_id) {
 					this.transactionStatus = "successful";
 					this.productDownloadUrl = url;
+
+					// In cases where the subscription product has a redirect url, redirect the user after 3 second
+					if (this.type === "subscription" && !!this.subscriptionRedirectUrl) {
+						this.redirectInterval = setInterval(() => {
+							this.secondsBeforeRedirect--;
+						}, 1000);
+
+						setTimeout(() => {
+							clearInterval(this.redirectInterval);
+							this.secondsBeforeRedirect = 3;
+							this.openTransactionStatus(false);
+							window.open(this.subscriptionRedirectUrl, "_blank");
+						}, 3000);
+					}
 				}
 			} else {
 				// Show error message
@@ -341,11 +395,16 @@ const App = {
 					};
 				}
 				if (this.type === "physical") {
-					purchaseProductInput.physical = JSON.stringify({
+					purchaseProductInput.physical = {
 						deliveryLocation: this.deliveryLocation,
 						address: this.deliveryAddress,
 						phoneNumber: this.phoneNumberInput.getNumber(),
-					});
+					};
+				}
+				if (this.type === "subscription") {
+					purchaseProductInput.subscription = {
+						tier: this.selectedTier,
+					};
 				}
 				const { _id, url } = await this.purchaseProduct(purchaseProductInput);
 				if (_id) {
@@ -378,6 +437,11 @@ const App = {
 					deliveryLocation: this.deliveryLocation,
 					address: this.deliveryAddress,
 					phoneNumber: this.phoneNumberInput.getNumber(),
+				});
+			}
+			if (this.type === "subscription") {
+				meta.subscription = JSON.stringify({
+					tier: this.selectedTier,
 				});
 			}
 			console.log("meta >>>>>", meta);
@@ -449,6 +513,22 @@ const App = {
 			const offset = DateTime.fromMillis(parsedDate, { zone }).toFormat("ZZZZ");
 
 			return { date, time, offset };
+		},
+
+		formatSubscriptionInterval(interval) {
+			let text = "";
+			switch (interval) {
+				case "none":
+					text = "One Time";
+					break;
+				case "sixMonths":
+					text = "Six Months";
+					break;
+				default:
+					text = `${interval.charAt(0).toUpperCase()}${interval.slice(1)}`;
+					break;
+			}
+			return text;
 		},
 	},
 
