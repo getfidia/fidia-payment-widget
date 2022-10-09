@@ -140,6 +140,7 @@ const App = {
                                             amount
                                             order
                                             interval
+                                            planId
                                         }
                                     }
                                 }
@@ -461,6 +462,10 @@ const App = {
 				callback: this.makePaymentCallback,
 				onclose: this.closedPaymentModal,
 			};
+
+            if (this.type === "subscription" && this.selectedTierData.interval !== "none") {
+                paymentData.payment_plan = this.selectedTierData.planId;
+            }
 
 			window.FlutterwaveCheckout(paymentData);
 		},
