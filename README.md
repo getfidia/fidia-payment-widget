@@ -6,7 +6,7 @@ Fidia payment widget embeds a Fidia [payment link](https://getfidia.com/payment-
 
 <img height="80px" src="https://res.cloudinary.com/fidia/image/upload/v1633732179/Payment_Button_1_wdddah.png"/>
 
-To give you a feel of how this works, we created a [demo website](https://embed.getfidia.com/example/) that uses our widget. You only have to click the embedded Fidia button to see it in action. Check it out [here](https://embed.getfidia.com/example/).
+To give you a feel of how this works, we created a [demo website](https://embed.getfidia.com/example/) that uses our widget. You only have to click the embedded Fidia button to see it in action. Check it out for products [here](https://embed.getfidia.com/example/product) and for pay links [here](https://embed.getfidia.com/example/payment).
 
 ## 🚀 Usage
 
