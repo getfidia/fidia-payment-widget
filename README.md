@@ -21,6 +21,10 @@ Specify a button which when clicked would popup our payment link widget. This bu
 - class - fidia-embed-target
 - data-fidia-username - Your Fidia username
 - data-fidia-slug - The slug of the payment link you want to embed
+- data-fidia-button - Button Label [Options are: "Pay Me", "Donate", "Book Me", "Support Me"] (defaults to "Support Me" if none is specified)
+- fidia-button-color - button color (defaults if none is specified)
+- fidia-button-background - button background (defaults if none is specified)
+
 
 This will look as shown below:
 
