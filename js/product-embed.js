@@ -63,6 +63,7 @@
 			}, 30);
 
 			// Child window and parent window can only communicate over events
+			document.body.style.overflow = "hidden";
 			fidiaProductIframe.contentWindow.postMessage(fidiaEmbedData, "*");
 		});
 	}
@@ -74,6 +75,7 @@
 			fidiaIframes.forEach((iframe) => {
 				iframe.style.display = "none";
 			});
+			document.body.style.overflow = "visible";
 		}
 	};
 })();
