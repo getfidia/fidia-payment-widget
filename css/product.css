@@ -131,6 +131,7 @@ body {
   margin-bottom: 1rem;
   margin-right: 1rem;
 }
+
 @media screen and (min-width: 600px) {
   .close-icon {
     margin-right: 0;
@@ -168,6 +169,7 @@ body {
   color: var(--fidiaColorBlack);
   margin-bottom: 0.5rem;
 }
+
 @media screen and (min-width: 600px) {
   .product__title {
     font-size: 2.4rem;
