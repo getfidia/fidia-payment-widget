@@ -6,7 +6,7 @@ Fidia payment widget embeds a Fidia [payment link](https://getfidia.com/payment-
 
 <img height="80px" src="https://res.cloudinary.com/fidia/image/upload/v1633732179/Payment_Button_1_wdddah.png"/>
 
-To give you a feel of how this works, we created a [demo website](https://embed.getfidia.com/example/) that uses our widget. You only have to click the embedded Fidia button to see it in action. Check it out [here](https://embed.getfidia.com/example/).
+To give you a feel of how this works, we created a [demo website](https://embed.getfidia.com/example/) that uses our widget. You only have to click the embedded Fidia button to see it in action. Check it out for products [here](https://embed.getfidia.com/example/product) and for pay links [here](https://embed.getfidia.com/example/payment).
 
 ## 🚀 Usage
 
@@ -21,6 +21,10 @@ Specify a button which when clicked would popup our payment link widget. This bu
 - class - fidia-embed-target
 - data-fidia-username - Your Fidia username
 - data-fidia-slug - The slug of the payment link you want to embed
+- data-fidia-button - Button Label [Options are: "Pay Me", "Donate", "Book Me", "Support Me"] (defaults to "Support Me" if none is specified)
+- fidia-button-color - button color (defaults if none is specified)
+- fidia-button-background - button background (defaults if none is specified)
+
 
 This will look as shown below:
 
