@@ -45,21 +45,20 @@
 					</div>
 				</div>
 				<div id="paymentBodyContainer">
-					<div v-if="!errorOccured && paymentLinkType === 'paylink'" id="paymentBody" class="pr-3 pl-3 pr-md-5 pl-md-5">
+					<div v-if="!errorOccured && paymentLinkType === 'paylink'" id="paymentBody"
+						class="pr-3 pl-3 pr-md-5 pl-md-5">
 						<div class="creator__details">
 							<img class="userProfileImage" :src="profileImage" alt="creatorImage">
 							<h4>{{ linkName }}</h4>
 							<span class="creator__name">
 								By {{ name }}
 								<span v-if="isCreatorVerified" class="icon">
-									<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+										xmlns="http://www.w3.org/2000/svg">
 										<g clip-path="url(#clip0_520_31534)">
-											<path
-												fill-rule="evenodd"
-												clip-rule="evenodd"
+											<path fill-rule="evenodd" clip-rule="evenodd"
 												d="M15.67 7.06001L14.59 5.72001C14.42 5.50001 14.31 5.24001 14.28 4.95001L14.09 3.25001C14.0514 2.91055 13.8989 2.5942 13.6574 2.35263C13.4158 2.11106 13.0994 1.95855 12.76 1.92001L11.06 1.73001C10.76 1.70001 10.5 1.57001 10.28 1.40001L8.93999 0.320005C8.38999 -0.119995 7.60999 -0.119995 7.05999 0.320005L5.71999 1.40001C5.49999 1.57001 5.23999 1.68001 4.94999 1.71001L3.24999 1.90001C2.54999 1.98001 1.99999 2.53001 1.91999 3.23001L1.72999 4.93001C1.69999 5.23001 1.56999 5.49001 1.39999 5.71001L0.31999 7.05001C-0.12001 7.60001 -0.12001 8.38001 0.31999 8.93001L1.39999 10.27C1.56999 10.49 1.67999 10.75 1.70999 11.04L1.89999 12.74C1.97999 13.44 2.52999 13.99 3.22999 14.07L4.92999 14.26C5.22999 14.29 5.48999 14.42 5.70999 14.59L7.04999 15.67C7.59999 16.11 8.37999 16.11 8.92999 15.67L10.27 14.59C10.49 14.42 10.75 14.31 11.04 14.28L12.74 14.09C13.44 14.01 13.99 13.46 14.07 12.76L14.26 11.06C14.29 10.76 14.42 10.5 14.59 10.28L15.67 8.94001C16.11 8.39001 16.11 7.61001 15.67 7.06001ZM6.49999 12L2.99999 8.50001L4.49999 7.00001L6.49999 9.00001L11.5 4.00001L13 5.55001L6.49999 12Z"
-												fill="#3A9EFD"
-											/>
+												fill="#3A9EFD" />
 										</g>
 										<defs>
 											<clipPath id="clip0_520_31534">
@@ -71,7 +70,7 @@
 							</span>
 							<p class="creator__description">{{ description }}</p>
 						</div>
-	
+
 						<div class="payment__form">
 							<form @submit.prevent="openPayLinkConfirmationPrompt">
 								<div class="mt-3">
@@ -79,34 +78,40 @@
 									<input class="input" placeholder="John Doe" v-model="supportersName" />
 									<small v-if="invalidName" class="errorMessage mt-2">Your name is required.</small>
 								</div>
-	
+
 								<div class="mt-3">
 									<div class="inputName pt-2 pb-2">Email</div>
 									<input type="email" class="input" placeholder="you@email.com"
-									v-model.trim="supportersEmail" @focus="invalidEmailAddress = false" />
+										v-model.trim="supportersEmail" @focus="invalidEmailAddress = false" />
 									<small v-if="invalidEmailAddress" class="errorMessage mt-2">Your email address is
-									required.</small>
+										required.</small>
 								</div>
-	
+
 								<div v-if="amountType === 'custom'" class="mt-3">
 									<div class="inputName pt-2 pb-2">Amount</div>
-									<input v-model="customeAmount" class="input"
-									:placeholder="currency"
-									@keydown="validateAmount($event)" @focusout="formatCustomeAmount($event)" />
-									<span v-if="amountError" class="pl-3 amountError">Amount must be atleast {{ currency }} 200.</span>
+									<input v-model="customeAmount" class="input" :placeholder="currency"
+										@keydown="validateAmount($event)" @focusout="formatCustomeAmount($event)" />
+									<span v-if="amountError" class="pl-3 amountError">Amount must be atleast {{ currency
+										}} 200.</span>
 								</div>
-	
+
 								<div class="mt-3">
 									<div class="inputName pt-2 pb-2">Message</div>
-									<textarea v-model="supportersMessage" :placeholder="`Leave ${firstname} some kind words`"></textarea>
+									<textarea v-model="supportersMessage"
+										:placeholder="`Leave ${firstname} some kind words`"></textarea>
 								</div>
-	
+
 								<div class="mt-3">
 									<div class="submitBtn" id="supportB">
-										<button class="button">{{ amountType === 'fixed' ? `${buttonLabel} - NGN ${amount}` : buttonLabel }}</button>
+										<button class="button">{{ amountType === 'fixed' ? `${buttonLabel} - NGN
+											${amount}` : buttonLabel }}</button>
 									</div>
 								</div>
-								<span v-if="paymentFrequency === 'recurring'" class="payment__plan">You’ll be charged <span class="interval"><template v-if="recurringInterval === 'sixMonths'">every</template> {{ formatCamelCase(recurringInterval) }}</span> and you can cancel at anytime</span>
+								<span v-if="paymentFrequency === 'recurring'" class="payment__plan">You’ll be charged
+									<span class="interval"><template
+											v-if="recurringInterval === 'sixMonths'">every</template> {{
+										formatCamelCase(recurringInterval) }}</span> and you can cancel at
+									anytime</span>
 							</form>
 						</div>
 					</div>
@@ -193,13 +198,14 @@
 									<input v-model="enterCustomeAmount" type="checkbox" id="custom" />
 									<label for="custom" class="mb-0 ml-2">Enter Custom Amount</label>
 								</div>
-								
+
 							</div>
 							<div class="mt-3" v-if="enterCustomeAmount">
 								<input v-model="customeAmount" class="input"
 									:placeholder="`How much would you like to pay ${firstname}?`"
 									@keydown="validateAmount($event)" @focusout="formatCustomeAmount($event)" />
-									<span v-if="amountError" class="pl-3 amountError">Amount must be atleast {{ currency }} 200.</span>
+								<span v-if="amountError" class="pl-3 amountError">Amount must be atleast {{ currency }}
+									200.</span>
 							</div>
 							<div class="mt-3">
 								<div class="submitBtn" id="supportB">
@@ -274,8 +280,11 @@
 
 				<div class="payLinkConfirmationPrompt">
 
-					<h4 v-if="paymentFrequency === 'recurring'">You’ll be charged <template v-if="recurringInterval === 'sixMonths'">every</template> {{ formatCamelCase(recurringInterval) }} for this payment, and you can cancel at anytime.</h4>
-					<h4 v-else>You’ll be charged {{ currency }} {{ amountType === 'fixed' ? amount : customeAmount }} one time for this payment.</h4>
+					<h4 v-if="paymentFrequency === 'recurring'">You’ll be charged <template
+							v-if="recurringInterval === 'sixMonths'">every</template> {{
+						formatCamelCase(recurringInterval) }} for this payment, and you can cancel at anytime.</h4>
+					<h4 v-else>You’ll be charged {{ currency }} {{ amountType === 'fixed' ? amount : customeAmount }}
+						one time for this payment.</h4>
 
 					<p>PAYMENT INFORMATION</p>
 
@@ -285,7 +294,9 @@
 					</div>
 					<div v-if="paymentFrequency === 'recurring'" class="info">
 						<p>Interval</p>
-						<p class="__amount text-capitalize"><template v-if="recurringInterval === 'sixMonths'">Every</template>{{ formatCamelCase(recurringInterval) }}</p>
+						<p class="__amount text-capitalize"><template
+								v-if="recurringInterval === 'sixMonths'">Every</template> {{
+							formatCamelCase(recurringInterval) }}</p>
 					</div>
 
 					<div class="submitBtn" id="supportB">
@@ -376,7 +387,8 @@
 				</div>
 
 				<div id="depositText" class="d-flex justify-content-center align-items-center mt-4 p-3">
-					<span v-if="paymentSuccessful"> Thank you for supporting {{ firstname }}!. </span>
+					<span v-if="paymentSuccessful">Your payment of {{ currency }} {{ totalPayableAmount() }} to {{
+						firstname }} was succesful.</span>
 
 					<span v-else> Your payment could not be processed at the moment, kindly try again. </span>
 				</div>
@@ -477,22 +489,22 @@
 			},
 		},
 		methods: {
-			openPayLinkConfirmationPrompt () {
+			openPayLinkConfirmationPrompt() {
 				if (this.supportersName === "" && this.supportersEmail === "") {
 					this.invalidEmailAddress = true;
 					this.invalidName = true;
 					return;
 				}
-				if (this.customeAmount < 200) {
+				if (this.amountType !== 'fixed' && this.customeAmount < 200) {
 					this.amountError = true;
 					return;
 				}
 				this.payLinkConfirmationPrompt = true;
 			},
-			closePayLinkConfirmationPrompt () {
+			closePayLinkConfirmationPrompt() {
 				this.payLinkConfirmationPrompt = false;
 			},
-			formatCamelCase (value) {
+			formatCamelCase(value) {
 				return value.replace(/([A-Z])/g, ' $1').toLowerCase(); // convert camelcase to splitted strings
 			},
 			displayedAmount() {
@@ -586,7 +598,7 @@
 					}
 
 					try {
-						let createTransactionData = await fetch(this.baseUrl, {
+						await fetch(this.baseUrl, {
 							method: "POST",
 							headers: {
 								"Content-Type": "application/json",
@@ -601,22 +613,19 @@
 								variables: { ...data },
 							}),
 						});
+					} catch { }
 
-						createTransactionData = await createTransactionData.json();
-
-						if (createTransactionData.data.createTransaction.amount) {
-							this.paymentSuccessful = true;
-							this.showPaymentStatus = true;
-
-							// Check if a redirectUrl is set, redirect after payment confrimation
-							if (this.redirectUrl) {
-								window.top.location.href = this.redirectUrl;
-							}
-						}
-						this.displayLoader = false;
-					} catch {
-						this.displayLoader = false;
+					this.paymentSuccessful = true;
+					this.showPaymentStatus = true;
+					// Check if a redirectUrl is set, redirect after payment confrimation
+					if (this.redirectUrl) {
+						window.top.location.href = this.redirectUrl;
 					}
+					this.displayLoader = false;
+				} else {
+					this.displayLoader = false;
+					this.paymentSuccessful = true;
+					this.showPaymentStatus = true;
 				}
 			},
 
@@ -661,7 +670,7 @@
 						email: this.supportersEmail || "anonnymous@fidia.com",
 					},
 					customizations: {
-						title: `${ this.paymentLinkType === 'paylink' ? 'Pay' : 'Support' } ${this.firstname} on Fidia`,
+						title: `${this.paymentLinkType === 'paylink' ? 'Pay' : 'Support'} ${this.firstname} on Fidia`,
 						description: `Buy ${this.firstname} a ${this.type} worth ${this.totalPayableAmount()}`,
 						logo: this.profileImage,
 					},
