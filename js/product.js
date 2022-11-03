@@ -8,7 +8,8 @@ const App = {
 		return {
 			showProduct: false,
 			displayLoader: true,
-			baseUrl: "https://getfidia-production.herokuapp.com/graphql",
+			// baseUrl: "https://getfidia-production.herokuapp.com/graphql",
+			baseUrl: "http://localhost:8000/graphql",
 			username: "",
 			slug: "",
 			name: "",
@@ -344,16 +345,7 @@ const App = {
 
 					// In cases where the subscription product has a redirect url, redirect the user after 3 second
 					if (this.type === "subscription" && !!this.subscriptionRedirectUrl) {
-						this.redirectInterval = setInterval(() => {
-							this.secondsBeforeRedirect--;
-						}, 1000);
-
-						setTimeout(() => {
-							clearInterval(this.redirectInterval);
-							this.secondsBeforeRedirect = 3;
-							this.openTransactionStatus(false);
-							window.open(this.subscriptionRedirectUrl, "_blank");
-						}, 3000);
+						this.redirectAfterSubscriptionProductPayment();
 					}
 				}
 			} else {
@@ -410,6 +402,10 @@ const App = {
 					this.productDownloadUrl = url;
 					this.openTransactionStatus(true);
 					this.transactionStatus = "successful";
+					// In cases where the subscription product has a redirect url, redirect the user after 3 second
+					if (this.type === "subscription" && !!this.subscriptionRedirectUrl) {
+						this.redirectAfterSubscriptionProductPayment();
+					}
 				}
 				this.displayLoader = false;
 			} catch {
@@ -442,8 +438,9 @@ const App = {
 					tier: this.selectedTier,
 				});
 			}
+			// public_key: "FLWPUBK-002b4d3ce050bd93f3b03f111bfba59f-X",
 			const paymentData = {
-				public_key: "FLWPUBK-002b4d3ce050bd93f3b03f111bfba59f-X",
+				public_key: "FLWPUBK_TEST-5e9c0b1c61cd1ae7d700e350eff2f18f-X",
 				tx_ref: this.generateReference(),
 				amount: this.totalAmount,
 				currency: "NGN",
@@ -463,9 +460,9 @@ const App = {
 				onclose: this.closedPaymentModal,
 			};
 
-            if (this.type === "subscription" && this.selectedTierData.interval !== "none") {
-                paymentData.payment_plan = this.selectedTierData.planId;
-            }
+			if (this.type === "subscription" && this.selectedTierData.interval !== "none") {
+				paymentData.payment_plan = this.selectedTierData.planId;
+			}
 
 			window.FlutterwaveCheckout(paymentData);
 		},
@@ -530,6 +527,19 @@ const App = {
 					break;
 			}
 			return text;
+		},
+
+		redirectAfterSubscriptionProductPayment() {
+			this.redirectInterval = setInterval(() => {
+				this.secondsBeforeRedirect--;
+			}, 1000);
+
+			setTimeout(() => {
+				clearInterval(this.redirectInterval);
+				this.secondsBeforeRedirect = 3;
+				this.openTransactionStatus(false);
+				window.open(this.subscriptionRedirectUrl, "_blank");
+			}, 3000);
 		},
 	},
 
