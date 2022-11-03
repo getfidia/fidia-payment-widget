@@ -42,6 +42,7 @@ const App = {
 			autocomplete: null,
 			deliveryAddress: "",
 			ticket: {},
+			purchaseCount: 0,
 			subscriptionRedirectUrl: "",
 			subscriptionTiers: [],
 			selectedTier: "",
@@ -82,6 +83,9 @@ const App = {
 		},
 		shouldShowBuyButton() {
 			return (this.type === "subscription" && this.selectedTier) || ["physical", "file", "redirect", "ticket"].includes(this.type);
+		},
+		haveReachedTicketProductLimit() {
+			return this.type === "ticket" && this.ticket.maxCapacity && this.ticket.maxCapacity > 0 && this.purchaseCount >= this.ticket.maxCapacity;
 		},
 	},
 
@@ -132,6 +136,7 @@ const App = {
                                         endDate
                                         timezone
                                         maxCapacity
+                                        purchaseCount
                                     }
                                     subscription {
                                         redirect
@@ -203,7 +208,10 @@ const App = {
 					});
 				}
 
-				if (product.type === "ticket") this.ticket = product.ticket;
+				if (product.type === "ticket") {
+					this.ticket = product.ticket;
+					this.purchaseCount = product?.ticket?.purchaseCount ?? 0;
+				}
 
 				if (product.type === "subscription") {
 					if (product.subscription.redirect) this.subscriptionRedirectUrl = product.subscription.redirect;
@@ -241,6 +249,9 @@ const App = {
 		},
 
 		openBuyProduct(value) {
+			// Limit the User from purchasing a ticket product if the maxCapacity have been reached
+			if (this.haveReachedTicketProductLimit) return;
+
 			this.showBuyProduct = value;
 		},
 
@@ -249,13 +260,20 @@ const App = {
 			if (this.transactionStatus === "successful") {
 				this.buyersName = "";
 				this.buyersEmail = "";
-				this.recipientEmail = "";
-				this.recipientName = "";
-				this.isGiftingSomeone = false;
-				this.deliveryAddress = "";
-				this.deliveryLocation = "";
-				this.phoneNumber = "";
-				this.selectedTier = "";
+				if (this.isGiftingSomeone) {
+					this.recipientEmail = "";
+					this.recipientName = "";
+					this.isGiftingSomeone = false;
+				}
+				if (this.type === "physical") {
+					this.deliveryAddress = "";
+					this.deliveryLocation = "";
+					this.phoneNumber = "";
+				}
+				if (this.type === "subscription") {
+					this.selectedTier = "";
+				}
+				if (this.type === "ticket") this.purchaseCount += 1;
 				this.v$.$reset();
 				this.closeProductPopup();
 				this.transactionStatus = "";
