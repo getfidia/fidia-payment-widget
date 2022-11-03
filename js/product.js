@@ -8,8 +8,7 @@ const App = {
 		return {
 			showProduct: false,
 			displayLoader: true,
-			// baseUrl: "https://getfidia-production.herokuapp.com/graphql",
-			baseUrl: "http://localhost:8000/graphql",
+			baseUrl: "https://getfidia-production.herokuapp.com/graphql",
 			username: "",
 			slug: "",
 			name: "",
