@@ -173,7 +173,7 @@
 									<input type="email" class="form__input" name="buyersEmail" id="buyersEmail" v-model="v$.buyersEmail.$model" placeholder="yourname@gmail.com" :class="{ error: v$.buyersEmail.$error }" />
 								</div>
 								<!-- GIFTING SECTION -->
-								<div v-if="totalAmount > 0" class="form__element">
+								<div v-if="totalAmount > 0" class="form__element form__element--small">
 									<label class="switch d-inline-flex align-items-center position-relative mb-0">
 										<div class="inner">
 											<input id="checkbox" type="checkbox" v-model="isGiftingSomeone" :checked="isGiftingSomeone" />
@@ -190,6 +190,35 @@
 									<div class="form__element">
 										<label class="form__label" for="recipientEmail">Recipient Email</label>
 										<input type="email" class="form__input" name="recipientEmail" id="recipientEmail" v-model="v$.recipientEmail.$model" placeholder="name@gmail.com" :class="{ error: v$.recipientEmail.$error }" />
+									</div>
+								</template>
+								<!-- DISCOUNT INPUT SECTION -->
+								<div v-if="totalAmount > 0" class="form__element form__element--small">
+									<label class="switch d-inline-flex align-items-center position-relative mb-0">
+										<div class="inner">
+											<input id="checkbox" type="checkbox" v-model="haveADiscountCode" :checked="haveADiscountCode" />
+											<span class="slider round"></span>
+										</div>
+										<p class="mb-0 ml-3 d-inline-block">Have a discount code?</p>
+									</label>
+								</div>
+								<template v-if="haveADiscountCode">
+									<div class="form__element">
+										<label for="discountCode" class="form__label">Discount Code</label>
+										<input type="text" class="form__input mb-3" name="discountCode" id="discountCode" v-model="v$.discountCode.$model" placeholder="Enter Code" :class="{ error: v$.discountCode.$error }" />
+										<button type="button" v-if="haveAppliedADiscountCode" class="button button--outline-blue" @click="removeDiscountCode">Cancel Coupon</button>
+										<button type="button" v-else class="button button--outline-blue" @click="applyDiscountCode">Apply</button>
+										<span v-if="!!discountCodeMessage" class="message" :class="`message--${discountCodeMessageType}`">
+											<svg v-if="discountCodeMessageType === 'success'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+												<path fill="none" d="M0 0h24v24H0z" />
+												<path d="M11.602 13.76l1.412 1.412 8.466-8.466 1.414 1.414-9.88 9.88-6.364-6.364 1.414-1.414 2.125 2.125 1.413 1.412zm.002-2.828l4.952-4.953 1.41 1.41-4.952 4.953-1.41-1.41zm-2.827 5.655L7.364 18 1 11.636l1.414-1.414 1.413 1.413-.001.001 4.951 4.951z" fill="rgba(47,204,113,1)" />
+											</svg>
+											<svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+												<path fill="none" d="M0 0h24v24H0z" />
+												<path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM11 7h2v2h-2V7zm0 4h2v6h-2v-6z" fill="rgba(235,87,87,1)" />
+											</svg>
+											{{ discountCodeMessage }}
+										</span>
 									</div>
 								</template>
 								<!-- SHIPPING INFORMATION -->
@@ -237,12 +266,16 @@
 										<span>DELIVERY FEE</span>
 										<span>NGN {{ deliveryFee }}</span>
 									</span>
+									<span v-if="haveAppliedADiscountCode" class="product-pricing__text product-pricing__delivery d-flex align-items-center justify-content-between">
+										<span>DISCOUNT</span>
+										<span>- NGN {{ discountedAmount }}</span>
+									</span>
 									<span class="product-pricing__text product-pricing__total d-flex align-items-center justify-content-between">
 										<span>TOTAL</span>
-										<span>NGN {{ totalAmount }}</span>
+										<span>NGN {{ totalAmountAfterDiscount }}</span>
 									</span>
 								</div>
-								<button class="button">{{ totalAmount === 0 ? 'Proceed' : 'Make Payment' }}</button>
+								<button class="button">{{ totalAmountAfterDiscount === 0 ? 'Proceed' : 'Make Payment' }}</button>
 							</form>
 						</div>
 					</div>
@@ -272,9 +305,9 @@
 								<h5>Success 🎉</h5>
 								<p>
 									<template v-if="type === 'file' || type === 'redirect'">Thank you for purchasing {{ name }}! The download page has also been emailed to {{ buyersEmail }}.</template>
-									<template v-else-if="type === 'physical'">You just bought {{ name }} by {{ creator }} for NGN {{ totalAmount }}.</template>
-									<template v-else-if="type === 'ticket'">You've just registered for {{ name }} by {{ creator }} for NGN {{ totalAmount }}. We've sent a calender invite to {{ buyersEmail }} to confirm your registration.</template>
-									<template v-else-if="type === 'subscription'">You've just subscribed to {{ name }} by {{ creator }} for NGN {{ totalAmount }} {{ formatSubscriptionInterval(selectedTierData.interval) }}.</template>
+									<template v-else-if="type === 'physical'">You just bought {{ name }} by {{ creator }} for NGN {{ totalAmountAfterDiscount }}.</template>
+									<template v-else-if="type === 'ticket'">You've just registered for {{ name }} by {{ creator }} for NGN {{ totalAmountAfterDiscount }}. We've sent a calender invite to {{ buyersEmail }} to confirm your registration.</template>
+									<template v-else-if="type === 'subscription'">You've just subscribed to {{ name }} by {{ creator }} for NGN {{ totalAmountAfterDiscount }} {{ formatSubscriptionInterval(selectedTierData.interval) }}.</template>
 								</p>
 								<h6 v-if="filename && filesize">File Download</h6>
 								<p v-if="filename">{{ filename }}</p>
@@ -303,11 +336,11 @@
 									</svg>
 								</div>
 								<h5>
-									<template v-if="totalAmount === 0"> An error occured </template>
+									<template v-if="totalAmountAfterDiscount === 0"> An error occured </template>
 									<template v-else> Transaction Failed </template>
 								</h5>
 								<p>
-									<template v-if="totalAmount === 0"> Your request could not be processed at the moment, kindly try again. </template>
+									<template v-if="totalAmountAfterDiscount === 0"> Your request could not be processed at the moment, kindly try again. </template>
 									<template v-else> Your payment could not be processed at the moment, kindly try again. </template>
 								</p>
 								<div class="tryAgain mx-auto">

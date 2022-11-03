@@ -46,7 +46,22 @@ const App = {
 			selectedTier: "",
 			secondsBeforeRedirect: 3,
 			redirectInterval: null,
+			haveADiscountCode: false,
+			discountCode: "",
+			haveAppliedADiscountCode: "",
+			discountedAmount: 0,
+			discountCodeMessage: "",
+			discountCodeMessageType: "",
 		};
+	},
+
+	watch: {
+		haveADiscountCode(newValue) {
+			if (!newValue) {
+				this.haveAppliedADiscountCode = false;
+				this.discountedAmount = 0;
+			}
+		},
 	},
 
 	computed: {
@@ -62,6 +77,13 @@ const App = {
 				return this.selectedTierData.amount;
 			}
 			return this.amount + this.deliveryFee;
+		},
+		totalAmountAfterDiscount() {
+			let totalAmount = this.totalAmount;
+			if (this.haveAppliedADiscountCode) {
+				totalAmount = totalAmount - this.discountedAmount > 0 ? totalAmount - this.discountedAmount : 0;
+			}
+			return totalAmount;
 		},
 		formattedEventDate() {
 			const startDate = this.formatTicketDate(this.ticket.startDate, this.ticket.timezone);
@@ -258,6 +280,12 @@ const App = {
 				this.v$.$reset();
 				this.closeProductPopup();
 				this.transactionStatus = "";
+				if (this.haveADiscountCode) {
+					this.haveADiscountCode = false;
+					this.haveAppliedADiscountCode = false;
+					this.discountedAmount = 0;
+					this.discountCode = "";
+				}
 			}
 		},
 
@@ -337,6 +365,7 @@ const App = {
 						tier: this.selectedTier,
 					};
 				}
+				if (this.haveAppliedADiscountCode) purchaseProductInput.discountCode = this.discountCode;
 				const { _id, url } = await this.purchaseProduct(purchaseProductInput);
 				if (_id) {
 					this.transactionStatus = "successful";
@@ -362,16 +391,24 @@ const App = {
 			}
 		},
 
-		getProduct() {
+		async getProduct() {
 			this.v$.$touch();
 
 			if (this.type === "physical") this.isValidPhoneNumber = this.phoneNumberInput.isValidNumber();
 
 			if (this.v$.$invalid || (this.type === "physical" && !this.isValidPhoneNumber)) return;
 
-			if (this.totalAmount === 0) {
+			if (this.totalAmountAfterDiscount === 0) {
 				this.getProductForFree();
 			} else {
+				if (this.haveADiscountCode) {
+					const discountedAmount = await this.applyDiscountCode();
+					if (!discountedAmount) {
+						this.haveAppliedADiscountCode = false;
+						this.discountedAmount = 0;
+						return;
+					}
+				}
 				this.makePaymentForProduct();
 			}
 		},
@@ -387,12 +424,6 @@ const App = {
 					name: this.buyersName,
 					email: this.buyersEmail,
 				};
-				if (this.isGiftingSomeone) {
-					purchaseProductInput.recipient = {
-						name: this.recipientName,
-						email: this.recipientEmail,
-					};
-				}
 				if (this.type === "physical") {
 					purchaseProductInput.physical = {
 						deliveryLocation: this.deliveryLocation,
@@ -405,6 +436,7 @@ const App = {
 						tier: this.selectedTier,
 					};
 				}
+				if (this.haveAppliedADiscountCode) purchaseProductInput.discountCode = this.discountCode;
 				const { _id, url } = await this.purchaseProduct(purchaseProductInput);
 				if (_id) {
 					this.productDownloadUrl = url;
@@ -445,7 +477,7 @@ const App = {
 			const paymentData = {
 				public_key: "FLWPUBK-002b4d3ce050bd93f3b03f111bfba59f-X",
 				tx_ref: this.generateReference(),
-				amount: this.totalAmount,
+				amount: this.totalAmountAfterDiscount,
 				currency: "NGN",
 				payment_options: "",
 				redirect_url: "",
@@ -456,16 +488,16 @@ const App = {
 				},
 				customizations: {
 					title: `Purchase ${this.name} by ${this.creator}`,
-					description: `Buy ${this.name} worth NGN ${this.totalAmount}`,
+					description: `Buy ${this.name} worth NGN ${this.totalAmountAfterDiscount}`,
 					logo: this.image,
 				},
 				callback: this.makePaymentCallback,
 				onclose: this.closedPaymentModal,
 			};
 
-            if (this.type === "subscription" && this.selectedTierData.interval !== "none") {
-                paymentData.payment_plan = this.selectedTierData.planId;
-            }
+			if (this.type === "subscription" && this.selectedTierData.interval !== "none") {
+				paymentData.payment_plan = this.selectedTierData.planId;
+			}
 
 			window.FlutterwaveCheckout(paymentData);
 		},
@@ -531,6 +563,81 @@ const App = {
 			}
 			return text;
 		},
+
+		async applyDiscountCode() {
+			this.v$.discountCode.$touch();
+			if (this.v$.discountCode.$invalid) return;
+			this.displayLoader = true;
+			try {
+				const discountCodeInput = {
+					discountCode: this.discountCode,
+					productId: this.productId,
+					email: this.buyersEmail,
+				};
+				const calculateDiscountAmountData = await fetch(this.baseUrl, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						query: `
+                                query($input: CalculateDiscountAmountInput!) {
+                                    calculateDiscountAmount(input: $input)
+                                }
+                        `,
+						variables: {
+							input: discountCodeInput,
+						},
+					}),
+				});
+				const responseData = await calculateDiscountAmountData.json();
+				if (responseData.data) {
+					this.haveAppliedADiscountCode = true;
+					this.discountedAmount = responseData.data.calculateDiscountAmount;
+					this.displayLoader = false;
+					this.discountCodeMessageType = "success";
+					this.discountCodeMessage = "Discount Code have been applied sucessfully";
+					this.clearDiscountCodeMessage();
+					return responseData.data.calculateDiscountAmount;
+				} else {
+					this.displayLoader = false;
+					this.discountCodeMessageType = "error";
+					const errorMessage = responseData.errors[0].message;
+					if (errorMessage.includes("does not apply")) {
+						this.discountCodeMessage = "The provided discount code cannot be applied to this product. Verify the code and try again.";
+					} else if (errorMessage.includes("not found")) {
+						this.discountCodeMessage = "This provided discount code does not exist. Verify the code and try again.";
+					} else if (errorMessage.includes("has expired")) {
+						this.discountCodeMessage = "This provided discount code have expired. Verify the code and try again.";
+					} else if (errorMessage.includes("yet active")) {
+						this.discountCodeMessage = "This provided discount code is not yet active. Verify the code and try again.";
+					} else if (errorMessage.includes("used up")) {
+						this.discountCodeMessage = "This provided discount code have been used up. Verify the code and try again.";
+					} else if (errorMessage.includes("used by")) {
+						this.discountCodeMessage = "This provided discount code have already been used by you. Verify the code and try again.";
+					} else {
+						this.discountCodeMessage = "An error occurred trying to apply this discount code. Verify the code and try again.";
+					}
+					this.clearDiscountCodeMessage();
+				}
+			} catch {
+				this.displayLoader = false;
+			}
+		},
+
+		removeDiscountCode() {
+			this.discountCodeMessageType = "success";
+			this.discountCodeMessage = "Discount Code have been removed sucessfully";
+			this.haveAppliedADiscountCode = false;
+			this.discountedAmount = 0;
+			this.clearDiscountCodeMessage();
+		},
+
+		clearDiscountCodeMessage() {
+			setTimeout(() => {
+				this.discountCodeMessage = "";
+			}, 3000);
+		},
 	},
 
 	validations() {
@@ -561,6 +668,11 @@ const App = {
 			phoneNumber: {
 				required: requiredIf(function () {
 					return this.type === "physical";
+				}),
+			},
+			discountCode: {
+				required: requiredIf(function () {
+					return this.haveADiscountCode;
 				}),
 			},
 		};
