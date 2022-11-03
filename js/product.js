@@ -277,6 +277,7 @@ const App = {
 				this.v$.$reset();
 				this.closeProductPopup();
 				this.transactionStatus = "";
+				if (this.type === "file") this.downloadStarted = false;
 			}
 		},
 
@@ -456,9 +457,8 @@ const App = {
 					tier: this.selectedTier,
 				});
 			}
-			// public_key: "FLWPUBK-002b4d3ce050bd93f3b03f111bfba59f-X",
 			const paymentData = {
-				public_key: "FLWPUBK_TEST-5e9c0b1c61cd1ae7d700e350eff2f18f-X",
+                public_key: "FLWPUBK-002b4d3ce050bd93f3b03f111bfba59f-X",
 				tx_ref: this.generateReference(),
 				amount: this.totalAmount,
 				currency: "NGN",
@@ -480,6 +480,7 @@ const App = {
 
 			if (this.type === "subscription" && this.selectedTierData.interval !== "none") {
 				paymentData.payment_plan = this.selectedTierData.planId;
+				paymentData.meta = { ...meta, planId: this.selectedTierData.planId };
 			}
 
 			window.FlutterwaveCheckout(paymentData);
