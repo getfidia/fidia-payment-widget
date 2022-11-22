@@ -131,7 +131,6 @@ body {
   margin-bottom: 1rem;
   margin-right: 1rem;
 }
-
 @media screen and (min-width: 600px) {
   .close-icon {
     margin-right: 0;
@@ -169,7 +168,6 @@ body {
   color: var(--fidiaColorBlack);
   margin-bottom: 0.5rem;
 }
-
 @media screen and (min-width: 600px) {
   .product__title {
     font-size: 2.4rem;
@@ -224,6 +222,11 @@ body {
   text-align: center;
   width: 100%;
   padding: 1.7rem 1.5rem;
+}
+.button--outline-blue {
+  border: 1px solid var(--fidiaColor);
+  background-color: transparent;
+  color: var(--fidiaColor);
 }
 
 /* POWERED BY FIDIA */
@@ -386,6 +389,9 @@ body {
   margin-bottom: 2.8rem;
   position: relative;
 }
+.form__element--small {
+  margin-bottom: 2rem;
+}
 .form__label {
   font-weight: 400;
   font-size: 1.8rem;
@@ -441,6 +447,27 @@ body {
   right: 2rem;
 }
 .form__error {
+  color: #eb5757;
+}
+
+.message {
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 0.4rem;
+  -webkit-animation: glowIn 0.5s linear;
+          animation: glowIn 0.5s linear;
+}
+.message svg {
+  flex-shrink: 0;
+}
+.message--success {
+  background-color: #ecfff4;
+  color: #2fcc71;
+}
+.message--error {
+  background-color: #ffeeee;
   color: #eb5757;
 }
 
@@ -784,4 +811,4 @@ body {
   100% {
     transform: rotate(0deg);
   }
-}/*# sourceMappingURL=product.css.map */
+}

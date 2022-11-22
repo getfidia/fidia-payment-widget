@@ -207,6 +207,12 @@ body {
 	text-align: center;
 	width: 100%;
 	padding: 1.7rem 1.5rem;
+
+	&--outline-blue {
+		border: 1px solid var(--fidiaColor);
+		background-color: transparent;
+		color: var(--fidiaColor);
+	}
 }
 
 /* POWERED BY FIDIA */
@@ -363,6 +369,10 @@ body {
 	&__element {
 		margin-bottom: 2.8rem;
 		position: relative;
+
+		&--small {
+			margin-bottom: 2rem;
+		}
 	}
 
 	&__label {
@@ -414,6 +424,29 @@ body {
 	}
 
 	&__error {
+		color: #eb5757;
+	}
+}
+
+.message {
+	margin-top: 1rem;
+	display: flex;
+	gap: 1rem;
+	padding: 1rem;
+	border-radius: 0.4rem;
+	animation: glowIn 0.5s linear;
+
+    svg {
+        flex-shrink: 0;
+    }
+
+	&--success {
+		background-color: #ecfff4;
+		color: #2fcc71;
+	}
+
+	&--error {
+		background-color: #ffeeee;
 		color: #eb5757;
 	}
 }
