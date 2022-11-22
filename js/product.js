@@ -41,6 +41,7 @@ const App = {
 			autocomplete: null,
 			deliveryAddress: "",
 			ticket: {},
+			purchaseCount: 0,
 			subscriptionRedirectUrl: "",
 			subscriptionTiers: [],
 			selectedTier: "",
@@ -104,6 +105,9 @@ const App = {
 		shouldShowBuyButton() {
 			return (this.type === "subscription" && this.selectedTier) || ["physical", "file", "redirect", "ticket"].includes(this.type);
 		},
+		haveReachedTicketProductLimit() {
+			return this.type === "ticket" && this.ticket.maxCapacity && this.ticket.maxCapacity > 0 && this.purchaseCount >= this.ticket.maxCapacity;
+		},
 	},
 
 	mounted() {
@@ -153,6 +157,7 @@ const App = {
                                         endDate
                                         timezone
                                         maxCapacity
+                                        purchaseCount
                                     }
                                     subscription {
                                         redirect
@@ -224,7 +229,10 @@ const App = {
 					});
 				}
 
-				if (product.type === "ticket") this.ticket = product.ticket;
+				if (product.type === "ticket") {
+					this.ticket = product.ticket;
+					this.purchaseCount = product?.ticket?.purchaseCount ?? 0;
+				}
 
 				if (product.type === "subscription") {
 					if (product.subscription.redirect) this.subscriptionRedirectUrl = product.subscription.redirect;
@@ -262,6 +270,9 @@ const App = {
 		},
 
 		openBuyProduct(value) {
+			// Limit the User from purchasing a ticket product if the maxCapacity have been reached
+			if (this.haveReachedTicketProductLimit) return;
+
 			this.showBuyProduct = value;
 		},
 
@@ -270,22 +281,32 @@ const App = {
 			if (this.transactionStatus === "successful") {
 				this.buyersName = "";
 				this.buyersEmail = "";
-				this.recipientEmail = "";
-				this.recipientName = "";
-				this.isGiftingSomeone = false;
-				this.deliveryAddress = "";
-				this.deliveryLocation = "";
-				this.phoneNumber = "";
-				this.selectedTier = "";
+				if (this.isGiftingSomeone) {
+					this.recipientEmail = "";
+					this.recipientName = "";
+					this.isGiftingSomeone = false;
+				}
+				if (this.type === "physical") {
+					this.deliveryAddress = "";
+					this.deliveryLocation = "";
+					this.phoneNumber = "";
+				}
+				if (this.type === "subscription") {
+					this.selectedTier = "";
+				}
+				if (this.type === "ticket") this.purchaseCount += 1;
 				this.v$.$reset();
 				this.closeProductPopup();
 				this.transactionStatus = "";
+        
 				if (this.haveADiscountCode) {
 					this.haveADiscountCode = false;
 					this.haveAppliedADiscountCode = false;
 					this.discountedAmount = 0;
 					this.discountCode = "";
 				}
+        
+				if (this.type === "file") this.downloadStarted = false;
 			}
 		},
 
@@ -373,16 +394,7 @@ const App = {
 
 					// In cases where the subscription product has a redirect url, redirect the user after 3 second
 					if (this.type === "subscription" && !!this.subscriptionRedirectUrl) {
-						this.redirectInterval = setInterval(() => {
-							this.secondsBeforeRedirect--;
-						}, 1000);
-
-						setTimeout(() => {
-							clearInterval(this.redirectInterval);
-							this.secondsBeforeRedirect = 3;
-							this.openTransactionStatus(false);
-							window.open(this.subscriptionRedirectUrl, "_blank");
-						}, 3000);
+						this.redirectAfterSubscriptionProductPayment();
 					}
 				}
 			} else {
@@ -442,6 +454,10 @@ const App = {
 					this.productDownloadUrl = url;
 					this.openTransactionStatus(true);
 					this.transactionStatus = "successful";
+					// In cases where the subscription product has a redirect url, redirect the user after 3 second
+					if (this.type === "subscription" && !!this.subscriptionRedirectUrl) {
+						this.redirectAfterSubscriptionProductPayment();
+					}
 				}
 				this.displayLoader = false;
 			} catch {
@@ -475,7 +491,7 @@ const App = {
 				});
 			}
 			const paymentData = {
-				public_key: "FLWPUBK-002b4d3ce050bd93f3b03f111bfba59f-X",
+                public_key: "FLWPUBK-002b4d3ce050bd93f3b03f111bfba59f-X",
 				tx_ref: this.generateReference(),
 				amount: this.totalAmountAfterDiscount,
 				currency: "NGN",
@@ -497,6 +513,7 @@ const App = {
 
 			if (this.type === "subscription" && this.selectedTierData.interval !== "none") {
 				paymentData.payment_plan = this.selectedTierData.planId;
+				paymentData.meta = { ...meta, planId: this.selectedTierData.planId };
 			}
 
 			window.FlutterwaveCheckout(paymentData);
@@ -635,8 +652,19 @@ const App = {
 
 		clearDiscountCodeMessage() {
 			setTimeout(() => {
-				this.discountCodeMessage = "";
-			}, 3000);
+				this.discountCodeMessage = "";  
+     }, 3000);
+      
+		redirectAfterSubscriptionProductPayment() {
+			this.redirectInterval = setInterval(() => {
+				this.secondsBeforeRedirect--;
+			}, 1000);
+
+			setTimeout(() => {
+				clearInterval(this.redirectInterval);
+				this.secondsBeforeRedirect = 3;
+				this.openTransactionStatus(false);
+				window.open(this.subscriptionRedirectUrl, "_blank");
 		},
 	},
 

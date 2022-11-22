@@ -200,13 +200,22 @@ body {
     margin-bottom: 1.5rem;
   }
 }
-.product__date, .product__location {
+.product__date, .product__location, .product__tickets {
   font-weight: 400;
   font-size: 1.6rem;
   line-height: 1.9rem;
   color: var(--fidiaColorGrey);
   margin-bottom: 1.5rem;
   gap: 1.3rem;
+}
+
+.sold-out-badge {
+  background-color: #f7a400;
+  color: #fff;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 2px;
+  gap: 10px;
 }
 
 /* BUTTON COMPONENT */

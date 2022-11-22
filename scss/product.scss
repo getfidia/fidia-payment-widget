@@ -192,10 +192,20 @@ body {
 	}
 
 	&__date,
-	&__location {
+	&__location,
+	&__tickets {
 		@include fontface(400, 1.6rem, 1.9rem, var(--fidiaColorGrey), 1.5rem);
 		gap: 1.3rem;
 	}
+}
+
+.sold-out-badge {
+	background-color: #f7a400;
+	color: #fff;
+	padding: 20px;
+	margin-top: 20px;
+	border-radius: 2px;
+	gap: 10px;
 }
 
 /* BUTTON COMPONENT */
@@ -213,6 +223,11 @@ body {
 		background-color: transparent;
 		color: var(--fidiaColor);
 	}
+
+  &:disabled {
+     cursor: not-allowed;
+     opacity: 0.5;
+  }
 }
 
 /* POWERED BY FIDIA */
