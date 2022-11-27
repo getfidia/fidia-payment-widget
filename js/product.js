@@ -653,7 +653,8 @@ const App = {
 		clearDiscountCodeMessage() {
 			setTimeout(() => {
 				this.discountCodeMessage = "";  
-     }, 3000);
+     		}, 3000);
+		},
       
 		redirectAfterSubscriptionProductPayment() {
 			this.redirectInterval = setInterval(() => {
@@ -665,6 +666,7 @@ const App = {
 				this.secondsBeforeRedirect = 3;
 				this.openTransactionStatus(false);
 				window.open(this.subscriptionRedirectUrl, "_blank");
+			});
 		},
 	},
 
