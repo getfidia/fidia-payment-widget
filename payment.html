@@ -742,10 +742,8 @@
 									viewPaymentLinkWithSlug(username: $username, slug: $slug){
 										user{
 											_id
-											bioSection {
-												name
-												profileImage
-											}
+											name
+											profileImage
 											currency
 											isCreatorVerified
 										}
@@ -774,11 +772,11 @@
 						data = await data.json();
 
 						const { user, link } = data.data.viewPaymentLinkWithSlug;
-						const userSplittedName = user.bioSection.name.split(" ");
-						this.name = user.bioSection.name;
+						const userSplittedName = user.name.split(" ");
+						this.name = user.name;
 						this.firstname = userSplittedName[0];
 						this.lastname = userSplittedName[1];
-						this.profileImage = user.bioSection.profileImage;
+						this.profileImage = user.profileImage;
 						this.isCreatorVerified = user.isCreatorVerified;
 						this.currency = user.currency;
 
