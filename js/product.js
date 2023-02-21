@@ -137,9 +137,7 @@ const App = {
                                     amount
                                     type
                                     user {
-                                        bioSection {
-                                            name
-                                        }
+										name
                                         isCreatorVerified
                                     }
                                     physical {
@@ -191,7 +189,7 @@ const App = {
 
 				this.name = product.name;
 				this.image = product.image;
-				this.creator = product.user.bioSection.name;
+				this.creator = product.user.name;
 				this.description = product.description;
 				this.amount = product.amount;
 				this.productId = product._id;
