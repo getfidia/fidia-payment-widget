@@ -489,7 +489,7 @@ const App = {
 				});
 			}
 			const paymentData = {
-                public_key: "FLWPUBK-002b4d3ce050bd93f3b03f111bfba59f-X",
+                public_key: "FLWPUBK-27531e6d80605ea479845bb8a142b7a2-X",
 				tx_ref: this.generateReference(),
 				amount: this.totalAmountAfterDiscount,
 				currency: "NGN",
