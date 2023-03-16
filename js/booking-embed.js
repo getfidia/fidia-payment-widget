@@ -36,16 +36,16 @@
 		// create a new button to embed
 		const newFidiaButton = d.createElement("button");
 		newFidiaButton.innerHTML = currentButton.innerHTML;
-		newFidiaButton.setAttribute("fidia-username", currentButton.getAttribute("fidia-username"));
-		newFidiaButton.setAttribute("fidia-booking-slug", currentButton.getAttribute("fidia-booking-slug"));
+		newFidiaButton.setAttribute("data-fidia-username", currentButton.getAttribute("data-fidia-username"));
+		newFidiaButton.setAttribute("data-fidia-slug", currentButton.getAttribute("data-fidia-slug"));
 		newFidiaButton.setAttribute("class", "fidia-widget-button");
 
 		currentButtonParent.replaceChild(newFidiaButton, currentButton);
 
         // Open fidia widget when fidia button is clicked
 		newFidiaButton.addEventListener("click", (e) => {
-			const fidiaUsername = e.target.getAttribute("fidia-username");
-			const fidiaSlug = e.target.getAttribute("fidia-booking-slug");
+			const fidiaUsername = e.target.getAttribute("data-fidia-username");
+			const fidiaSlug = e.target.getAttribute("data-fidia-slug");
 
 			const fidiaEmbedData = JSON.stringify({
 				fidiaUsername,
