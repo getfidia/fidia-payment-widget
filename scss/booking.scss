@@ -31,6 +31,11 @@ body {
 	margin: auto !important;
 }
 
+input,
+button {
+	font: inherit;
+}
+
 .booking {
 	position: absolute;
 	overflow-y: scroll;
@@ -212,6 +217,7 @@ body {
 							background-color: transparent;
 							border: 1.5px solid #dfdfdf;
 							border-radius: 5px;
+							font: inherit;
 							font-weight: 400;
 							font-size: 16px;
 							line-height: 23px;
@@ -325,6 +331,7 @@ body {
 					background: var(--fidiaColor);
 					border: 0;
 					border-radius: 10px;
+					font: inherit;
 					font-weight: 500;
 					font-size: 24px;
 					line-height: 30px;
@@ -369,8 +376,8 @@ body {
 			p {
 				max-width: 438px;
 				font-weight: 400;
-				font-size: 24px;
-				line-height: 30px;
+				font-size: 21px;
+				line-height: 27px;
 				text-align: center;
 				color: var(--fidiaColorGrey);
 
@@ -386,8 +393,8 @@ body {
 				border: 0;
 				border-radius: 10px;
 				font-weight: 600;
-				font-size: 24px;
-				line-height: 30px;
+				font-size: 20px;
+				line-height: 24px;
 				text-align: center;
 				color: #ffffff;
 				padding: 18px 0;

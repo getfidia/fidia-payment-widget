@@ -27,6 +27,7 @@ const bookingApp = {
 			customerName: "",
 			customerEmail: "",
 			mode: "booking",
+			showBookingWidget: false,
 			displayLoader: true,
 			baseUrl: "https://getfidia-production.herokuapp.com/graphql",
 			username: "",
@@ -100,6 +101,7 @@ const bookingApp = {
 				this.displayLoader = true;
 				await this.fetchBooking();
 				await this.fetchBookingSlots();
+				this.showBookingWidget = true;
 				this.displayLoader = false;
 			} catch (error) {
 				this.displayLoader = false;
@@ -373,6 +375,7 @@ const bookingApp = {
 		},
 		closeBookingModal() {
 			this.clearSelectedTimeSlot();
+			this.showBookingWidget = false;
 			this.mode = "booking";
 			// Tell the parent document to close the iframe
 			window.parent.postMessage("closeFidiaBookingIframe", "*");
