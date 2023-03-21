@@ -323,6 +323,7 @@ button {
   opacity: 0.8;
 }
 .booking-content .payment-status {
+  width: 100vw;
   max-width: 592px;
   max-height: 549px;
   margin: auto;
