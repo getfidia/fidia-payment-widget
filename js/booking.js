@@ -104,9 +104,9 @@ const bookingApp = {
 				this.showBookingWidget = true;
 				this.displayLoader = false;
 			} catch (error) {
+				this.showBookingWidget = true;
 				this.displayLoader = false;
 				this.errorOccured = true;
-				console.log("error", error);
 			}
 		};
 	},
