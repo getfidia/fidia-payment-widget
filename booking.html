@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Fidia Booking Widget</title>
+
+        <!-- Use this URL for Vue in development mode https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js -->
+
+        <script src="https://unpkg.com/vue@3"></script>
+        <script src="https://checkout.flutterwave.com/v3.js"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Sora:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vue2-datepicker@3.11.1/index.min.css">
+        <link href="https://embed.getfidia.com/css/booking.css" rel="stylesheet" />
+        <!-- <link rel="stylesheet" href="./css/booking.css" /> -->
+    </head>
+
+    <body>
+        <div id="booking-app">
+            <div class="booking">
+                <template v-if="showBookingWidget">
+                    <div class="booking-content" :class="{ 'booking-active': mode !== 'booking' }">
+                        <span class="close" @click="closeBookingModal">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M12 10.5857L16.95 5.63574L18.364 7.04974L13.414 11.9997L18.364 16.9497L16.95 18.3637L12 13.4137L7.04999 18.3637L5.63599 16.9497L10.586 11.9997L5.63599 7.04974L7.04999 5.63574L12 10.5857Z"
+                                    fill="#787676" />
+                            </svg>
+                        </span>
+                        <template v-if="errorOccured">
+                            <div class="widget__error">
+                                <svg width="51" height="50" viewBox="0 0 51 50" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <g clip-path="url(#clip0)">
+                                        <path
+                                            d="M32.037 6.11777L49.4918 36.3505C50.1319 37.4592 50.5 38.7445 50.5 40.1167C50.5 44.2837 47.1219 47.662 42.9547 47.662H25.5L19.4638 25.0004L25.5 2.33887C28.2949 2.33887 30.7331 3.85967 32.037 6.11777Z"
+                                            fill="#3B4145" />
+                                        <path
+                                            d="M18.963 6.11777L1.50811 36.3505C0.868066 37.4592 0.5 38.7445 0.5 40.1167C0.5 44.2837 3.87812 47.662 8.04531 47.662H25.5V2.33887C22.7051 2.33887 20.2669 3.85967 18.963 6.11777Z"
+                                            fill="#525A61" />
+                                        <path
+                                            d="M46.8782 37.8594L29.4235 7.62695C28.6368 6.26377 27.1922 5.40361 25.6298 5.35938L40.5584 44.644H42.9548C45.4508 44.644 47.4819 42.613 47.4819 40.1169C47.4819 39.3241 47.2727 38.5435 46.8782 37.8594Z"
+                                            fill="#FFB751" />
+                                        <path
+                                            d="M43.9427 37.859C44.2837 38.5431 44.4638 39.3237 44.4638 40.1165C44.4638 42.6125 42.7123 44.6437 40.5583 44.6437H8.04531C5.54931 44.6437 3.51816 42.6125 3.51816 40.1165C3.51816 39.3237 3.72744 38.5431 4.12177 37.859L21.5765 7.62656C22.3853 6.22617 23.8884 5.35596 25.5 5.35596C25.5433 5.35596 25.5865 5.35693 25.6298 5.35898C26.9708 5.41133 28.2093 6.26943 28.8843 7.62656L43.9427 37.859Z"
+                                            fill="#FFD764" />
+                                        <path
+                                            d="M25.5 34.583V39.6132C26.8894 39.6132 28.0151 38.4874 28.0151 37.098C28.0151 35.7088 26.8894 34.583 25.5 34.583Z"
+                                            fill="#3B4145" />
+                                        <path
+                                            d="M25.5 34.583C25.7776 34.583 26.003 35.7088 26.003 37.0981C26.003 38.4875 25.7776 39.6133 25.5 39.6133C24.1106 39.6133 22.9849 38.4875 22.9849 37.0981C22.9849 35.7088 24.1106 34.583 25.5 34.583Z"
+                                            fill="#525A61" />
+                                        <path
+                                            d="M25.5 12.9536V31.5653C26.8894 31.5653 28.0151 30.4386 28.0151 29.0502V15.4688C28.0151 14.0794 26.8894 12.9536 25.5 12.9536Z"
+                                            fill="#3B4145" />
+                                        <path
+                                            d="M25.5 12.9536C25.7776 12.9536 26.003 14.0794 26.003 15.4688V29.0502C26.003 30.4385 25.7776 31.5653 25.5 31.5653C24.1106 31.5653 22.9849 30.4386 22.9849 29.0502V15.4688C22.9849 14.0794 24.1106 12.9536 25.5 12.9536Z"
+                                            fill="#525A61" />
+                                    </g>
+                                    <defs>
+                                        <clipPath id="clip0">
+                                            <rect width="50" height="50" fill="white" transform="translate(0.5)" />
+                                        </clipPath>
+                                    </defs>
+                                </svg>
+                                <h6>Error loading widget!</h6>
+                                <p>This booking does not exist. It is either been deleted or disabled.</p>
+                            </div>
+                        </template>
+                        <template v-else-if="Object.keys(booking).length > 0 && !errorOccured">
+                            <div v-if="mode === 'booking'" class="booking-container">
+                                <div class="booking-container__details">
+                                    <img :src="booking.user.profileImage" :alt="`${booking.user.name} profile image`"
+                                        class="booking-image" />
+                                    <h3 class="booking-title">{{ booking.name }}</h3>
+                                    <p class="booking-author">By {{ booking.user.name }}</p>
+                                    <p class="booking-duration">
+                                        <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg" data-v-baea09fa="">
+                                            <g clip-path="url(#clip0_1270_6730)">
+                                                <path
+                                                    d="M10 18.8332C5.39752 18.8332 1.66669 15.1023 1.66669 10.4998C1.66669 5.89734 5.39752 2.1665 10 2.1665C14.6025 2.1665 18.3334 5.89734 18.3334 10.4998C18.3334 15.1023 14.6025 18.8332 10 18.8332ZM10 17.1665C11.7681 17.1665 13.4638 16.4641 14.7141 15.2139C15.9643 13.9636 16.6667 12.2679 16.6667 10.4998C16.6667 8.73173 15.9643 7.03603 14.7141 5.78579C13.4638 4.53555 11.7681 3.83317 10 3.83317C8.23191 3.83317 6.53622 4.53555 5.28598 5.78579C4.03573 7.03603 3.33335 8.73173 3.33335 10.4998C3.33335 12.2679 4.03573 13.9636 5.28598 15.2139C6.53622 16.4641 8.23191 17.1665 10 17.1665ZM10.8334 10.4998H14.1667V12.1665H9.16669V6.33317H10.8334V10.4998Z"
+                                                    fill="#787676"></path>
+                                            </g>
+                                            <defs>
+                                                <clipPath id="clip0_1270_6730">
+                                                    <rect width="20" height="20" fill="white" transform="translate(0 0.5)">
+                                                    </rect>
+                                                </clipPath>
+                                            </defs>
+                                        </svg>
+                                        {{ bookingDuration }} {{ convertTimezoneToOffset(booking.timezone) }}
+                                    </p>
+                                    <p class="booking-duration">
+                                        <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg" data-v-baea09fa="">
+                                            <g clip-path="url(#clip0_1030_8450)">
+                                                <path
+                                                    d="M10 17.9169L14.125 13.7919C14.9408 12.9761 15.4963 11.9367 15.7213 10.8052C15.9463 9.67362 15.8308 8.50076 15.3892 7.43489C14.9477 6.36902 14.2 5.45802 13.2408 4.81707C12.2815 4.17612 11.1537 3.83401 10 3.83401C8.8463 3.83401 7.71851 4.17612 6.75924 4.81707C5.79997 5.45802 5.05229 6.36902 4.61076 7.43489C4.16923 8.50076 4.05368 9.67362 4.27871 10.8052C4.50374 11.9367 5.05926 12.9761 5.875 13.7919L10 17.9169ZM10 20.2736L4.69667 14.9703C3.64779 13.9214 2.93349 12.585 2.64411 11.1301C2.35473 9.67528 2.50326 8.16729 3.07092 6.79684C3.63858 5.4264 4.59987 4.25507 5.83324 3.43096C7.0666 2.60686 8.51665 2.16699 10 2.16699C11.4834 2.16699 12.9334 2.60686 14.1668 3.43096C15.4001 4.25507 16.3614 5.4264 16.9291 6.79684C17.4968 8.16729 17.6453 9.67528 17.3559 11.1301C17.0665 12.585 16.3522 13.9214 15.3033 14.9703L10 20.2736ZM10 11.3336C10.442 11.3336 10.866 11.158 11.1785 10.8454C11.4911 10.5329 11.6667 10.109 11.6667 9.66693C11.6667 9.2249 11.4911 8.80098 11.1785 8.48842C10.866 8.17586 10.442 8.00026 10 8.00026C9.55798 8.00026 9.13405 8.17586 8.82149 8.48842C8.50893 8.80098 8.33334 9.2249 8.33334 9.66693C8.33334 10.109 8.50893 10.5329 8.82149 10.8454C9.13405 11.158 9.55798 11.3336 10 11.3336ZM10 13.0003C9.11595 13.0003 8.2681 12.6491 7.64298 12.0239C7.01786 11.3988 6.66667 10.551 6.66667 9.66693C6.66667 8.78287 7.01786 7.93503 7.64298 7.3099C8.2681 6.68478 9.11595 6.33359 10 6.33359C10.8841 6.33359 11.7319 6.68478 12.357 7.3099C12.9821 7.93503 13.3333 8.78287 13.3333 9.66693C13.3333 10.551 12.9821 11.3988 12.357 12.0239C11.7319 12.6491 10.8841 13.0003 10 13.0003Z"
+                                                    fill="#787676"></path>
+                                            </g>
+                                            <defs>
+                                                <clipPath id="clip0_1030_8450">
+                                                    <rect width="20" height="20" fill="white" transform="translate(0 0.5)">
+                                                    </rect>
+                                                </clipPath>
+                                            </defs>
+                                        </svg>
+                                        <template v-if="booking.location === 'googleMeet'">Google Meet</template>
+                                        <template v-else-if="booking.location === 'virtual'">Virtual</template>
+                                        <template v-else>{{ booking.locationUrl }}</template>
+                                    </p>
+                                    <p class="booking-duration">
+                                        <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg" data-v-baea09fa="">
+                                            <g clip-path="url(#clip0_1609_5993)">
+                                                <path
+                                                    d="M17.5001 3C17.7211 3 17.9331 3.0878 18.0893 3.24408C18.2456 3.40036 18.3334 3.61232 18.3334 3.83333V8.41667C17.7809 8.41667 17.251 8.63616 16.8603 9.02686C16.4696 9.41756 16.2501 9.94747 16.2501 10.5C16.2501 11.0525 16.4696 11.5824 16.8603 11.9731C17.251 12.3638 17.7809 12.5833 18.3334 12.5833V17.1667C18.3334 17.3877 18.2456 17.5996 18.0893 17.7559C17.9331 17.9122 17.7211 18 17.5001 18H2.50008C2.27907 18 2.06711 17.9122 1.91083 17.7559C1.75455 17.5996 1.66675 17.3877 1.66675 17.1667V12.5833C2.21928 12.5833 2.74919 12.3638 3.13989 11.9731C3.53059 11.5824 3.75008 11.0525 3.75008 10.5C3.75008 9.94747 3.53059 9.41756 3.13989 9.02686C2.74919 8.63616 2.21928 8.41667 1.66675 8.41667V3.83333C1.66675 3.61232 1.75455 3.40036 1.91083 3.24408C2.06711 3.0878 2.27907 3 2.50008 3H17.5001ZM16.6667 4.66667H3.33341V7.14L3.46341 7.2075C4.02868 7.51587 4.50502 7.9646 4.84655 8.51047C5.18809 9.05634 5.38331 9.68096 5.41341 10.3242L5.41675 10.5C5.41685 11.1735 5.23551 11.8347 4.89179 12.4139C4.54807 12.9931 4.05466 13.469 3.46341 13.7917L3.33341 13.86V16.3333H16.6667V13.8592L16.5367 13.7925C15.9715 13.4841 15.4951 13.0354 15.1536 12.4895C14.8121 11.9437 14.6169 11.319 14.5867 10.6758L14.5834 10.5C14.5834 9.08 15.3726 7.84417 16.5367 7.20833L16.6667 7.13917V4.66667ZM13.3334 8V13H6.66675V8H13.3334Z"
+                                                    fill="#787676"></path>
+                                            </g>
+                                            <defs>
+                                                <clipPath id="clip0_1609_5993">
+                                                    <rect width="20" height="20" fill="white" transform="translate(0 0.5)">
+                                                    </rect>
+                                                </clipPath>
+                                            </defs>
+                                        </svg>
+                                        <template v-if="booking.amount <= 0">Free</template>
+                                        <template v-else> NGN {{ booking.amount }}</template>
+                                    </p>
+                                    <div class="booking-description">{{ booking.description }}</div>
+                                </div>
+
+                                <div class="booking-container__calendar">
+                                    <div ref="datePicker" class="booking-date__picker">
+                                        <date-picker v-model="selectedDate" value-type="timestamp"
+                                            :default-value="defaultValue" :lang="datePickerLang" type="date" :inline="true"
+                                            :disabled-date="disabledDates" prefix-class="mx"
+                                            @input="checkAvailableTimeSlots" @calendar-change="fetchAvailableTimeSlots">
+                                        </date-picker>
+
+                                        <div v-if="isFetchingAvailableSlots" class="booking-dates__loader">
+                                            <span class="booking-dates__loader-inner"></span>
+                                        </div>
+                                    </div>
+
+                                    <div v-if="startTimesForSelectedDate && startTimesForSelectedDate.length > 0"
+                                        class="booking-date__time-picker">
+                                        <p class="booking-time__header">{{ formattedShortDate }}</p>
+                                        <div ref="timeSlots" class="booking-time__slots">
+                                            <button v-for="time in startTimesForSelectedDate" :key="time.key"
+                                                class="booking-time__button"
+                                                :class="{ selected: time.key === selectedStartTime }"
+                                                @click="selectTimeSlot(time.key)">{{ time.value }}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div v-if="mode === 'book-session'" class="book-session">
+                                <h4>Book Session</h4>
+                                <p>Schedule a {{ bookingDuration }} session with {{ booking.user.name }} from
+                                    {{ convertTimeToAMPM(selectedStartTime) }} to
+                                    {{ convertTimeToAMPM(bookedTimeSlot.endTime) }} on {{ formattedLongDate }}
+                                </p>
+
+                                <form @submit.prevent="validateBookSessionInput">
+                                    <label for="name">
+                                        <span>Name</span>
+                                        <input v-model="v$.customerName.$model" type="text" name="name" id="name"
+                                            placeholder="Your Name" :class="{ error: v$.customerName.$error }" />
+                                    </label>
+
+                                    <label for="email">
+                                        <span>Email</span>
+                                        <input v-model="v$.customerEmail.$model" type="email" name="email" id="email"
+                                            placeholder="yourname@email.com" :class="{ error: v$.customerEmail.$error }" />
+                                    </label>
+
+                                    <template v-if="booking.amount > 0">
+                                        <div class="booking-summary">
+                                            <span class="title">Amount</span>
+                                            <span class="amount">NGN {{ booking.amount }}</span>
+                                        </div>
+                                        <div class="booking-summary total">
+                                            <span class="title">Total</span>
+                                            <span class="amount">NGN {{ booking.amount }}</span>
+                                        </div>
+                                    </template>
+
+                                    <button class="button">{{ booking.amount > 0 ? 'Make Payment' : 'Continue' }}</button>
+                                </form>
+                            </div>
+
+                            <div v-if="mode === 'payment-status'" class="payment-status">
+                                <svg v-if="paymentStatus === 'success'" width="70" height="70" viewBox="0 0 70 70"
+                                    fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M35.0001 0.000142739C54.33 0.000142739 70 15.6702 70 35.0001C70 54.33 54.33 70 35.0001 70C15.6702 70 0.000145175 54.33 0.000145175 35.0001C-0.0548568 15.725 15.5259 0.0551448 34.8008 0.000142739C34.8672 -4.75796e-05 34.9337 -4.75796e-05 35.0001 0.000142739Z"
+                                        fill="#3BB54A" />
+                                    <path
+                                        d="M54.3892 25.3553L29.5313 50.2131L15.6108 36.3922L21.2785 30.8241L29.5313 38.9775L48.7217 19.7871L54.3892 25.3553Z"
+                                        fill="#D4E1F4" />
+                                </svg>
+                                <svg v-else width="71" height="70" viewBox="0 0 71 70" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <g clip-path="url(#clip0_4120:23626)">
+                                        <path
+                                            d="M35.5 0C16.1703 0 0.5 15.6703 0.5 35C0.5 54.3297 16.1703 70 35.5 70C54.8297 70 70.5 54.3297 70.5 35C70.5 15.6703 54.8297 0 35.5 0ZM6.53448 35C6.53448 19.0291 19.5291 6.03448 35.5 6.03448C42.5555 6.03448 49.0269 8.57259 54.056 12.7798L13.2798 53.556C9.07259 48.5269 6.53448 42.0543 6.53448 35ZM35.5 63.9655C28.7534 63.9655 22.5428 61.6398 17.6138 57.7572L58.2572 17.1126C62.1398 22.0428 64.4655 28.2534 64.4655 35C64.4655 50.9709 51.4709 63.9655 35.5 63.9655Z"
+                                            fill="#DD352E" />
+                                    </g>
+                                    <defs>
+                                        <clipPath id="clip0_4120:23626">
+                                            <rect width="70" height="70" fill="white" transform="translate(0.5)" />
+                                        </clipPath>
+                                    </defs>
+                                </svg>
+                                <h4>{{ paymentStatus === 'success' ? 'Success 🎉' : 'Transaction Failed' }}</h4>
+                                <p>
+                                    <template v-if="paymentStatus === 'success'">
+                                        You've successfully booked a {{bookingDuration}} session with {{booking.user.name}}
+                                        for NGN {{booking.amount}} on {{formattedLongDate}} from
+                                        {{convertTimeToAMPM(selectedStartTime)}} to
+                                        {{convertTimeToAMPM(bookedTimeSlot.endTime)}}.
+                                    </template>
+                                    <template v-else>
+                                        Your payment could not be processed at the moment, kindly try again.
+                                    </template>
+                                </p>
+                                <button class="button"
+                                    @click="closeOrTryAgain">{{ paymentStatus === 'success' ? 'Done' : 'Try Again' }}</button>
+                            </div>
+                        </template>
+
+                        <!-- Powered by -->
+                        <div class="powered-by-fidia">
+                            <img src="https://embed.getfidia.com/images/fidia-powered.svg" alt="Fidia Logo" />
+                            <span>Powered by Fidia</span>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- LOADER SECTION -->
+                <div v-if="displayLoader" class="loader">
+                    <img src="https://embed.getfidia.com/images/loader.svg" alt="Loader Image here.." />
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/vue-demi"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue2-datepicker@4.0.0-beta.1/index.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@vuelidate/core"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@vuelidate/validators"></script>
+        <script src="https://cdn.jsdelivr.net/npm/luxon@3.0.4/build/global/luxon.min.js"></script>
+        <script src="/js/booking.js"></script>
+    </body>
+
+</html>
