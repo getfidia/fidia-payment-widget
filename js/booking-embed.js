@@ -66,8 +66,8 @@
     w.onmessage = (e) => {
 		if (e.data === "closeFidiaBookingIframe") {
 			// Close the iframe when this event is emitted to the parent document,
-			const bookingIframes = document.querySelectorAll("#fidia-booking-embed-iframe");
-            bookingIframes.forEach((iframe) => {
+			const fidiaIframes = document.querySelectorAll("#fidia-product-embed-iframe, #fidia-embed-iframe, #fidia-booking-embed-iframe");
+            fidiaIframes.forEach((iframe) => {
 				iframe.style.display = "none";
 			});
 			document.body.style.overflow = "visible";
