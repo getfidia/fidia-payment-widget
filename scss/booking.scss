@@ -112,6 +112,7 @@ button {
 				max-height: unset;
 				padding-bottom: 30px;
 				overflow: auto;
+				border-radius: 10px 10px 0 0;
 			}
 
 			@media screen and (min-width: 1200px) {
@@ -415,7 +416,7 @@ button {
 			align-items: center;
 			text-align: center;
 			background: #ffffff;
-			max-height: 600px;
+			min-height: 600px;
 			box-shadow: 0rem 1px 1px rgba(120, 118, 118, 0.05);
 			border-radius: 16px 16px 0 0;
 			padding: 48px 28px;
@@ -432,18 +433,18 @@ button {
 			h6 {
 				padding-top: 30px;
 				font-weight: 500;
-				font-size: 32px;
-				line-height: 56px;
+				font-size: 2.4rem;
+				line-height: 3.5rem;
 				color: var(--fidiaColorBlack);
 				margin-bottom: 16px;
 			}
 
 			p {
 				font-weight: 400;
-				font-size: 18px;
-				line-height: 24px;
+				font-size: 1.8rem;
+				line-height: 2.3rem;
 				color: var(--fidiaColorGrey);
-				margin-bottom: 24px;
+				margin-bottom: 16px;
 			}
 		}
 
@@ -451,22 +452,34 @@ button {
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			height: 35px;
-			max-width: 180px;
-			margin: auto;
-			margin-top: 10px;
-			background: #ffffff;
-			border-radius: 2px;
-			border: 1px solid #f8f8f8;
-			box-shadow: 0px 10px 50px rgba(120, 118, 118, 0.2);
-			cursor: pointer;
-
-			span {
-				padding-left: 7px;
-				color: var(--fidiaColor);
+			background-color: #fff;
+			margin: 0;
+			padding: 3rem 0;
+		
+			@media screen and (min-width: 600px) {
+				background-color: transparent;
+				margin: 0.9rem auto 2rem;
+				padding: 0;
+			}
+		
+			a {
+				display: flex;
+				align-items: center;
+				justify-content: center;
 				font-weight: 500;
 				font-size: 16px;
 				line-height: 20px;
+				color: var(--fidiaColor);
+				text-decoration: none;
+				border: 1px solid #f8f8f8;
+				box-shadow: 0rem 16px 5rem #78767633;
+				border-radius: 0.2rem;
+				padding: 0.8rem;
+				background-color: #FFFFFF;
+		
+				img {
+					margin-right: 0.7rem;
+				}
 			}
 		}
 	}
